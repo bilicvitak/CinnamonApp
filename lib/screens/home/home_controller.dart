@@ -1,0 +1,133 @@
+import 'package:get/get.dart';
+
+import '../../constants/dependencies.dart';
+import '../../models/lesson/lesson.dart';
+import '../../models/reservation/reservation.dart';
+import '../../models/seat/seat.dart';
+import '../lesson_details/lesson_screen_details.dart';
+import '../lesson_reservations/lesson_screen_reservations.dart';
+
+class HomeController extends GetxController {
+  /// ------------------------
+  /// VARIABLES
+  /// ------------------------
+
+  final _isSeatReserved = false.obs;
+  final _reservedSeat = Rx<Seat>(Seat.blank());
+
+  final _upcomingLesson = sharedFirebaseDataService.upcomingLesson.obs;
+  final _upcomingLecture = sharedFirebaseDataService.upcomingLecture.obs;
+  final _upcomingCodeLab = sharedFirebaseDataService.upcomingCodeLab.obs;
+
+  /// ------------------------
+  /// GETTERS
+  /// ------------------------
+
+  bool get isSeatReserved => _isSeatReserved.value;
+
+  Seat get reservedSeat => _reservedSeat.value;
+
+  Lesson get upcomingLesson => _upcomingLesson.value;
+
+  Lesson get upcomingLecture => _upcomingLecture.value;
+
+  Lesson get upcomingCodeLab => _upcomingCodeLab.value;
+
+  /// ------------------------
+  /// SETTERS
+  /// ------------------------
+
+  set isSeatReserved(bool value) => _isSeatReserved.value = value;
+
+  set reservedSeat(Seat value) => _reservedSeat.value = value;
+
+  set upcomingLesson(Lesson value) => _upcomingLesson.value = value;
+
+  set upcomingLecture(Lesson value) => _upcomingLecture.value = value;
+
+  set upcomingCodeLab(Lesson value) => _upcomingCodeLab.value = value;
+
+  /// ------------------------
+  /// INIT
+  /// ------------------------
+
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+
+    await sharedFirebaseDataService.getAllLessons();
+    filterUpcomingLesson();
+
+    await getReservedSeat();
+  }
+
+  /// ------------------------
+  /// METHODS
+  /// ------------------------
+
+  /// home screen => lesson screen details
+  void goToLessonScreenDetails() => Get.toNamed(LessonScreenDetails.routeName, arguments: {
+        'lesson': upcomingLesson.lessonDetails,
+        'isSeatReserved': isSeatReserved,
+        'reservedSeat': reservedSeat,
+      });
+
+  void goToLessonScreenReservations() => Get.toNamed(LessonScreenReservations.routeName, arguments: {
+        'selectedLesson': upcomingLesson.lessonDetails,
+        'isSeatReserved': isSeatReserved,
+      });
+
+  void filterUpcomingLesson() {
+    final sortedLessons = sharedFirebaseDataService.lessons
+        .where((lesson) => lesson.lessonStart.isAfter(DateTime.now()))
+        .toList()
+      ..sort((a, b) => a.lessonStart.compareTo(b.lessonStart));
+
+    final lesson = sortedLessons.first;
+
+    upcomingLesson = Lesson(
+        lessonName: lesson.lessonName,
+        lessonStart: lesson.lessonStart,
+        lessonEnd: lesson.lessonEnd,
+        lessonDetails: lesson.lessonDetails);
+
+    upcomingLecture = Lesson(
+        lessonName: lesson.lessonDetails!.lectureName,
+        lessonStart: lesson.lessonDetails!.lectureStart,
+        lessonEnd: lesson.lessonDetails!.lectureEnd);
+
+    upcomingCodeLab = Lesson(
+        lessonName: lesson.lessonDetails!.codeLabName,
+        lessonStart: lesson.lessonDetails!.codeLabStart,
+        lessonEnd: lesson.lessonDetails!.codeLabEnd);
+  }
+
+  Future<void> getReservedSeat() async {
+    final firebaseReservations =
+        await firebaseService.getDocuments(collectionPath: firebaseService.reservationsCollection);
+
+    final reservations = firebaseReservations.docs.map((doc) => Reservation.fromJson(doc.data())).toList();
+    final reservation = reservations
+        .where((reservation) =>
+            reservation.lectureId ==
+            '${firebaseService.lessonsCollection}/Lesson${upcomingLesson.lessonDetails!.lessonNumber}')
+        .single;
+
+    String? seatId;
+    for (final student in reservation.students) {
+      student.forEach((key, value) {
+        if (key == 'userId' &&
+            value == '${firebaseService.usersCollection}/${firebaseService.firebaseUser.value!.uid}') {
+          seatId = student['seatId'];
+        }
+      });
+    }
+
+    if (seatId != null) {
+      isSeatReserved = true;
+
+      final firebaseSeat = await firebaseService.getDocument(docPath: seatId!);
+      reservedSeat = Seat.fromJson({'id': firebaseSeat.id, ...firebaseSeat.data()!});
+    }
+  }
+}

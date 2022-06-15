@@ -19,7 +19,7 @@ class RegistrationController extends GetxController {
   /// VARIABLES
   /// ------------------------
 
-  var baseUrl = 'https://us-central1-flutteracademia.cloudfunctions.net/sendEmailAgain?userId=';
+  var baseUrl = 'https://us-central1-cinnamonapp-73a64.cloudfunctions.net/sendEmailAgain?userId=';
 
   /// enable yellow button
   final _validated = false.obs; //password check

@@ -16,7 +16,7 @@ class LoginController extends GetxController {
   /// VARIABLES
   /// ------------------------
 
-  var baseUrl = 'https://us-central1-flutteracademia.cloudfunctions.net/sendEmailAgain?userId=';
+  var baseUrl = 'https://us-central1-cinnamonapp-73a64.cloudfunctions.net/sendEmailAgain?userId=';
 
   /// Login fields
   final _email = ''.obs;

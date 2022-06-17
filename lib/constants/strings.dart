@@ -163,4 +163,19 @@ class FAStrings {
   /// keys
   static const notificationsKey = 'notifications';
   static const darkModeKey = 'darkMode';
+
+  /// errors
+  static final errorError = 'errorError'.tr;
+  static final errorEmailInUse = 'errorEmailInUse'.tr;
+  static final errorRegistrationFail = 'errorRegistrationFail'.tr;
+  static final errorWrongCode = 'errorWrongCode'.tr;
+  static final errorValidationFail = 'errorValidationFail'.tr;
+  static final errorResendEmail = 'errorResendEmail'.tr;
+  static final errorPictureNotSelected = 'errorPictureNotSelected'.tr;
+  static final errorUploadFileFail = 'errorUploadFileFail'.tr;
+  static final errorNoGoals = 'errorNoGoals'.tr;
+  static final errorUserNotFound = 'errorUserNotFound'.tr;
+  static final errorWrongPassword = 'errorWrongPassword'.tr;
+  static final errorLoginFail = 'errorLoginFail'.tr;
+  static final errorPasswordResetFail = 'errorPasswordResetFail'.tr;
 }

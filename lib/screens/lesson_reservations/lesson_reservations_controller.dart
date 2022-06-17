@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
+import '../../constants/firestore_collections.dart';
 import '../../models/lesson_details/lesson_details.dart';
 import '../../models/reservation/reservation.dart';
 import '../../models/reservation_seat/reservation_seat.dart';
@@ -103,18 +104,23 @@ class LessonReservationsController extends GetxController {
   }
 
   Future<void> _filterSeats() async {
-    final firebaseSeats = await firebaseService.getDocuments(collectionPath: firebaseService.seatsCollection);
-    seats = firebaseSeats.docs.map((doc) => Seat.fromJson({'id': doc.id, ...doc.data()})).toList();
+    final firebaseSeats =
+        await firebaseService.getDocuments(collectionPath: FCFirestoreCollections.seatsCollection);
 
+    if(firebaseSeats == null) {
+      return;
+    }
+
+    seats = firebaseSeats.docs.map((doc) => Seat.fromJson({'id': doc.id, ...doc.data()})).toList();
     seats.sort((a, b) => a.position.compareTo(b.position));
   }
 
   Future<void> _getReservations() async {
-    final lectureId = '${firebaseService.lessonsCollection}/Lesson${lesson.lessonNumber}';
+    final lectureId = '${FCFirestoreCollections.lessonsCollection}/Lesson${lesson.lessonNumber}';
     final lectureRef = firebaseService.firebaseFirestore.doc(lectureId);
 
     final firebaseReservation = await firebaseService.firebaseFirestore
-        .collection(firebaseService.reservationsCollection)
+        .collection(FCFirestoreCollections.reservationsCollection)
         .where('lectureId', isEqualTo: lectureRef)
         .get();
 
@@ -124,8 +130,9 @@ class LessonReservationsController extends GetxController {
     await _setSeatReservation(reservation.students);
   }
 
-  Seat _getSeat(String seatPath) =>
-      seats.where((seat) => '${firebaseService.seatsCollection}/${seat.id}' == seatPath).single;
+  Seat _getSeat(String seatPath) => seats
+      .where((seat) => '${FCFirestoreCollections.seatsCollection}/${seat.id}' == seatPath)
+      .single;
 
   Future<cinnamon_user.User> _getUser(String path) async {
     final firebaseUser = await firebaseService.firebaseFirestore.doc(path).get();
@@ -163,11 +170,11 @@ class LessonReservationsController extends GetxController {
   }
 
   Future<void> _listenReservationChanges() async {
-    final lectureId = '${firebaseService.lessonsCollection}/Lesson${lesson.lessonNumber}';
+    final lectureId = '${FCFirestoreCollections.lessonsCollection}/Lesson${lesson.lessonNumber}';
     final lectureRef = firebaseService.firebaseFirestore.doc(lectureId);
 
     firebaseReservations = firebaseService.firebaseFirestore
-        .collection(firebaseService.reservationsCollection)
+        .collection(FCFirestoreCollections.reservationsCollection)
         .where('lectureId', isEqualTo: lectureRef)
         .snapshots()
         .listen((event) async {
@@ -184,23 +191,24 @@ class LessonReservationsController extends GetxController {
 
   Future<void> reserveSeat() async {
     reservations.add({
-      'seatId': firebaseService.firebaseFirestore.doc('${firebaseService.seatsCollection}/${selectedSeat.id}'),
-      'userId': firebaseService.firebaseFirestore
-          .doc('${firebaseService.usersCollection}/${firebaseService.firebaseUser.value?.uid}')
+      'seatId': firebaseService.firebaseFirestore
+          .doc('${FCFirestoreCollections.seatsCollection}/${selectedSeat.id}'),
+      'userId': firebaseService.firebaseFirestore.doc(
+          '${FCFirestoreCollections.usersCollection}/${firebaseService.firebaseUser.value?.uid}')
     });
 
     await firebaseService.firebaseFirestore
-        .collection(firebaseService.reservationsCollection)
+        .collection(FCFirestoreCollections.reservationsCollection)
         .doc(reservationId)
         .update({'students': reservations});
   }
 
   Future<void> cancelReservation() async {
-    reservations.removeWhere((element) => element
-        .containsValue(firebaseService.firebaseFirestore.doc('${firebaseService.seatsCollection}/${selectedSeat.id}')));
+    reservations.removeWhere((element) => element.containsValue(firebaseService.firebaseFirestore
+        .doc('${FCFirestoreCollections.seatsCollection}/${selectedSeat.id}')));
 
     await firebaseService.firebaseFirestore
-        .collection(firebaseService.reservationsCollection)
+        .collection(FCFirestoreCollections.reservationsCollection)
         .doc(reservationId)
         .update({'students': reservations});
 

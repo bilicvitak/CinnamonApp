@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../constants/dependencies.dart';
+import '../constants/firestore_collections.dart';
 import '../models/lesson/lesson.dart';
 import '../models/lesson_details/lesson_details.dart';
 
@@ -71,8 +72,9 @@ class SharedFirebaseDataService extends GetxService {
   /// ------------------------
 
   Future<void> getAllLessons() async {
-    final snapshot =
-        await firebaseService.firebaseFirestore.collection(firebaseService.lessonsCollection).get();
+    final snapshot = await firebaseService.firebaseFirestore
+        .collection(FCFirestoreCollections.lessonsCollection)
+        .get();
 
     final lessonsDetails = snapshot.docs.map((doc) => LessonDetails.fromJson(doc.data()));
 
@@ -89,7 +91,7 @@ class SharedFirebaseDataService extends GetxService {
 
   Future<void> getNotifications() async {
     final docPath =
-        '${firebaseService.notificationsCollection}/${firebaseService.firebaseUser.value?.uid}';
+        '${FCFirestoreCollections.notificationsCollection}/${firebaseService.firebaseUser.value?.uid}';
     final snapshot = await firebaseService.getDocument(docPath: docPath);
   }
 }

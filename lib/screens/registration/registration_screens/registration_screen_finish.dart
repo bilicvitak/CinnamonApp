@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
-import '../../../constants/dependencies.dart';
 import '../../../constants/logo.dart';
 import '../../../constants/strings.dart';
 import '../../../constants/text_styles.dart';
 import '../../../widgets/yellow_button.dart';
+import '../registration_controller.dart';
 
 class RegistrationScreenFinish extends StatelessWidget {
   static const routeName = '/registration_screen_finish';
+  final registrationController = Get.find<RegistrationController>();
 
   @override
   Widget build(BuildContext context) => Scaffold(

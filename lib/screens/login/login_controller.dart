@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
+import '../../constants/errors.dart';
+import '../../constants/firestore_collections.dart';
+import '../../constants/strings.dart';
 import '../../models/user/user.dart' as cinnamon_user;
 import '../main_screen.dart';
 import 'login_screen.dart';
@@ -10,7 +14,6 @@ import 'login_screens/login_screen_new_password.dart';
 import 'login_screens/login_screen_password_reset.dart';
 
 class LoginController extends GetxController {
-  static final instance = Get.find<LoginController>();
 
   /// ------------------------
   /// VARIABLES
@@ -149,6 +152,7 @@ class LoginController extends GetxController {
     validated = true;
   }
 
+  /// FUNCTION: Show/hide password
   void showPassword() => obscureText = !obscureText;
 
   /// FUNCTION: Validate e-mail
@@ -167,17 +171,29 @@ class LoginController extends GetxController {
 
   /// FUNCTION: Sign In
   Future<void> signIn() async {
-    final success = await firebaseService.signIn(email, password);
+    final resultCode = await firebaseService.signIn(email, password);
 
-    if (success) {
-      await Get.toNamed(MainScreen.routeName);
+    switch (resultCode) {
+      case 0:
+        await Get.toNamed(MainScreen.routeName);
+        break;
+      case FCErrors.userNotFound:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorUserNotFound);
+        break;
+      case FCErrors.wrongPassword:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorWrongPassword);
+        break;
+      case FCErrors.loginFail:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorLoginFail);
+        break;
     }
   }
 
   /// FUNCTION: Get user by email
+  /// TODO Add try-catch block
   Future<cinnamon_user.User> _getUserByEmail() async {
     final firebaseUsers = await firebaseService
-        .getCollectionReference(collection: firebaseService.usersCollection)
+        .getCollectionReference(collection: FCFirestoreCollections.usersCollection)
         .where('email', isEqualTo: email)
         .get();
 
@@ -191,33 +207,44 @@ class LoginController extends GetxController {
     final data = baseUrl + user.id;
     await dioService.getURL(Uri.parse(data).toString());
 
-    await firebaseService.firebaseFirestore
-        .collection(firebaseService.usersCollection)
-        .doc(user.id)
-        .update({'codeIsVerified': false});
+    final success = await firebaseService.updateDoc(
+        collection: FCFirestoreCollections.usersCollection,
+        doc: user.id,
+        field: 'codeIsVerified',
+        value: false);
 
     await Get.toNamed(LoginCheckYourEmailScreen.routeName);
   }
 
   /// FUNCTION: Check code validation
   Future<void> validateAccount() async {
-    codeVerified = await firebaseService.validateAccount(resetCode, user.id);
+    final resultCode = await firebaseService.validateAccount(code: resetCode, userId: user.id);
 
-    if (!codeVerified) {
-      Get.snackbar('Error', 'Account validation not successful');
+    switch (resultCode) {
+      case 0:
+        codeVerified = true;
+        break;
+      case FCErrors.wrongCode:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorWrongCode);
+        break;
+      case FCErrors.validationFail:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorValidationFail);
+        break;
     }
   }
 
   /// FUNCTION: Save new password
   Future<void> resetPassword() async {
-    final signInSuccess = await firebaseService.signIn(email, user.password!);
+    final resultCode = await firebaseService.signIn(email, user.password!);
 
-    if (signInSuccess) {
+    if (resultCode == 0) {
       final changePasswordSuccess =
           await firebaseService.changePassword(email, newPassword, user.id);
 
       if (changePasswordSuccess) {
         await Get.offAllNamed(LoginFinishScreen.routeName);
+      } else {
+        Get.snackbar(FAStrings.errorError, FAStrings.errorPasswordResetFail);
       }
     }
   }

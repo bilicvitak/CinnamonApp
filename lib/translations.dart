@@ -158,6 +158,21 @@ class FATranslations extends Translations {
           'iconLessons': 'Lessons',
           'iconCalendar': 'Calendar',
           'iconProfile': 'Profile',
+
+          // errors:
+          'errorError': 'Error',
+          'errorEmailInUse': 'The account already exists for that email.',
+          'errorRegistrationFail': 'Registration failed',
+          'errorWrongCode': 'Entered code is not valid.',
+          'errorValidationFail': 'Code verification failed',
+          'errorResendEmail': 'Email resend failed',
+          'errorPictureNotSelected': 'Picture not selected.',
+          'errorUploadFileFail': 'File upload failed',
+          'errorNoGoals': 'Error occurred while fetching goals. Click next and try again later.',
+          'errorUserNotFound': 'User not found.',
+          'errorWrongPassword': 'Wrong password provided for this user.',
+          'errorLoginFail': 'Login failed',
+          'errorPasswordResetFail': 'Password reset failed',
         },
         'de_DE': {
           'helloWorld': 'Hallo Welt!',

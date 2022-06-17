@@ -5,16 +5,17 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../constants/colors.dart';
-import '../../../constants/dependencies.dart';
 import '../../../constants/strings.dart';
 import '../../../constants/text_styles.dart';
 import '../../../widgets/yellow_button.dart';
 import '../../../widgets/yellow_close_button.dart';
 import '../../onboarding/onboarding_screen.dart';
+import '../login_controller.dart';
 import '../login_screen.dart';
 
 class LoginCheckYourEmailScreen extends StatelessWidget {
   static const routeName = '/login_screen_email_check';
+  final loginController = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) => Scaffold(

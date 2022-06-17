@@ -74,9 +74,9 @@ exports.sendEmailAgain = functions.https.onRequest(async (req, res) => {
         const email = user.data().email;
 
         await sendVerification(userId, email);
-        res.status(200).send('Bravo!');
+        res.status(200);
     } catch (error) {
         console.log(error);
-        res.status(404);
+        res.status(400);
     }
 });

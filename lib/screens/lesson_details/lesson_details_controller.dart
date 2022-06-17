@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
 
 import '../../constants/dependencies.dart';
+import '../../constants/firestore_collections.dart';
+import '../../constants/strings.dart';
 import '../../models/lesson/lesson.dart';
 import '../../models/lesson_details/lesson_details.dart';
 import '../../models/reservation/reservation.dart';
@@ -113,13 +115,15 @@ class LessonDetailsController extends GetxController {
 
   /// FUNCTION: Get user rating
   Future<void> _getLessonRating() async {
-    final userRef = firebaseService.firebaseFirestore
-        .doc('/${firebaseService.usersCollection}/${firebaseService.firebaseUser.value!.uid}');
-    final lectureRef = firebaseService.firebaseFirestore
-        .doc('/${firebaseService.lessonsCollection}/Lesson${lesson.lessonNumber}');
+    final userRef = firebaseService.getDocumentReference(
+        collection: FCFirestoreCollections.usersCollection,
+        doc: firebaseService.firebaseUser.value!.uid);
 
-    final ratingsCollection =
-        firebaseService.firebaseFirestore.collection(firebaseService.lessonRatingsCollection);
+    final lectureRef = firebaseService.getDocumentReference(
+        collection: FCFirestoreCollections.lessonsCollection, doc: 'Lesson${lesson.lessonNumber}');
+
+    final ratingsCollection = firebaseService.getCollectionReference(
+        collection: FCFirestoreCollections.lessonRatingsCollection);
 
     final snapshot = await ratingsCollection
         .where('lectureId', isEqualTo: lectureRef)
@@ -133,14 +137,15 @@ class LessonDetailsController extends GetxController {
 
   /// FUNCTION: Set lesson rating in Firebase
   Future<void> rateLesson() async {
-    final userId = '${firebaseService.usersCollection}/${firebaseService.firebaseUser.value!.uid}';
-    final userRef = firebaseService.firebaseFirestore.doc(userId);
+    final userRef = firebaseService.getDocumentReference(
+        collection: FCFirestoreCollections.usersCollection,
+        doc: firebaseService.firebaseUser.value!.uid);
 
-    final lectureId = '${firebaseService.lessonsCollection}/Lesson${lesson.lessonNumber}';
-    final lectureRef = firebaseService.firebaseFirestore.doc(lectureId);
+    final lectureRef = firebaseService.getDocumentReference(
+        collection: FCFirestoreCollections.lessonsCollection, doc: 'Lesson${lesson.lessonNumber}');
 
-    final ratingsCollection =
-        firebaseService.firebaseFirestore.collection(firebaseService.lessonRatingsCollection);
+    final ratingsCollection = firebaseService.getCollectionReference(
+        collection: FCFirestoreCollections.lessonRatingsCollection);
 
     final snapshot = await ratingsCollection
         .where('lectureId', isEqualTo: lectureRef)
@@ -151,20 +156,29 @@ class LessonDetailsController extends GetxController {
       await ratingsCollection.add({'lectureId': lectureRef, 'rating': rating, 'userId': userRef});
     } else {
       final ratingId = snapshot.docs.first.id;
-      await ratingsCollection.doc(ratingId).update({'rating': rating});
+      final result = await firebaseService.updateDoc(
+          collection: FCFirestoreCollections.lessonRatingsCollection,
+          doc: ratingId,
+          field: 'rating',
+          value: rating);
     }
   }
 
   /// FUNCTION: Get user's seat for selected lesson
   Future<void> _getReservedSeat() async {
-    final firebaseReservations =
-        await firebaseService.getDocuments(collectionPath: firebaseService.reservationsCollection);
+    final firebaseReservations = await firebaseService.getDocuments(
+        collectionPath: FCFirestoreCollections.reservationsCollection);
+
+    if (firebaseReservations == null) {
+      return;
+    }
+
     final reservations =
         firebaseReservations.docs.map((doc) => Reservation.fromJson(doc.data())).toList();
     final reservation = reservations
         .where((reservation) =>
             reservation.lectureId ==
-            '${firebaseService.lessonsCollection}/Lesson${lesson.lessonNumber}')
+            '${FCFirestoreCollections.lessonsCollection}/Lesson${lesson.lessonNumber}')
         .single;
 
     String? seatId;
@@ -172,7 +186,7 @@ class LessonDetailsController extends GetxController {
       student.forEach((key, value) {
         if (key == 'userId' &&
             value ==
-                '${firebaseService.usersCollection}/${firebaseService.firebaseUser.value!.uid}') {
+                '${FCFirestoreCollections.usersCollection}/${firebaseService.firebaseUser.value!.uid}') {
           seatId = student['seatId'];
         }
       });
@@ -198,6 +212,8 @@ class LessonDetailsController extends GetxController {
 
     if (filePath != null) {
       await OpenFile.open(filePath);
+    } else {
+      Get.snackbar(FAStrings.errorError, 'message');
     }
   }
 }

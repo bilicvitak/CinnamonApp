@@ -1,6 +1,4 @@
 import '../screens/custom_bottom_navigation_bar/custom_bottom_navigation_bar_controller.dart';
-import '../screens/login/login_controller.dart';
-import '../screens/registration/registration_controller.dart';
 import '../services/alice_service.dart';
 import '../services/dio_service.dart';
 import '../services/firebase_service.dart';
@@ -24,5 +22,3 @@ final storageService = StorageService.instance;
 /// ------------------------
 
 final dashboardController = CustomBottomNavigationBarController.instance;
-final registrationController = RegistrationController.instance;
-final loginController = LoginController.instance;

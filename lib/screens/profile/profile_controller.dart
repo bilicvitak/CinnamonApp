@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
+import '../../constants/firestore_collections.dart';
 import '../../constants/strings.dart';
 import '../../models/goal/goal.dart';
 import '../../models/user/user.dart';
@@ -104,7 +105,7 @@ class ProfileController extends GetxController {
   Future<void> _getCurrentUser() async {
     if (firebaseService.firebaseUser.value?.uid != null) {
       final userPath =
-          '${firebaseService.usersCollection}/${firebaseService.firebaseUser.value?.uid}';
+          '${FCFirestoreCollections.usersCollection}/${firebaseService.firebaseUser.value?.uid}';
       final firebaseUser = await firebaseService.getDocument(docPath: userPath);
 
       user = User.fromJson(firebaseUser.data() ?? {});
@@ -145,10 +146,14 @@ class ProfileController extends GetxController {
 
   Future<void> _getGoals() async {
     final firebaseGoals =
-        await firebaseService.getDocuments(collectionPath: firebaseService.goalsCollection);
+        await firebaseService.getDocuments(collectionPath: FCFirestoreCollections.goalsCollection);
+
+    if (firebaseGoals == null) {
+      return;
+    }
 
     goals = firebaseGoals.docs.map((doc) {
-      final goalPath = '${firebaseService.goalsCollection}/${doc.id}';
+      final goalPath = '${FCFirestoreCollections.goalsCollection}/${doc.id}';
 
       if (user.userGoals != null && user.userGoals!.contains(goalPath)) {
         return Goal.fromJson({'id': doc.id, 'isChecked': true, ...doc.data()});
@@ -166,14 +171,14 @@ class ProfileController extends GetxController {
     final selectedGoals = goals
         .where((goal) => goal.isChecked)
         .map((goal) => firebaseService.getDocumentReference(
-              collection: firebaseService.goalsCollection,
+              collection: FCFirestoreCollections.goalsCollection,
               doc: goal.id,
             ))
         .toList();
 
     if (uid != null) {
       await firebaseService.updateDoc(
-        collection: firebaseService.usersCollection,
+        collection: FCFirestoreCollections.usersCollection,
         doc: uid,
         field: 'userGoals',
         value: selectedGoals,
@@ -206,7 +211,12 @@ class ProfileController extends GetxController {
     final file = await dashboardController.chooseImage(isCamera: isCamera);
 
     if (user.profilePicture != null) {
-      await firebaseService.deleteFile(user.profilePicture!);
+      final success = await firebaseService.deleteFile(user.profilePicture!);
+
+      if(!success){
+        Get.snackbar(FAStrings.errorError, 'message');
+        return;
+      }
     }
 
     await firebaseService.uploadFile(file: file);

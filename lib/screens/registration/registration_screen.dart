@@ -137,7 +137,7 @@ class RegistrationScreen extends StatelessWidget {
                     text: FAStrings.buttonCreate,
                     enabled: registrationController.validated,
                     onPressed: () => registrationController.validated
-                        ? registrationController.goToCreateCode()
+                        ? registrationController.signUp()
                         : null,
                   ),
                 ),

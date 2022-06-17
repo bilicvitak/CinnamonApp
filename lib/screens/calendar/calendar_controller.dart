@@ -37,6 +37,7 @@ class CalendarController extends GetxController {
     _filterLessons();
   }
 
+  /// FUNCTION: Convert lessons to calendar events
   void _filterLessons() {
     final lectures = sharedFirebaseDataService.lessons
         .map((lesson) => Lesson(
@@ -65,6 +66,7 @@ class CalendarController extends GetxController {
           eventBackgroundColor: FCColors.mint)));
   }
 
+  /// FUNCTION: Show previous page
   void previousPage(DateTime? datetime) {
     if (datetime != null) {
       cellCalendarPageController.jumpToDate(
@@ -76,6 +78,7 @@ class CalendarController extends GetxController {
     }
   }
 
+  /// FUNCTION: Show next page
   void nextPage(DateTime? datetime) {
     if (datetime != null) {
       cellCalendarPageController.jumpToDate(

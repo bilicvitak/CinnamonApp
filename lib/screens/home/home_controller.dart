@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
+import '../../constants/firestore_collections.dart';
 import '../../models/lesson/lesson.dart';
 import '../../models/reservation/reservation.dart';
 import '../../models/seat/seat.dart';
@@ -72,7 +73,8 @@ class HomeController extends GetxController {
         'reservedSeat': reservedSeat,
       });
 
-  void goToLessonScreenReservations() => Get.toNamed(LessonScreenReservations.routeName, arguments: {
+  void goToLessonScreenReservations() =>
+      Get.toNamed(LessonScreenReservations.routeName, arguments: {
         'selectedLesson': upcomingLesson.lessonDetails,
         'isSeatReserved': isSeatReserved,
       });
@@ -103,21 +105,27 @@ class HomeController extends GetxController {
   }
 
   Future<void> getReservedSeat() async {
-    final firebaseReservations =
-        await firebaseService.getDocuments(collectionPath: firebaseService.reservationsCollection);
+    final firebaseReservations = await firebaseService.getDocuments(
+        collectionPath: FCFirestoreCollections.reservationsCollection);
 
-    final reservations = firebaseReservations.docs.map((doc) => Reservation.fromJson(doc.data())).toList();
+    if(firebaseReservations == null) {
+      return;
+    }
+
+    final reservations =
+        firebaseReservations.docs.map((doc) => Reservation.fromJson(doc.data())).toList();
     final reservation = reservations
         .where((reservation) =>
             reservation.lectureId ==
-            '${firebaseService.lessonsCollection}/Lesson${upcomingLesson.lessonDetails!.lessonNumber}')
+            '${FCFirestoreCollections.lessonsCollection}/Lesson${upcomingLesson.lessonDetails!.lessonNumber}')
         .single;
 
     String? seatId;
     for (final student in reservation.students) {
       student.forEach((key, value) {
         if (key == 'userId' &&
-            value == '${firebaseService.usersCollection}/${firebaseService.firebaseUser.value!.uid}') {
+            value ==
+                '${FCFirestoreCollections.usersCollection}/${firebaseService.firebaseUser.value!.uid}') {
           seatId = student['seatId'];
         }
       });

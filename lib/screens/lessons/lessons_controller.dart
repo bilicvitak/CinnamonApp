@@ -73,8 +73,7 @@ class LessonsController extends GetxController {
   /// lesson details screen => lesson reserve a seat
   void goToLessonScreenReserveSeat() => Get.toNamed(LessonScreenReservations.routeName);
 
-  /// count how many lessons are upcoming
-
+  /// FUNCTION: count how many lessons are upcoming
   void _countUpcomingLessons() {
     upcomingLessonsCounter = 0;
 
@@ -85,8 +84,7 @@ class LessonsController extends GetxController {
     }
   }
 
-  /// filter upcoming lessons and return list of upcoming lessons
-
+  /// FUNCTION: filter upcoming lessons and return list of upcoming lessons
   void _filterUpcomingLessons() {
     upcomingLessons.clear();
 
@@ -97,8 +95,7 @@ class LessonsController extends GetxController {
     }
   }
 
-  /// filter past lessons and return list of past lessons
-
+  /// FUNCTION: filter past lessons and return list of past lessons
   void _filterPastLessons() {
     pastLessons.clear();
 

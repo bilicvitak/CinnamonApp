@@ -1,7 +1,9 @@
-
 import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
+import '../../constants/errors.dart';
+import '../../constants/firestore_collections.dart';
+import '../../constants/strings.dart';
 import '../../models/goal/goal.dart';
 import '../../services/firebase_service.dart';
 import '../login/login_screen.dart';
@@ -13,7 +15,6 @@ import 'registration_screens/registration_screen_notifications.dart';
 import 'registration_screens/registration_screen_profile_picture.dart';
 
 class RegistrationController extends GetxController {
-  static final instance = Get.find<RegistrationController>();
 
   /// ------------------------
   /// VARIABLES
@@ -36,6 +37,7 @@ class RegistrationController extends GetxController {
   final _email = ''.obs;
   final _password = ''.obs;
 
+  /// error info
   final _errorTextFullName = false.obs;
   final _errorTextEmail = false.obs;
   final _errorTextPassword = false.obs;
@@ -124,17 +126,6 @@ class RegistrationController extends GetxController {
   /// METHODS
   /// ------------------------
 
-  /// registration screen -> reg. code screen
-  Future<void> goToCreateCode() async {
-    if (validated) {
-      final success = await FirebaseService.instance.signUp(email, password);
-
-      if (success) {
-        await Get.toNamed(RegistrationScreenCode.routeName);
-      }
-    }
-  }
-
   /// reg. code screen -> reg. profile picture screen
   void goToProfile() {
     Get.toNamed(RegistrationScreenProfilePicture.routeName);
@@ -159,6 +150,7 @@ class RegistrationController extends GetxController {
     Get.toNamed(RegistrationScreenFinish.routeName);
   }
 
+  /// reg. finish screen -> login/main screen
   void start() {
     if (firebaseService.firebaseUser.value == null) {
       Get.toNamed(LoginScreen.routeName);
@@ -167,8 +159,27 @@ class RegistrationController extends GetxController {
     }
   }
 
-  /// ------------------------
+  /// FUNCTION: Create user and go to next screen
+  Future<void> signUp() async {
+    if (validated) {
+      final resultCode = await FirebaseService.instance
+          .signUp(email: email, password: password, fullName: fullName);
 
+      switch (resultCode) {
+        case 0:
+          await Get.toNamed(RegistrationScreenCode.routeName);
+          break;
+        case FCErrors.emailInUse:
+          Get.snackbar(FAStrings.errorError, FAStrings.errorEmailInUse);
+          break;
+        case FCErrors.registrationFail:
+          Get.snackbar(FAStrings.errorError, FAStrings.errorRegistrationFail);
+          break;
+      }
+    }
+  }
+
+  /// FUNCTION: check registration fields
   void validateFields() {
     /// if field is/was filled show error message (if value is not good)
     if (fullName.isNotEmpty) {
@@ -199,17 +210,23 @@ class RegistrationController extends GetxController {
 
   /// FUNCTION: Validate account by code
   Future<void> validateAccount() async {
-    final uid = firebaseService.firebaseUser.value?.uid;
+    final userId = firebaseService.firebaseUser.value?.uid ?? '0';
+    final resultCode = await firebaseService.validateAccount(code: code, userId: userId);
 
-    if (uid != null) {
-      final validationSuccess = await firebaseService.validateAccount(code, uid);
-
-      validationSuccess
-          ? codeVerified = true
-          : Get.snackbar('Error', 'Account validation not successful');
+    switch (resultCode) {
+      case 0:
+        codeVerified = true;
+        break;
+      case FCErrors.wrongCode:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorWrongCode);
+        break;
+      case FCErrors.validationFail:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorValidationFail);
+        break;
     }
   }
 
+  /// FUNCTION: Change (un)checked goals
   void changeCheckbox(bool value, int index) {
     var checkedCounter = 0;
 
@@ -239,6 +256,8 @@ class RegistrationController extends GetxController {
     if (uid != null) {
       final data = baseUrl + uid;
       await dioService.getURL(Uri.parse(data).toString());
+    } else {
+      Get.snackbar(FAStrings.errorError, FAStrings.errorResendEmail);
     }
 
     Get.back(); // Close dialog after sending email
@@ -246,15 +265,27 @@ class RegistrationController extends GetxController {
 
   /// FUNCTION: Send code via SMS
   void sendSMS() {
-    logger.wtf('Sending code to phone...');
-    Get.back();
+    Get
+      ..snackbar('Service unavailable', 'SMS verification not available')
+      ..back();
   }
 
+  /// FUNCTION: Upload profile picture
   Future<void> uploadPicture({bool isCamera = false}) async {
     final file = await dashboardController.chooseImage(isCamera: isCamera);
-    await firebaseService.uploadFile(file: file);
+    final resultCode = await firebaseService.uploadFile(file: file);
 
-    profilePictureSet = firebaseService.urlSet;
+    switch (resultCode) {
+      case 0:
+        profilePictureSet = firebaseService.urlSet;
+        break;
+      case FCErrors.picturNotSelected:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorPictureNotSelected);
+        break;
+      case FCErrors.uploadFileFail:
+        Get.snackbar(FAStrings.errorError, FAStrings.errorUploadFileFail);
+        break;
+    }
 
     Get.back();
   }
@@ -262,26 +293,36 @@ class RegistrationController extends GetxController {
   /// FUNCTION: Get all goals from firebase
   Future<List<Goal>> _getGoals() async {
     final firebaseGoals =
-        await firebaseService.getDocuments(collectionPath: firebaseService.goalsCollection);
+        await firebaseService.getDocuments(collectionPath: FCFirestoreCollections.goalsCollection);
 
-    return firebaseGoals.docs
-        .map((doc) => Goal.fromJson({'id': doc.id, 'isChecked': false, ...doc.data()}))
-        .toList();
+    if (firebaseGoals != null) {
+      return firebaseGoals.docs
+          .map((doc) => Goal.fromJson({'id': doc.id, 'isChecked': false, ...doc.data()}))
+          .toList();
+    }
+    
+    Get.snackbar(FAStrings.errorError, FAStrings.errorNoGoals);
+
+    return [
+      Goal(id: '1', name: 'Goal 1', isChecked: true)
+    ];
   }
 
+  /// FUNCTION: Update user's goals in firebase
   Future<void> setGoals() async {
     final uid = firebaseService.firebaseUser.value?.uid;
+
     final selectedGoals = goals
         .where((goal) => goal.isChecked)
         .map((goal) => firebaseService.getDocumentReference(
-              collection: firebaseService.goalsCollection,
+              collection: FCFirestoreCollections.goalsCollection,
               doc: goal.id,
             ))
         .toList();
 
     if (uid != null) {
       await firebaseService.updateDoc(
-        collection: firebaseService.usersCollection,
+        collection: FCFirestoreCollections.usersCollection,
         doc: uid,
         field: 'userGoals',
         value: selectedGoals,

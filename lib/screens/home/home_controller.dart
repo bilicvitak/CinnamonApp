@@ -135,7 +135,7 @@ class HomeController extends GetxController {
       isSeatReserved = true;
 
       final firebaseSeat = await firebaseService.getDocument(docPath: seatId!);
-      reservedSeat = Seat.fromJson({'id': firebaseSeat.id, ...firebaseSeat.data()!});
+      reservedSeat = Seat.fromJson({'id': firebaseSeat?.id, ...?firebaseSeat?.data()!});
     }
   }
 }

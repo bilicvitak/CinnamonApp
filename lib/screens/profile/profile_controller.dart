@@ -108,7 +108,7 @@ class ProfileController extends GetxController {
           '${FCFirestoreCollections.usersCollection}/${firebaseService.firebaseUser.value?.uid}';
       final firebaseUser = await firebaseService.getDocument(docPath: userPath);
 
-      user = User.fromJson(firebaseUser.data() ?? {});
+      user = User.fromJson(firebaseUser?.data() ?? {});
     }
   }
 
@@ -176,6 +176,7 @@ class ProfileController extends GetxController {
             ))
         .toList();
 
+    // TODO Use firebaseService method
     if (uid != null) {
       await firebaseService.updateDoc(
         collection: FCFirestoreCollections.usersCollection,

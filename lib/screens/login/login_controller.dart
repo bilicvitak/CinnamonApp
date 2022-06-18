@@ -14,7 +14,6 @@ import 'login_screens/login_screen_new_password.dart';
 import 'login_screens/login_screen_password_reset.dart';
 
 class LoginController extends GetxController {
-
   /// ------------------------
   /// VARIABLES
   /// ------------------------
@@ -36,7 +35,7 @@ class LoginController extends GetxController {
   final _newPassword = ''.obs;
   final _repeatNewPassword = ''.obs;
 
-  late cinnamon_user.User user;
+  cinnamon_user.User? user;
 
   final _errorTextNewPassword = false.obs;
   final _errorTextRepeatNewPassword = false.obs;
@@ -190,26 +189,37 @@ class LoginController extends GetxController {
   }
 
   /// FUNCTION: Get user by email
-  /// TODO Add try-catch block
-  Future<cinnamon_user.User> _getUserByEmail() async {
-    final firebaseUsers = await firebaseService
-        .getCollectionReference(collection: FCFirestoreCollections.usersCollection)
-        .where('email', isEqualTo: email)
-        .get();
+  Future<cinnamon_user.User?> _getUserByEmail() async {
+    try {
+      final firebaseUsers = await firebaseService
+          .getCollectionReference(collection: FCFirestoreCollections.usersCollection)
+          ?.where('email', isEqualTo: email)
+          .get();
 
-    return cinnamon_user.User.fromJson(firebaseUsers.docs.single.data());
+      if (firebaseUsers != null) {
+        return cinnamon_user.User.fromJson(firebaseUsers.docs.single.data());
+      }
+    } catch (e) {
+      logger.e(e);
+    }
+
+    return null;
   }
 
   /// FUNCTION: Send email with code to reset the password
   Future<void> sendEmailPasswordReset() async {
     user = await _getUserByEmail();
 
-    final data = baseUrl + user.id;
+    if (user == null) {
+      return;
+    }
+
+    final data = baseUrl + user!.id;
     await dioService.getURL(Uri.parse(data).toString());
 
     final success = await firebaseService.updateDoc(
         collection: FCFirestoreCollections.usersCollection,
-        doc: user.id,
+        doc: user!.id,
         field: 'codeIsVerified',
         value: false);
 
@@ -218,7 +228,11 @@ class LoginController extends GetxController {
 
   /// FUNCTION: Check code validation
   Future<void> validateAccount() async {
-    final resultCode = await firebaseService.validateAccount(code: resetCode, userId: user.id);
+    if (user == null) {
+      return;
+    }
+
+    final resultCode = await firebaseService.validateAccount(code: resetCode, userId: user!.id);
 
     switch (resultCode) {
       case 0:
@@ -235,11 +249,15 @@ class LoginController extends GetxController {
 
   /// FUNCTION: Save new password
   Future<void> resetPassword() async {
-    final resultCode = await firebaseService.signIn(email, user.password!);
+    if (user == null) {
+      return;
+    }
+
+    final resultCode = await firebaseService.signIn(email, user!.password!);
 
     if (resultCode == 0) {
       final changePasswordSuccess =
-          await firebaseService.changePassword(email, newPassword, user.id);
+          await firebaseService.changePassword(email, newPassword, user!.id);
 
       if (changePasswordSuccess) {
         await Get.offAllNamed(LoginFinishScreen.routeName);

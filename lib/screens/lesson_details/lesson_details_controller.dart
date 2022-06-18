@@ -126,11 +126,11 @@ class LessonDetailsController extends GetxController {
         collection: FCFirestoreCollections.lessonRatingsCollection);
 
     final snapshot = await ratingsCollection
-        .where('lectureId', isEqualTo: lectureRef)
+        ?.where('lectureId', isEqualTo: lectureRef)
         .where('userId', isEqualTo: userRef)
         .get();
 
-    if (snapshot.docs.isNotEmpty) {
+    if (snapshot != null && snapshot.docs.isNotEmpty) {
       rating = await snapshot.docs.single.data()['rating'];
     }
   }
@@ -148,19 +148,21 @@ class LessonDetailsController extends GetxController {
         collection: FCFirestoreCollections.lessonRatingsCollection);
 
     final snapshot = await ratingsCollection
-        .where('lectureId', isEqualTo: lectureRef)
+        ?.where('lectureId', isEqualTo: lectureRef)
         .where('userId', isEqualTo: userRef)
         .get();
 
-    if (snapshot.docs.isEmpty) {
-      await ratingsCollection.add({'lectureId': lectureRef, 'rating': rating, 'userId': userRef});
-    } else {
-      final ratingId = snapshot.docs.first.id;
-      final result = await firebaseService.updateDoc(
-          collection: FCFirestoreCollections.lessonRatingsCollection,
-          doc: ratingId,
-          field: 'rating',
-          value: rating);
+    if (snapshot != null) {
+      if (snapshot.docs.isEmpty) {
+        await ratingsCollection?.add({'lectureId': lectureRef, 'rating': rating, 'userId': userRef});
+      } else {
+        final ratingId = snapshot.docs.first.id;
+        final result = await firebaseService.updateDoc(
+            collection: FCFirestoreCollections.lessonRatingsCollection,
+            doc: ratingId,
+            field: 'rating',
+            value: rating);
+      }
     }
   }
 
@@ -196,11 +198,12 @@ class LessonDetailsController extends GetxController {
       isSeatReserved = true;
 
       final firebaseSeat = await firebaseService.getDocument(docPath: seatId!);
-      reservedSeat = Seat.fromJson({'id': firebaseSeat.id, ...firebaseSeat.data()!});
+      reservedSeat = Seat.fromJson({'id': firebaseSeat?.id, ...?firebaseSeat?.data()!});
     }
   }
 
   /// FUNCTION: Get file name from storage
+  /// TODO Add try-catch block
   String getFileName(String url) {
     final ref = firebaseService.firebaseStorage.refFromURL(url);
     return ref.name;

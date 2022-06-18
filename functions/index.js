@@ -13,7 +13,7 @@ async function sendVerification(userId, email) {
     try {
         let result = await admin.firestore().collection('users').doc(userId).update({
             isValid: false,
-            code: code,
+            code: code.toString(),
             codeIsVerified: false
         });
     } catch (error) {

@@ -135,7 +135,7 @@ class FirebaseService extends GetxService {
 
     try {
       final snapshot = await getDocument(docPath: docPath);
-      var user = cinnamon_user.User.fromJson(snapshot.data() ?? {'id': '', 'email': ''});
+      var user = cinnamon_user.User.fromJson(snapshot?.data() ?? {'id': '', 'email': ''});
 
       if (user.code == code) {
         user = user.copyWith(codeIsVerified: true);
@@ -233,21 +233,20 @@ class FirebaseService extends GetxService {
   }
 
   /// FUNCTION: download file
-  /// TODO: Add try-catch block
   Future<void> downloadFile() async {
-    final userId = firebaseUser.value?.uid ?? '0';
+    try {
+      final userId = firebaseUser.value?.uid ?? '0';
+      final ref = firebaseStorage.ref().child('uploads/$userId');
+      profilePictureUrl = await ref.getDownloadURL();
 
-    final ref = firebaseStorage.ref().child('uploads/$userId');
-    profilePictureUrl = await ref.getDownloadURL();
-
-    /// TODO Act accordingly to the result
-    final result = await updateDoc(
-        collection: FCFirestoreCollections.usersCollection,
-        doc: userId,
-        field: 'profilePicture',
-        value: profilePictureUrl);
-
-    urlSet = true;
+      urlSet = await updateDoc(
+          collection: FCFirestoreCollections.usersCollection,
+          doc: userId,
+          field: 'profilePicture',
+          value: profilePictureUrl);
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   /// FUNCTION: delete file
@@ -270,10 +269,15 @@ class FirebaseService extends GetxService {
   }
 
   /// FUNCTION: get document by relative path
-  /// TODO Add try-catch block
-  Future<DocumentSnapshot<Map<String, dynamic>>> getDocument({required String docPath}) async {
-    final doc = await firebaseFirestore.doc(docPath).get();
-    return doc;
+  Future<DocumentSnapshot<Map<String, dynamic>>?> getDocument({required String docPath}) async {
+    try {
+      final doc = await firebaseFirestore.doc(docPath).get();
+      return doc;
+    } on FirebaseException catch (e) {
+      logger.e(e.message);
+    }
+
+    return null;
   }
 
   /// FUNCTION: get all documents in collection
@@ -284,8 +288,9 @@ class FirebaseService extends GetxService {
       return collection;
     } on FirebaseException catch (e) {
       logger.e(e.message);
-      return null;
     }
+
+    return null;
   }
 
   /// FUNCTION: Generic function for updating document
@@ -297,34 +302,51 @@ class FirebaseService extends GetxService {
   }) async {
     try {
       await firebaseFirestore.collection(collection).doc(doc).update({field: value});
+      return true;
     } on FirebaseException catch (e) {
       logger.e(e.message);
-      return false;
     } catch (e) {
       logger.e(e);
-      return false;
     }
 
-    return true;
+    return false;
   }
 
   /// FUNCTION: Create or update document by id
-  /// TODO Add try-catch block
-  Future<void> createDoc(
+  Future<bool> createDoc(
       {required String collection, required String doc, required Map<String, dynamic> data}) async {
-    await firebaseFirestore.collection(collection).doc(doc).set(data);
+    try {
+      await firebaseFirestore.collection(collection).doc(doc).set(data);
+      return true;
+    } catch (e) {
+      logger.e(e);
+    }
+
+    return false;
   }
 
   /// FUNCTION: Get document reference by id
-  /// TODO Add try-catch block
-  DocumentReference<Map<String, dynamic>> getDocumentReference(
-          {required String collection, required String doc}) =>
-      firebaseFirestore.collection(collection).doc(doc);
+  DocumentReference<Map<String, dynamic>>? getDocumentReference(
+          {required String collection, required String doc}) {
+    try {
+      return firebaseFirestore.collection(collection).doc(doc);
+    } catch (e) {
+      logger.e(e);
+    }
+
+    return null;
+  }
 
   /// FUNCTION: Get collection reference by id
-  /// TODO Add try-catch block
-  CollectionReference<Map<String, dynamic>> getCollectionReference({required String collection}) =>
-      firebaseFirestore.collection(collection);
+  CollectionReference<Map<String, dynamic>>? getCollectionReference({required String collection}) {
+    try {
+      return firebaseFirestore.collection(collection);
+    } catch (e) {
+      logger.e(e);
+    }
+
+    return null;
+  }
 
   /// FUNCTION: Save file to local folder
   Future<String?> saveFile(String url, String name) async {

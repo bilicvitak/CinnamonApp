@@ -21,6 +21,7 @@ class RegistrationScreenCode extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: FCColors.white,
+          elevation: 1,
           leading: YellowBackButton(),
           title: Text(
             FAStrings.registarionEnterCode,

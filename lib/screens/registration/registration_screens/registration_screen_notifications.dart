@@ -45,7 +45,7 @@ class RegistrationScreenNotifications extends StatelessWidget {
                     children: [
                       YellowButton(
                         text: FAStrings.buttonAllow,
-                        onPressed: registrationController.goToFinish,
+                        onPressed: registrationController.allowNotifications,
                       ),
                       SizedBox(height: 20.h),
                       OutlinedGrayButton(

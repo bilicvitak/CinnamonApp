@@ -15,7 +15,6 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       name: json['name'] as String?,
       profilePicture: json['profilePicture'] as String?,
       userGoals: referenceToString(json['userGoals'] as List?),
-      token: json['token'] as String?,
       password: json['password'] as String?,
     );
 
@@ -27,7 +26,6 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'isValid': instance.isValid,
       'name': instance.name,
       'profilePicture': instance.profilePicture,
-      'userGoals': instance.userGoals,
-      'token': instance.token,
+      'userGoals': stringToReference(instance.userGoals),
       'password': instance.password,
     };

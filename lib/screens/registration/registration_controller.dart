@@ -15,7 +15,6 @@ import 'registration_screens/registration_screen_notifications.dart';
 import 'registration_screens/registration_screen_profile_picture.dart';
 
 class RegistrationController extends GetxController {
-
   /// ------------------------
   /// VARIABLES
   /// ------------------------
@@ -162,8 +161,8 @@ class RegistrationController extends GetxController {
   /// FUNCTION: Create user and go to next screen
   Future<void> signUp() async {
     if (validated) {
-      final resultCode = await FirebaseService.instance
-          .signUp(email: email, password: password, fullName: fullName);
+      final resultCode =
+          await firebaseService.signUp(email: email, password: password, fullName: fullName);
 
       switch (resultCode) {
         case 0:
@@ -300,12 +299,10 @@ class RegistrationController extends GetxController {
           .map((doc) => Goal.fromJson({'id': doc.id, 'isChecked': false, ...doc.data()}))
           .toList();
     }
-    
+
     Get.snackbar(FAStrings.errorError, FAStrings.errorNoGoals);
 
-    return [
-      Goal(id: '1', name: 'Goal 1', isChecked: true)
-    ];
+    return [Goal(id: '1', name: 'Goal 1', isChecked: true)];
   }
 
   /// FUNCTION: Update user's goals in firebase
@@ -328,5 +325,12 @@ class RegistrationController extends GetxController {
         value: selectedGoals,
       );
     }
+  }
+
+  Future<void> allowNotifications() async {
+    await storageService.deleteValue(key: FAStrings.notificationsKey);
+    await storageService.insertValue(key: FAStrings.notificationsKey, value: true);
+
+    goToFinish();
   }
 }

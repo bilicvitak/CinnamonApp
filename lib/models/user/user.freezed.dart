@@ -29,8 +29,8 @@ class _$UserTearOff {
       bool? isValid,
       String? name,
       String? profilePicture,
-      @JsonKey(fromJson: referenceToString) List<String>? userGoals,
-      String? token,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          List<String>? userGoals,
       String? password}) {
     return _User(
       id: id,
@@ -41,7 +41,6 @@ class _$UserTearOff {
       name: name,
       profilePicture: profilePicture,
       userGoals: userGoals,
-      token: token,
       password: password,
     );
   }
@@ -63,9 +62,8 @@ mixin _$User {
   bool? get isValid => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get profilePicture => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: referenceToString)
+  @JsonKey(fromJson: referenceToString, toJson: stringToReference)
   List<String>? get userGoals => throw _privateConstructorUsedError;
-  String? get token => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -85,8 +83,8 @@ abstract class $UserCopyWith<$Res> {
       bool? isValid,
       String? name,
       String? profilePicture,
-      @JsonKey(fromJson: referenceToString) List<String>? userGoals,
-      String? token,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          List<String>? userGoals,
       String? password});
 }
 
@@ -108,7 +106,6 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? name = freezed,
     Object? profilePicture = freezed,
     Object? userGoals = freezed,
-    Object? token = freezed,
     Object? password = freezed,
   }) {
     return _then(_value.copyWith(
@@ -144,10 +141,6 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.userGoals
           : userGoals // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      token: token == freezed
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as String?,
       password: password == freezed
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -169,8 +162,8 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       bool? isValid,
       String? name,
       String? profilePicture,
-      @JsonKey(fromJson: referenceToString) List<String>? userGoals,
-      String? token,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          List<String>? userGoals,
       String? password});
 }
 
@@ -193,7 +186,6 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? name = freezed,
     Object? profilePicture = freezed,
     Object? userGoals = freezed,
-    Object? token = freezed,
     Object? password = freezed,
   }) {
     return _then(_User(
@@ -229,10 +221,6 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.userGoals
           : userGoals // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      token: token == freezed
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as String?,
       password: password == freezed
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -252,8 +240,8 @@ class _$_User with DiagnosticableTreeMixin implements _User {
       this.isValid,
       this.name,
       this.profilePicture,
-      @JsonKey(fromJson: referenceToString) this.userGoals,
-      this.token,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          this.userGoals,
       this.password});
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
@@ -273,16 +261,14 @@ class _$_User with DiagnosticableTreeMixin implements _User {
   @override
   final String? profilePicture;
   @override
-  @JsonKey(fromJson: referenceToString)
+  @JsonKey(fromJson: referenceToString, toJson: stringToReference)
   final List<String>? userGoals;
-  @override
-  final String? token;
   @override
   final String? password;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, email: $email, code: $code, codeIsVerified: $codeIsVerified, isValid: $isValid, name: $name, profilePicture: $profilePicture, userGoals: $userGoals, token: $token, password: $password)';
+    return 'User(id: $id, email: $email, code: $code, codeIsVerified: $codeIsVerified, isValid: $isValid, name: $name, profilePicture: $profilePicture, userGoals: $userGoals, password: $password)';
   }
 
   @override
@@ -298,7 +284,6 @@ class _$_User with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('profilePicture', profilePicture))
       ..add(DiagnosticsProperty('userGoals', userGoals))
-      ..add(DiagnosticsProperty('token', token))
       ..add(DiagnosticsProperty('password', password));
   }
 
@@ -317,7 +302,6 @@ class _$_User with DiagnosticableTreeMixin implements _User {
             (identical(other.profilePicture, profilePicture) ||
                 other.profilePicture == profilePicture) &&
             const DeepCollectionEquality().equals(other.userGoals, userGoals) &&
-            (identical(other.token, token) || other.token == token) &&
             (identical(other.password, password) ||
                 other.password == password));
   }
@@ -333,7 +317,6 @@ class _$_User with DiagnosticableTreeMixin implements _User {
       name,
       profilePicture,
       const DeepCollectionEquality().hash(userGoals),
-      token,
       password);
 
   @JsonKey(ignore: true)
@@ -356,8 +339,8 @@ abstract class _User implements User {
       bool? isValid,
       String? name,
       String? profilePicture,
-      @JsonKey(fromJson: referenceToString) List<String>? userGoals,
-      String? token,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          List<String>? userGoals,
       String? password}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -377,10 +360,8 @@ abstract class _User implements User {
   @override
   String? get profilePicture;
   @override
-  @JsonKey(fromJson: referenceToString)
+  @JsonKey(fromJson: referenceToString, toJson: stringToReference)
   List<String>? get userGoals;
-  @override
-  String? get token;
   @override
   String? get password;
   @override

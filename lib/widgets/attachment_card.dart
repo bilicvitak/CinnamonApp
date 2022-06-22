@@ -34,9 +34,12 @@ class AttachmentCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  fileName,
-                  style: FATextStyles.lessonAttachment,
+                Flexible(
+                  child: Text(
+                    fileName,
+                    style: FATextStyles.lessonAttachment,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () => detailsController.saveFile(url: fileUrl, name: fileName),

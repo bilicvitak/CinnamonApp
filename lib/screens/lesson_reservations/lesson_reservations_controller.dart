@@ -5,12 +5,14 @@ import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
 import '../../constants/firestore_collections.dart';
+import '../../models/lesson/lesson.dart';
 import '../../models/lesson_details/lesson_details.dart';
 import '../../models/reservation/reservation.dart';
 import '../../models/reservation_seat/reservation_seat.dart';
 import '../../models/seat/seat.dart';
 
 import '../../models/user/user.dart' as cinnamon_user;
+import '../home/home_controller.dart';
 import '../lesson_details/lesson_details_controller.dart';
 
 class LessonReservationsController extends GetxController {
@@ -77,7 +79,7 @@ class LessonReservationsController extends GetxController {
 
     lesson = Get.arguments['selectedLesson'];
     isSeatReserved = Get.arguments['isSeatReserved'];
-    selectedSeat = Get.arguments['selectedSeat'];
+    selectedSeat = Get.arguments['selectedSeat'] ?? Seat.blank();
 
     await _filterSeats();
     await _getReservations();
@@ -96,9 +98,17 @@ class LessonReservationsController extends GetxController {
   /// ------------------------
 
   void getBackAndRefresh() {
-    Get.find<LessonDetailsController>()
-      ..isSeatReserved = isSeatReserved
-      ..reservedSeat = selectedSeat;
+    if (Get.isRegistered<LessonDetailsController>()) {
+      Get.find<LessonDetailsController>()
+        ..isSeatReserved = isSeatReserved
+        ..reservedSeat = selectedSeat;
+    }
+
+    if (Get.isRegistered<HomeController>()) {
+      Get.find<HomeController>()
+        ..isSeatReserved = isSeatReserved
+        ..reservedSeat = selectedSeat;
+    }
 
     Get.back();
   }
@@ -107,7 +117,7 @@ class LessonReservationsController extends GetxController {
     final firebaseSeats =
         await firebaseService.getDocuments(collectionPath: FCFirestoreCollections.seatsCollection);
 
-    if(firebaseSeats == null) {
+    if (firebaseSeats == null) {
       return;
     }
 
@@ -117,10 +127,12 @@ class LessonReservationsController extends GetxController {
 
   Future<void> _getReservations() async {
     final lectureId = '${FCFirestoreCollections.lessonsCollection}/Lesson${lesson.lessonNumber}';
-    final lectureRef = firebaseService.firebaseFirestore.doc(lectureId); // TODO Use firebaseService method
+    final lectureRef =
+        firebaseService.firebaseFirestore.doc(lectureId); // TODO Use firebaseService method
 
     final firebaseReservation = await firebaseService.firebaseFirestore
-        .collection(FCFirestoreCollections.reservationsCollection) // TODO Use firebaseService method
+        .collection(
+            FCFirestoreCollections.reservationsCollection) // TODO Use firebaseService method
         .where('lectureId', isEqualTo: lectureRef)
         .get();
 
@@ -172,8 +184,7 @@ class LessonReservationsController extends GetxController {
 
   Future<void> _listenReservationChanges() async {
     final lectureId = '${FCFirestoreCollections.lessonsCollection}/Lesson${lesson.lessonNumber}';
-    // TODO Use firebaseService Method
-    final lectureRef = firebaseService.firebaseFirestore.doc(lectureId);
+    final lectureRef = firebaseService.getDocumentReference(doc: lectureId);
 
     firebaseReservations = firebaseService.firebaseFirestore
         .collection(FCFirestoreCollections.reservationsCollection)

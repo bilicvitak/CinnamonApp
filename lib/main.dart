@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'constants/dependencies.dart';
 import 'global_binding.dart';
 import 'pages.dart';
+import 'screens/registration/registration_screens/registration_screen_notifications.dart';
 import 'screens/splash/splash_screen.dart';
 import 'services/alice_service.dart';
 import 'services/firebase_service.dart';

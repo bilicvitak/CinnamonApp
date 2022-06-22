@@ -27,68 +27,72 @@ class UpcomingLesson extends StatelessWidget {
         color: FCColors.yellow,
         child: Padding(
           padding: EdgeInsets.all(16.r),
-          child: Column(
-            children: [
-              /// Row - lesson name, lesson time, chevron right
-              Row(
-                children: [
-                  /// Column - lesson name, lesson time
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 271.w,
-                        child: Text(
-                          lessonName,
-                          style: FATextStyles.lessonTitle,
+          child: Obx(
+            () => Column(
+              children: [
+                /// Row - lesson name, lesson time, chevron right
+                Row(
+                  children: [
+                    /// Column - lesson name, lesson time
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 271.w,
+                          child: Text(
+                            lessonName,
+                            style: FATextStyles.lessonTitle,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 271.w,
-                        child: Text(
-                          lessonTime,
-                          style: FATextStyles.description,
+                        SizedBox(
+                          width: 271.w,
+                          child: Text(
+                            lessonTime,
+                            style: FATextStyles.description,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
 
-                  /// chevron right
-                  GestureDetector(
-                    onTap: homeController.goToLessonScreenDetails,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: SvgPicture.asset(
-                        FCIcons.chevronRight,
-                        color: FCColors.gray600,
+                    /// chevron right
+                    GestureDetector(
+                      onTap: homeController.goToLessonScreenDetails,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: SvgPicture.asset(
+                          FCIcons.chevronRight,
+                          color: FCColors.gray600,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-
-              /// blank space
-              SizedBox(
-                height: 24.h,
-              ),
-
-              /// Reserve seat button
-              if (homeController.isSeatReserved)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '${FAStrings.lessonsSelectedSeat} ${homeController.reservedSeat.name}',
-                    style: FATextStyles.description,
-                  ),
-                )
-              else
-                WhiteButton(
-                  width: double.infinity,
-                  height: 40.h,
-                  text: FAStrings.buttonReserveSeat,
-                  onPressed: homeController.goToLessonScreenReservations,
+                  ],
                 ),
-            ],
+
+                /// blank space
+                SizedBox(
+                  height: 24.h,
+                ),
+
+                /// Reserve seat button
+                if (homeController.isSeatReserved)
+                  Obx(
+                    () => Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '${FAStrings.lessonsSelectedSeat} ${homeController.reservedSeat.name}',
+                        style: FATextStyles.description,
+                      ),
+                    ),
+                  )
+                else
+                  WhiteButton(
+                    width: double.infinity,
+                    height: 40.h,
+                    text: FAStrings.buttonReserveSeat,
+                    onPressed: homeController.goToLessonScreenReservations,
+                  ),
+              ],
+            ),
           ),
         ),
       );

@@ -111,7 +111,7 @@ class FirebaseService extends GetxService {
               'id': result.user!.uid,
               'email': email,
               'password': password,
-              'profilePicture': '',
+              'profilePicture': null
             });
       } else {
         return FCErrors.registrationFail;
@@ -326,27 +326,18 @@ class FirebaseService extends GetxService {
   }
 
   /// FUNCTION: Get document reference by id
-  DocumentReference<Map<String, dynamic>>? getDocumentReference(
-          {required String collection, required String doc}) {
-    try {
+  DocumentReference<Map<String, dynamic>> getDocumentReference(
+      {required String doc, String? collection}) {
+    if (collection != null) {
       return firebaseFirestore.collection(collection).doc(doc);
-    } catch (e) {
-      logger.e(e);
+    } else {
+      return firebaseFirestore.doc(doc);
     }
-
-    return null;
   }
 
   /// FUNCTION: Get collection reference by id
-  CollectionReference<Map<String, dynamic>>? getCollectionReference({required String collection}) {
-    try {
-      return firebaseFirestore.collection(collection);
-    } catch (e) {
-      logger.e(e);
-    }
-
-    return null;
-  }
+  CollectionReference<Map<String, dynamic>> getCollectionReference({required String collection}) =>
+      firebaseFirestore.collection(collection);
 
   /// FUNCTION: Save file to local folder
   Future<String?> saveFile(String url, String name) async {
@@ -363,5 +354,18 @@ class FirebaseService extends GetxService {
     }
 
     return null;
+  }
+
+  Future<bool> reauthenticate({required String email, required String password}) async {
+    final credential = EmailAuthProvider.credential(email: email, password: password);
+
+    try {
+      final result = await firebaseUser.value?.reauthenticateWithCredential(credential);
+      return result != null;
+    } on FirebaseAuthException catch (e) {
+      logger.e(e.message);
+    }
+
+    return false;
   }
 }

@@ -22,10 +22,16 @@ class _$NotificationTearOff {
   const _$NotificationTearOff();
 
   _Notification call(
-      {@JsonKey(fromJson: referencesToString)
-          required List<Map<String, dynamic>> notification}) {
+      {required String title,
+      required String description,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          required String lectureId,
+      required bool isRead}) {
     return _Notification(
-      notification: notification,
+      title: title,
+      description: description,
+      lectureId: lectureId,
+      isRead: isRead,
     );
   }
 
@@ -39,9 +45,11 @@ const $Notification = _$NotificationTearOff();
 
 /// @nodoc
 mixin _$Notification {
-  @JsonKey(fromJson: referencesToString)
-  List<Map<String, dynamic>> get notification =>
-      throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+  String get lectureId => throw _privateConstructorUsedError;
+  bool get isRead => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,8 +63,11 @@ abstract class $NotificationCopyWith<$Res> {
           Notification value, $Res Function(Notification) then) =
       _$NotificationCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(fromJson: referencesToString)
-          List<Map<String, dynamic>> notification});
+      {String title,
+      String description,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          String lectureId,
+      bool isRead});
 }
 
 /// @nodoc
@@ -69,13 +80,28 @@ class _$NotificationCopyWithImpl<$Res> implements $NotificationCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? notification = freezed,
+    Object? title = freezed,
+    Object? description = freezed,
+    Object? lectureId = freezed,
+    Object? isRead = freezed,
   }) {
     return _then(_value.copyWith(
-      notification: notification == freezed
-          ? _value.notification
-          : notification // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      lectureId: lectureId == freezed
+          ? _value.lectureId
+          : lectureId // ignore: cast_nullable_to_non_nullable
+              as String,
+      isRead: isRead == freezed
+          ? _value.isRead
+          : isRead // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -88,8 +114,11 @@ abstract class _$NotificationCopyWith<$Res>
       __$NotificationCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(fromJson: referencesToString)
-          List<Map<String, dynamic>> notification});
+      {String title,
+      String description,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          String lectureId,
+      bool isRead});
 }
 
 /// @nodoc
@@ -104,13 +133,28 @@ class __$NotificationCopyWithImpl<$Res> extends _$NotificationCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? notification = freezed,
+    Object? title = freezed,
+    Object? description = freezed,
+    Object? lectureId = freezed,
+    Object? isRead = freezed,
   }) {
     return _then(_Notification(
-      notification: notification == freezed
-          ? _value.notification
-          : notification // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      lectureId: lectureId == freezed
+          ? _value.lectureId
+          : lectureId // ignore: cast_nullable_to_non_nullable
+              as String,
+      isRead: isRead == freezed
+          ? _value.isRead
+          : isRead // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -119,18 +163,28 @@ class __$NotificationCopyWithImpl<$Res> extends _$NotificationCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Notification implements _Notification {
   _$_Notification(
-      {@JsonKey(fromJson: referencesToString) required this.notification});
+      {required this.title,
+      required this.description,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          required this.lectureId,
+      required this.isRead});
 
   factory _$_Notification.fromJson(Map<String, dynamic> json) =>
       _$$_NotificationFromJson(json);
 
   @override
-  @JsonKey(fromJson: referencesToString)
-  final List<Map<String, dynamic>> notification;
+  final String title;
+  @override
+  final String description;
+  @override
+  @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+  final String lectureId;
+  @override
+  final bool isRead;
 
   @override
   String toString() {
-    return 'Notification(notification: $notification)';
+    return 'Notification(title: $title, description: $description, lectureId: $lectureId, isRead: $isRead)';
   }
 
   @override
@@ -138,13 +192,17 @@ class _$_Notification implements _Notification {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Notification &&
-            const DeepCollectionEquality()
-                .equals(other.notification, notification));
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.lectureId, lectureId) ||
+                other.lectureId == lectureId) &&
+            (identical(other.isRead, isRead) || other.isRead == isRead));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(notification));
+  int get hashCode =>
+      Object.hash(runtimeType, title, description, lectureId, isRead);
 
   @JsonKey(ignore: true)
   @override
@@ -159,15 +217,24 @@ class _$_Notification implements _Notification {
 
 abstract class _Notification implements Notification {
   factory _Notification(
-      {@JsonKey(fromJson: referencesToString)
-          required List<Map<String, dynamic>> notification}) = _$_Notification;
+      {required String title,
+      required String description,
+      @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+          required String lectureId,
+      required bool isRead}) = _$_Notification;
 
   factory _Notification.fromJson(Map<String, dynamic> json) =
       _$_Notification.fromJson;
 
   @override
-  @JsonKey(fromJson: referencesToString)
-  List<Map<String, dynamic>> get notification;
+  String get title;
+  @override
+  String get description;
+  @override
+  @JsonKey(fromJson: referenceToString, toJson: stringToReference)
+  String get lectureId;
+  @override
+  bool get isRead;
   @override
   @JsonKey(ignore: true)
   _$NotificationCopyWith<_Notification> get copyWith =>

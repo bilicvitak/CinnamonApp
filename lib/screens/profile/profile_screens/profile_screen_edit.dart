@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/icons.dart';
@@ -96,10 +97,10 @@ class ProfileScreenEdit extends StatelessWidget {
                 SizedBox(height: 24.h),
 
                 /// Full Name TextField
-                TextField(
-                  controller: TextEditingController(text: '${profileController.user.name}'),
+                TextFormField(
+                  initialValue: profileController.name,
                   onChanged: (value) => profileController
-                    ..user = profileController.user.copyWith(name: value)
+                    ..name = value
                     ..validateFields(),
                   decoration: InputDecoration(
                     labelText: FAStrings.registrationValidationFullName,
@@ -109,8 +110,7 @@ class ProfileScreenEdit extends StatelessWidget {
                     labelStyle: FATextStyles.description,
                     errorText: !profileController.errorTextFullName
                         ? null
-                        : profileController.user.name == null ||
-                                profileController.user.name!.isEmpty
+                        : profileController.name.isEmpty
                             ? FAStrings.registrationValidationRequiredField
                             : null,
                     errorStyle: FATextStyles.errorDescription,
@@ -121,10 +121,10 @@ class ProfileScreenEdit extends StatelessWidget {
                 const Spacer(),
 
                 /// E-mail TextFormField
-                TextField(
-                  controller: TextEditingController(text: profileController.user.email),
+                TextFormField(
+                  initialValue: profileController.email,
                   onChanged: (value) => profileController
-                    ..user = profileController.user.copyWith(email: value)
+                    ..email = value
                     ..validateFields(),
                   decoration: InputDecoration(
                     focusedErrorBorder:
@@ -133,9 +133,9 @@ class ProfileScreenEdit extends StatelessWidget {
                     labelStyle: FATextStyles.description,
                     errorText: !profileController.errorTextEmail
                         ? null
-                        : profileController.user.email.isEmpty
+                        : profileController.email.isEmpty
                             ? FAStrings.registrationValidationRequiredField
-                            : !profileController.user.email.isEmail
+                            : !profileController.email.isEmail
                                 ? FAStrings.registrationValidationValidEmail
                                 : null,
                     errorStyle: FATextStyles.errorDescription,
@@ -152,7 +152,7 @@ class ProfileScreenEdit extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     child: YellowButton(
                       text: FAStrings.buttonSave,
-                      onPressed: () => {},
+                      onPressed: profileController.updateUserInfo,
                     ),
                   ),
                 ),

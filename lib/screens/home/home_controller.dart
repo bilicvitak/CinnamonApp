@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../constants/dependencies.dart';
 import '../../constants/firestore_collections.dart';
 import '../../models/lesson/lesson.dart';
+import '../../models/notification/notification.dart';
 import '../../models/reservation/reservation.dart';
 import '../../models/seat/seat.dart';
 import '../lesson_details/lesson_screen_details.dart';
@@ -20,6 +24,10 @@ class HomeController extends GetxController {
   final _upcomingLecture = sharedFirebaseDataService.upcomingLecture.obs;
   final _upcomingCodeLab = sharedFirebaseDataService.upcomingCodeLab.obs;
 
+  StreamSubscription? firebaseNotifications;
+
+  final _areNotificationsRead = false.obs;
+
   /// ------------------------
   /// GETTERS
   /// ------------------------
@@ -33,6 +41,8 @@ class HomeController extends GetxController {
   Lesson get upcomingLecture => _upcomingLecture.value;
 
   Lesson get upcomingCodeLab => _upcomingCodeLab.value;
+
+  bool get areNotificationsRead => _areNotificationsRead.value;
 
   /// ------------------------
   /// SETTERS
@@ -48,6 +58,8 @@ class HomeController extends GetxController {
 
   set upcomingCodeLab(Lesson value) => _upcomingCodeLab.value = value;
 
+  set areNotificationsRead(bool value) => _areNotificationsRead.value = value;
+
   /// ------------------------
   /// INIT
   /// ------------------------
@@ -60,6 +72,17 @@ class HomeController extends GetxController {
     filterUpcomingLesson();
 
     await getReservedSeat();
+
+    await sharedFirebaseDataService.getNotifications();
+    checkNotifications();
+
+    await _listenNotificationsChanges();
+  }
+
+  @override
+  void dispose() {
+    firebaseNotifications?.cancel();
+    super.dispose();
   }
 
   /// ------------------------
@@ -108,7 +131,7 @@ class HomeController extends GetxController {
     final firebaseReservations = await firebaseService.getDocuments(
         collectionPath: FCFirestoreCollections.reservationsCollection);
 
-    if(firebaseReservations == null) {
+    if (firebaseReservations == null) {
       return;
     }
 
@@ -137,5 +160,28 @@ class HomeController extends GetxController {
       final firebaseSeat = await firebaseService.getDocument(docPath: seatId!);
       reservedSeat = Seat.fromJson({'id': firebaseSeat?.id, ...?firebaseSeat?.data()!});
     }
+  }
+
+  Future<void> _listenNotificationsChanges() async {
+    firebaseNotifications = firebaseService.firebaseFirestore
+        .collection(FCFirestoreCollections.notificationsCollection)
+        .doc(firebaseService.firebaseUser.value?.uid)
+        .snapshots()
+        .listen((snapshot) async {
+      final data = snapshot.data()!['notification'] as List<dynamic>;
+
+      sharedFirebaseDataService.notifications =
+          data.map((json) => Notification.fromJson(json)).toList();
+
+      checkNotifications();
+    });
+  }
+
+  void checkNotifications() {
+    final result = sharedFirebaseDataService.notifications
+        .where((notification) => !notification.isRead)
+        .length;
+
+    areNotificationsRead = result == 0;
   }
 }

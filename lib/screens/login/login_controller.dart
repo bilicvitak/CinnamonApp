@@ -217,6 +217,8 @@ class LoginController extends GetxController {
     final data = baseUrl + user!.id;
     await dioService.getURL(Uri.parse(data).toString());
 
+    await firebaseService.firebaseAuth.signInAnonymously(); // TODO Extract method to firebaseService
+
     final success = await firebaseService.updateDoc(
         collection: FCFirestoreCollections.usersCollection,
         doc: user!.id,
@@ -253,6 +255,7 @@ class LoginController extends GetxController {
       return;
     }
 
+    await firebaseService.logOut();
     final resultCode = await firebaseService.signIn(email, user!.password!);
 
     if (resultCode == 0) {

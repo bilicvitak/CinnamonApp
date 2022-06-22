@@ -89,4 +89,11 @@ class FATextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w900,
   );
+
+  static const notificationTitle = TextStyle(
+    color: FCColors.yellow,
+    fontFamily: 'MontHeavy',
+    fontSize: 16,
+    fontWeight: FontWeight.w800,
+  );
 }

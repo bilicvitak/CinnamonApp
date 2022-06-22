@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import '../constants/dependencies.dart';
 import '../constants/firestore_collections.dart';
 import '../models/lesson/lesson.dart';
 import '../models/lesson_details/lesson_details.dart';
+import '../models/notification/notification.dart';
 
 class SharedFirebaseDataService extends GetxService {
   static final instance = Get.find<SharedFirebaseDataService>();
@@ -43,6 +46,8 @@ class SharedFirebaseDataService extends GetxService {
           lessonEnd: DateTime.now().add(const Duration(hours: 2)))
       .obs;
 
+  final _notifications = <Notification>[].obs;
+
   /// ------------------------
   /// GETTERS
   /// ------------------------
@@ -55,6 +60,8 @@ class SharedFirebaseDataService extends GetxService {
 
   Lesson get upcomingCodeLab => _upcomingCodeLab.value;
 
+  List<Notification> get notifications => _notifications.value;
+
   /// ------------------------
   /// SETTERS
   /// ------------------------
@@ -66,6 +73,8 @@ class SharedFirebaseDataService extends GetxService {
   set upcomingLecture(value) => _upcomingLecture.value = value;
 
   set upcomingCodeLab(value) => _upcomingCodeLab.value = value;
+
+  set notifications(List<Notification> value) => _notifications.assignAll(value);
 
   /// ------------------------
   /// METHODS
@@ -92,6 +101,10 @@ class SharedFirebaseDataService extends GetxService {
   Future<void> getNotifications() async {
     final docPath =
         '${FCFirestoreCollections.notificationsCollection}/${firebaseService.firebaseUser.value?.uid}';
+
     final snapshot = await firebaseService.getDocument(docPath: docPath);
+    final data = snapshot?.data()!['notification'] as List<dynamic>;
+
+    notifications = data.map((json) => Notification.fromJson(json)).toList();
   }
 }

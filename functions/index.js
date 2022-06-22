@@ -59,10 +59,10 @@ exports.validateAccount = functions.https.onRequest(async (req, res) => {
             isValid: true
         });
 
-        res.send('You successfully verified your account!');
+        res.status(200).json({ message: 'You successfully verified your account!' });
     } catch (error) {
         console.log(error);
-        res.status(404);
+        res.status(404).json({ error: error });
     }
 });
 
@@ -74,9 +74,9 @@ exports.sendEmailAgain = functions.https.onRequest(async (req, res) => {
         const email = user.data().email;
 
         await sendVerification(userId, email);
-        res.status(200);
+        res.status(200).json({ message: 'Email resend successfull'});
     } catch (error) {
         console.log(error);
-        res.status(400);
+        res.status(400).json({ error: error });
     }
 });

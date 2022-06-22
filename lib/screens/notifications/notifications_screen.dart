@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';
+import '../../widgets/notifications_list.dart';
 import '../../widgets/yellow_close_button.dart';
 import '../main_screen.dart';
 import 'notifications_controller.dart';
@@ -27,6 +29,6 @@ class NotificationsScreen extends StatelessWidget {
             style: FATextStyles.headline,
           ),
         ),
-        body: Container(),
+        body: NotificationsList(),
       );
 }

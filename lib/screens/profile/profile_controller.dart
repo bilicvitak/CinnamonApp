@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../constants/dependencies.dart';
 import '../../constants/firestore_collections.dart';
@@ -21,6 +22,9 @@ class ProfileController extends GetxController {
   final _notifications = false.obs;
   final _darkMode = false.obs;
 
+  final _name = ''.obs;
+  final _email = ''.obs;
+
   final _goals = <Goal>[].obs;
 
   final _errorTextFullName = false.obs;
@@ -38,6 +42,10 @@ class ProfileController extends GetxController {
   bool get notifications => _notifications.value;
 
   bool get darkMode => _darkMode.value;
+
+  String get name => _name.value;
+
+  String get email => _email.value;
 
   List<Goal> get goals => _goals;
 
@@ -59,6 +67,10 @@ class ProfileController extends GetxController {
 
   set darkMode(bool value) => _darkMode.value = value;
 
+  set name(String value) => _name.value = value;
+
+  set email(String value) => _email.value = value;
+
   set goals(List<Goal> value) => _goals.assignAll(value);
 
   set errorTextFullName(bool value) => _errorTextFullName.value = value;
@@ -72,10 +84,14 @@ class ProfileController extends GetxController {
   /// ------------------------
 
   Future<bool> init() async {
-    await _getGoals();
     await _getCurrentUser();
+    await _getGoals();
+
+    name = user.name ?? '';
+    email = user.email;
 
     profilePictureSet = user.profilePicture != null;
+
     notifications =
         storageService.getValue(key: FAStrings.notificationsKey).toString().toLowerCase() == 'true';
     darkMode =
@@ -161,6 +177,8 @@ class ProfileController extends GetxController {
         return Goal.fromJson({'id': doc.id, 'isChecked': false, ...doc.data()});
       }
     }).toList();
+
+    _goals.refresh();
   }
 
   /// FUNCTION: Update goals in firebase
@@ -192,15 +210,15 @@ class ProfileController extends GetxController {
 
   void validateFields() {
     /// if field is/was filled show error message (if value is not good)
-    if (user.name != null && user.name!.isNotEmpty) {
+    if (name.isNotEmpty) {
       errorTextFullName = true;
     }
-    if (user.email.isNotEmpty) {
+    if (email.isNotEmpty) {
       errorTextEmail = true;
     }
 
     /// check validation of all fields
-    if (user.name == null || user.name!.isNotEmpty || !user.email.isEmail) {
+    if (name.isNotEmpty || !email.isEmail) {
       validated = false;
       return;
     }
@@ -214,7 +232,7 @@ class ProfileController extends GetxController {
     if (user.profilePicture != null) {
       final success = await firebaseService.deleteFile(user.profilePicture!);
 
-      if(!success){
+      if (!success) {
         Get.snackbar(FAStrings.errorError, 'message');
         return;
       }
@@ -224,6 +242,29 @@ class ProfileController extends GetxController {
     await _getCurrentUser();
 
     profilePictureSet = firebaseService.urlSet;
+
+    Get.back();
+  }
+
+  Future<void> updateUserInfo() async {
+    final success =
+        await firebaseService.reauthenticate(email: user.email, password: user.password!);
+
+    if (success) {
+      final updatedUser = user.copyWith(email: email, name: name);
+
+      // TODO Add try-catch block
+      await firebaseService.firebaseUser.value?.updateEmail(updatedUser.email);
+      await firebaseService.firebaseUser.value?.updateDisplayName(updatedUser.name);
+
+      // TODO Check success
+      await firebaseService.createDoc(
+          collection: FCFirestoreCollections.usersCollection,
+          doc: updatedUser.id,
+          data: updatedUser.toJson());
+
+      user = updatedUser;
+    }
 
     Get.back();
   }

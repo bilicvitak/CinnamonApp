@@ -8,10 +8,17 @@ part of 'notification.dart';
 
 _$_Notification _$$_NotificationFromJson(Map<String, dynamic> json) =>
     _$_Notification(
-      notification: referencesToString(json['notification'] as List),
+      title: json['title'] as String,
+      description: json['description'] as String,
+      lectureId:
+          referenceToString(json['lectureId'] as DocumentReference<Object?>),
+      isRead: json['isRead'] as bool,
     );
 
 Map<String, dynamic> _$$_NotificationToJson(_$_Notification instance) =>
     <String, dynamic>{
-      'notification': instance.notification,
+      'title': instance.title,
+      'description': instance.description,
+      'lectureId': stringToReference(instance.lectureId),
+      'isRead': instance.isRead,
     };

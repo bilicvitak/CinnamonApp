@@ -35,7 +35,7 @@ class SeatCard extends StatelessWidget {
                     child: SvgPicture.asset(FCIcons.seatReserved),
                   ),
                   Container(
-                    margin: angle == 0 ? EdgeInsets.only(bottom: 28.h) : EdgeInsets.only(top: 29.h),
+                    margin: angle == 0 ? EdgeInsets.only(bottom: 25.h) : EdgeInsets.only(top: 26.h),
                     alignment: angle == 0 ? Alignment.bottomCenter : Alignment.topCenter,
                     child: Text(
                       reservation.student?.name ?? 'Student',
@@ -56,7 +56,7 @@ class SeatCard extends StatelessWidget {
                       ),
                       Container(
                         margin:
-                            angle == 0 ? EdgeInsets.only(bottom: 28.h) : EdgeInsets.only(top: 29.h),
+                            angle == 0 ? EdgeInsets.only(bottom: 25.h) : EdgeInsets.only(top: 26.h),
                         alignment: angle == 0 ? Alignment.bottomCenter : Alignment.topCenter,
                         child: Text(
                           reservation.student?.name ?? 'Student',

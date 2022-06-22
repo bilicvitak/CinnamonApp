@@ -43,11 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
             FCLogo.fcLogoLine,
           ),
           actions: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: GestureDetector(
-                child: SvgPicture.asset(FCIcons.noNotification),
-                onTap: () => Get.toNamed(NotificationsScreen.routeName),
+            Obx(
+              () => Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: GestureDetector(
+                  child: homeController.areNotificationsRead
+                      ? SvgPicture.asset(FCIcons.noNotification)
+                      : SvgPicture.asset(FCIcons.notification),
+                  onTap: () => Get.toNamed(NotificationsScreen.routeName),
+                ),
               ),
             ),
           ],
@@ -91,13 +95,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               /// calendar
-              Expanded(
-                child: Container(
-                  color: FCColors.white,
-                  child: CustomPaint(
-                    painter: SchedulePainter(
-                      lessonLecture: homeController.upcomingLecture,
-                      lessonCodeLab: homeController.upcomingCodeLab,
+              Obx(
+                () => Expanded(
+                  child: Container(
+                    color: FCColors.white,
+                    child: CustomPaint(
+                      painter: SchedulePainter(
+                        lessonLecture: homeController.upcomingLecture,
+                        lessonCodeLab: homeController.upcomingCodeLab,
+                      ),
                     ),
                   ),
                 ),

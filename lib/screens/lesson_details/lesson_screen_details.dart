@@ -40,6 +40,7 @@ class LessonScreenDetails extends StatelessWidget {
               /// lesson details
 
               SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
                     Padding(
@@ -109,8 +110,7 @@ class LessonScreenDetails extends StatelessWidget {
 
                             /// lesson date
                             Text(
-                              dashboardController
-                                  .writeLessonDate(detailsController.getLesson()),
+                              dashboardController.writeLessonDate(detailsController.getLesson()),
                               style: FATextStyles.description,
                             ),
 
@@ -125,8 +125,9 @@ class LessonScreenDetails extends StatelessWidget {
 
                             /// Attachments ListView
                             SizedBox(
-                              height: 100.h,
+                              height: (detailsController.lesson.fileUrl.length * 80).h,
                               child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: detailsController.lesson.fileUrl.length,
                                   itemBuilder: (context, index) {
                                     final fileUrl = detailsController.lesson.fileUrl[index];

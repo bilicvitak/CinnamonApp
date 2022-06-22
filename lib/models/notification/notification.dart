@@ -1,27 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../constants/dependencies.dart';
+
 part 'notification.freezed.dart';
 
 part 'notification.g.dart';
 
-List<Map<String, dynamic>> referencesToString(List<dynamic> data) {
-  final parsedData = data.map((e) => (e as Map<String, dynamic>)
-      .map((key, value) {
-        if(value is DocumentReference) {
-          return MapEntry(key, value.path);
-        } else {
-          return MapEntry(key, value);
-        }
-  }));
+String referenceToString(DocumentReference reference) => reference.path;
 
-  return parsedData.toList();
-}
+DocumentReference stringToReference(String lectureId) =>
+    firebaseService.getDocumentReference(doc: lectureId);
 
 @freezed
-class Notification with _$Notification{
+class Notification with _$Notification {
   factory Notification({
-    @JsonKey(fromJson: referencesToString) required List<Map<String, dynamic>> notification,
+    required String title,
+    required String description,
+    @JsonKey(fromJson: referenceToString, toJson: stringToReference) required String lectureId,
+    required bool isRead,
   }) = _Notification;
 
   factory Notification.fromJson(Map<String, dynamic> json) => _$NotificationFromJson(json);

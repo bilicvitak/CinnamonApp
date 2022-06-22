@@ -183,12 +183,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Container(
                                   margin: EdgeInsets.only(bottom: 8.h),
                                   child: ListTile(
-                                    title: Container(
-                                      margin: EdgeInsets.only(bottom: 8.h),
-                                      child: Text(
-                                        FAStrings.profileNotifications,
-                                        style: FATextStyles.description,
-                                      ),
+                                    title: Text(
+                                      FAStrings.profileNotifications,
+                                      style: FATextStyles.description,
                                     ),
                                     tileColor: FCColors.white,
                                     shape: Border.all(color: FCColors.gray200),
@@ -215,12 +212,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Container(
                                   margin: EdgeInsets.only(bottom: 8.h),
                                   child: ListTile(
-                                    title: Container(
-                                      margin: EdgeInsets.only(bottom: 8.h),
-                                      child: Text(
-                                        FAStrings.profileDarkMode,
-                                        style: FATextStyles.description,
-                                      ),
+                                    title: Text(
+                                      FAStrings.profileDarkMode,
+                                      style: FATextStyles.description,
                                     ),
                                     tileColor: FCColors.white,
                                     shape: Border.all(color: FCColors.gray200),
@@ -249,12 +243,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: GestureDetector(
                                     onTap: profileController.goToTerms,
                                     child: ListTile(
-                                      title: Container(
-                                        margin: EdgeInsets.only(bottom: 8.h),
-                                        child: Text(
-                                          FAStrings.profileTermsCo,
-                                          style: FATextStyles.description,
-                                        ),
+                                      title: Text(
+                                        FAStrings.profileTermsCo,
+                                        style: FATextStyles.description,
                                       ),
                                       trailing: SvgPicture.asset(FCIcons.chevronRight),
                                       tileColor: FCColors.white,
@@ -267,12 +258,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ListTile(
                                   title: GestureDetector(
                                     onTap: profileController.logOut,
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 8.h),
-                                      child: Text(
-                                        FAStrings.profileLogOut,
-                                        style: FATextStyles.description,
-                                      ),
+                                    child: Text(
+                                      FAStrings.profileLogOut,
+                                      style: FATextStyles.description,
                                     ),
                                   ),
                                   tileColor: FCColors.white,

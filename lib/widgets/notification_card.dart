@@ -35,6 +35,7 @@ class NotificationCard extends StatelessWidget {
         ),
         onDismissed: (direction) => notificationsController.updateNotification(index: index),
         child: Container(
+          height: 88.h,
           width: double.infinity,
           padding: EdgeInsets.all(16.r),
           decoration: BoxDecoration(
@@ -54,6 +55,7 @@ class NotificationCard extends StatelessWidget {
               Text(
                 notification.description,
                 style: FATextStyles.description,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

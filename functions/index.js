@@ -128,10 +128,10 @@ exports.sendLectureNotification = functions.pubsub.schedule('* 12 * * *').onRun(
             notification: {
                 title: 'Lecture is coming...',
                 body: newNnotification.title,
-
+                
             },
             data: {
-                'clickAction': 'FLUTTER_NOTIFICATION_CLICK',
+                'clickAction': 'FLUTTER_NOTIFICATION_CLICK'
             },
         });
 

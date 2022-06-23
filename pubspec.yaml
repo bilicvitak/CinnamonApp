@@ -54,6 +54,7 @@ dependencies:
   splashscreen: ^1.3.5 # Used to load initial screen that gets displayed right when the user launches the app, before the main page loads
   syncfusion_flutter_pdfviewer: ^20.1.50-beta # Used to view PDF documents
   url_launcher: ^6.0.12 # Used to launch URLs in native browser
+  flutter_local_notifications: ^9.6.1
 
 dev_dependencies:
   flutter_test:

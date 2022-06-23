@@ -118,6 +118,9 @@ class RegistrationController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
 
+    final settings = await firebaseService.firebaseMessaging.requestPermission();
+    logger.i(settings.authorizationStatus);
+
     goals = await _getGoals();
   }
 

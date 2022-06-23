@@ -126,7 +126,7 @@ class LessonDetailsController extends GetxController {
         collection: FCFirestoreCollections.lessonRatingsCollection);
 
     final snapshot = await ratingsCollection
-        ?.where('lectureId', isEqualTo: lectureRef)
+        .where('lectureId', isEqualTo: lectureRef)
         .where('userId', isEqualTo: userRef)
         .get();
 
@@ -148,13 +148,13 @@ class LessonDetailsController extends GetxController {
         collection: FCFirestoreCollections.lessonRatingsCollection);
 
     final snapshot = await ratingsCollection
-        ?.where('lectureId', isEqualTo: lectureRef)
+        .where('lectureId', isEqualTo: lectureRef)
         .where('userId', isEqualTo: userRef)
         .get();
 
     if (snapshot != null) {
       if (snapshot.docs.isEmpty) {
-        await ratingsCollection?.add({'lectureId': lectureRef, 'rating': rating, 'userId': userRef});
+        await ratingsCollection.add({'lectureId': lectureRef, 'rating': rating, 'userId': userRef});
       } else {
         final ratingId = snapshot.docs.first.id;
         final result = await firebaseService.updateDoc(

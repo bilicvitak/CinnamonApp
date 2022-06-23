@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
+const { firestore } = require("firebase-admin");
 
 require('dotenv').config();
 
@@ -24,7 +25,7 @@ async function sendVerification(userId, email) {
         host: 'smtp.gmail.com',
         port: 465,
         secure: true,
-        auth:{
+        auth: {
             user: process.env.EMAIL,
             pass: process.env.PASSWORD,
         }
@@ -74,9 +75,69 @@ exports.sendEmailAgain = functions.https.onRequest(async (req, res) => {
         const email = user.data().email;
 
         await sendVerification(userId, email);
-        res.status(200).json({ message: 'Email resend successfull'});
+        res.status(200).json({ message: 'Email resend successfull' });
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error });
+    }
+});
+
+exports.sendLectureNotification = functions.pubsub.schedule('* 12 * * *').onRun(async (context) => {
+    try {
+        var lectureSnapshot = await admin.firestore().collection('lectures')
+            .where('lectureStart', '>=', firestore.Timestamp.now())
+            .orderBy('lectureStart')
+            .limit(1)
+            .get();
+
+        var lecture = lectureSnapshot.docs.at(0);
+        var timeInterval = lecture.data().lectureStart - firestore.Timestamp.now();
+
+        if (timeInterval > 86400) return { result: 'There are more than 2 days until next lecture.' };
+
+        var usersSnapshot = await admin.firestore().collection('users').get();
+        var notificationRefs = usersSnapshot.docs.map((doc) =>
+            admin.firestore().collection('notifications').doc(doc.id));
+
+        var newNnotification = {
+            'title': lecture.data().lessonName,
+            'description': lecture.data().description,
+            'isRead': false,
+            'lectureId': lecture.ref
+        }
+
+        for (let i = 0; i < notificationRefs.length; i++) {
+            const doc = await notificationRefs[i].get();
+            var notifications = [];
+
+            if (doc.exists) {
+                var existingNotifications = Array.from(doc.data().notification);
+                var index = existingNotifications.findIndex((elem) => elem['lectureId'].toString() == newNnotification.lectureId.toString());
+
+                if (index > -1) existingNotifications.splice(index, 1);
+
+                notifications.push(...existingNotifications);
+            }
+
+            notifications.push(newNnotification);
+
+            await notificationRefs[i].set({ 'notification': notifications });
+        }
+
+        let result = await admin.messaging().sendToTopic('lectures', {
+            notification: {
+                title: 'Lecture is coming...',
+                body: newNnotification.title,
+
+            },
+            data: {
+                'clickAction': 'FLUTTER_NOTIFICATION_CLICK',
+            },
+        });
+
+        return result;
+    } catch (error) {
+        console.log(error);
+        return { error: error };
     }
 });

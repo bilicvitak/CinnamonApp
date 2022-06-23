@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -272,6 +273,12 @@ class ProfileController extends GetxController {
   Future<void> setNotifications() async {
     await storageService.deleteValue(key: FAStrings.notificationsKey);
     await storageService.insertValue(key: FAStrings.notificationsKey, value: notifications);
+
+    if(notifications){
+      await firebaseService.firebaseMessaging.subscribeToTopic('lectures');
+    } else {
+      await firebaseService.firebaseMessaging.unsubscribeFromTopic('lectures');
+    }
   }
 
   Future<void> setDarkMode() async {

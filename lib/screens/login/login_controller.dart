@@ -193,7 +193,7 @@ class LoginController extends GetxController {
     try {
       final firebaseUsers = await firebaseService
           .getCollectionReference(collection: FCFirestoreCollections.usersCollection)
-          ?.where('email', isEqualTo: email)
+          .where('email', isEqualTo: email)
           .get();
 
       if (firebaseUsers != null) {

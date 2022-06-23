@@ -3,13 +3,16 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../constants/dependencies.dart';
 import '../constants/errors.dart';
 import '../constants/firestore_collections.dart';
+import '../main.dart';
 import '../models/user/user.dart' as cinnamon_user;
 
 class FirebaseService extends GetxService {
@@ -19,9 +22,10 @@ class FirebaseService extends GetxService {
   /// VARIABLES
   /// ------------------------
 
-  late FirebaseAuth _firebaseAuth;
-  late FirebaseFirestore _firebaseFirestore;
-  late FirebaseStorage _firebaseStorage;
+  late FirebaseAuth firebaseAuth;
+  late FirebaseFirestore firebaseFirestore;
+  late FirebaseStorage firebaseStorage;
+  late FirebaseMessaging firebaseMessaging;
 
   late Rx<User?> firebaseUser;
   late StreamSubscription<User?> userChanges;
@@ -33,12 +37,6 @@ class FirebaseService extends GetxService {
   /// GETTERS
   /// ------------------------
 
-  FirebaseAuth get firebaseAuth => _firebaseAuth;
-
-  FirebaseFirestore get firebaseFirestore => _firebaseFirestore;
-
-  FirebaseStorage get firebaseStorage => _firebaseStorage;
-
   bool get urlSet => _urlSet.value;
 
   String get profilePictureUrl => _profilePictureUrl.value;
@@ -46,12 +44,6 @@ class FirebaseService extends GetxService {
   /// ------------------------
   /// SETTERS
   /// ------------------------
-
-  set firebaseAuth(FirebaseAuth value) => _firebaseAuth = value;
-
-  set firebaseFirestore(FirebaseFirestore value) => _firebaseFirestore = value;
-
-  set firebaseStorage(FirebaseStorage value) => _firebaseStorage = value;
 
   set urlSet(bool value) => _urlSet.value = value;
 
@@ -68,6 +60,8 @@ class FirebaseService extends GetxService {
     firebaseAuth = FirebaseAuth.instance;
     firebaseFirestore = FirebaseFirestore.instance;
     firebaseStorage = FirebaseStorage.instance;
+    firebaseMessaging = FirebaseMessaging.instance;
+
     firebaseUser = Rx<User?>(firebaseAuth.currentUser);
     firebaseUser.bindStream(firebaseAuth.userChanges());
   }
@@ -75,6 +69,7 @@ class FirebaseService extends GetxService {
   @override
   Future<void> onClose() async {
     await userChanges.cancel();
+
     super.onClose();
   }
 

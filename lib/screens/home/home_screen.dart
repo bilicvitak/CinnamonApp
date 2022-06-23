@@ -84,9 +84,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               /// text lesson name
-              Text(
-                '${homeController.upcomingLesson.lessonName} ${FAStrings.homeLessonNameSchedule}',
-                style: FATextStyles.headline,
+              Obx(
+                () => Text(
+                  '${homeController.upcomingLesson.lessonName} ${FAStrings.homeLessonNameSchedule}',
+                  style: FATextStyles.headline,
+                ),
               ),
 
               /// blank space

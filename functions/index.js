@@ -82,7 +82,7 @@ exports.sendEmailAgain = functions.https.onRequest(async (req, res) => {
     }
 });
 
-exports.sendLectureNotification = functions.pubsub.schedule('* 12 * * *').onRun(async (context) => {
+exports.sendLectureNotification = functions.pubsub.schedule('0 12 * * *').timeZone('Europe/Zagreb').onRun(async (context) => {
     try {
         var lectureSnapshot = await admin.firestore().collection('lectures')
             .where('lectureStart', '>=', firestore.Timestamp.now())

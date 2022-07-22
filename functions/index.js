@@ -112,7 +112,7 @@ exports.sendLectureNotification = functions.pubsub.schedule('0 12 * * *').timeZo
 
             if (doc.exists) {
                 var existingNotifications = Array.from(doc.data().notification);
-                var index = existingNotifications.findIndex((elem) => elem['lectureId'].toString() == newNnotification.lectureId.toString());
+                var index = existingNotifications.findIndex((elem) => elem['lectureId'].path == newNnotification.lectureId.path);
 
                 if (index > -1) existingNotifications.splice(index, 1);
 

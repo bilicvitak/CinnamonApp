@@ -60,7 +60,7 @@ class SharedFirebaseDataService extends GetxService {
 
   Lesson get upcomingCodeLab => _upcomingCodeLab.value;
 
-  List<Notification> get notifications => _notifications.value;
+  List<Notification> get notifications => _notifications;
 
   /// ------------------------
   /// SETTERS

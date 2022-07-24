@@ -49,12 +49,7 @@ class SplashController extends GetxController {
 
     await runAnimation();
     await initializeStorage();
-
-    if (firebaseService.firebaseUser.value == null) {
-      await Get.offAllNamed(OnboardingScreen.routeName);
-    } else {
-      await Get.offAllNamed(MainScreen.routeNameTransition);
-    }
+    await goToApp();
   }
 
   /// ------------------------
@@ -88,6 +83,14 @@ class SplashController extends GetxController {
     final darkMode = storageService.contains(key: FAStrings.darkModeKey);
     if (!darkMode) {
       await storageService.insertValue(key: FAStrings.darkModeKey, value: false);
+    }
+  }
+
+  Future<void> goToApp() async {
+    if (firebaseService.firebaseUser.value == null) {
+      await Get.offAllNamed(OnboardingScreen.routeName);
+    } else {
+      await Get.offAllNamed(MainScreen.routeNameTransition);
     }
   }
 }

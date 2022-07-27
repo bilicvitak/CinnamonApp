@@ -268,7 +268,7 @@ class __$LessonDetailsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_LessonDetails with DiagnosticableTreeMixin implements _LessonDetails {
+class _$_LessonDetails extends _LessonDetails with DiagnosticableTreeMixin {
   _$_LessonDetails(
       {required this.lessonName,
       required this.description,
@@ -280,7 +280,8 @@ class _$_LessonDetails with DiagnosticableTreeMixin implements _LessonDetails {
       @JsonKey(fromJson: timestampToDate) required this.codeLabStart,
       @JsonKey(fromJson: timestampToDate) required this.codeLabEnd,
       required this.fileUrl,
-      required this.lessonNumber});
+      required this.lessonNumber})
+      : super._();
 
   factory _$_LessonDetails.fromJson(Map<String, dynamic> json) =>
       _$$_LessonDetailsFromJson(json);
@@ -335,49 +336,6 @@ class _$_LessonDetails with DiagnosticableTreeMixin implements _LessonDetails {
       ..add(DiagnosticsProperty('lessonNumber', lessonNumber));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _LessonDetails &&
-            (identical(other.lessonName, lessonName) ||
-                other.lessonName == lessonName) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.location, location) ||
-                other.location == location) &&
-            (identical(other.lectureName, lectureName) ||
-                other.lectureName == lectureName) &&
-            (identical(other.lectureStart, lectureStart) ||
-                other.lectureStart == lectureStart) &&
-            (identical(other.lectureEnd, lectureEnd) ||
-                other.lectureEnd == lectureEnd) &&
-            (identical(other.codeLabName, codeLabName) ||
-                other.codeLabName == codeLabName) &&
-            (identical(other.codeLabStart, codeLabStart) ||
-                other.codeLabStart == codeLabStart) &&
-            (identical(other.codeLabEnd, codeLabEnd) ||
-                other.codeLabEnd == codeLabEnd) &&
-            const DeepCollectionEquality().equals(other.fileUrl, fileUrl) &&
-            (identical(other.lessonNumber, lessonNumber) ||
-                other.lessonNumber == lessonNumber));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      lessonName,
-      description,
-      location,
-      lectureName,
-      lectureStart,
-      lectureEnd,
-      codeLabName,
-      codeLabStart,
-      codeLabEnd,
-      const DeepCollectionEquality().hash(fileUrl),
-      lessonNumber);
-
   @JsonKey(ignore: true)
   @override
   _$LessonDetailsCopyWith<_LessonDetails> get copyWith =>
@@ -389,7 +347,7 @@ class _$_LessonDetails with DiagnosticableTreeMixin implements _LessonDetails {
   }
 }
 
-abstract class _LessonDetails implements LessonDetails {
+abstract class _LessonDetails extends LessonDetails {
   factory _LessonDetails(
       {required String lessonName,
       required String description,
@@ -402,6 +360,7 @@ abstract class _LessonDetails implements LessonDetails {
       @JsonKey(fromJson: timestampToDate) required DateTime codeLabEnd,
       required List<String> fileUrl,
       required int lessonNumber}) = _$_LessonDetails;
+  _LessonDetails._() : super._();
 
   factory _LessonDetails.fromJson(Map<String, dynamic> json) =
       _$_LessonDetails.fromJson;

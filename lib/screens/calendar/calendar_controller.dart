@@ -34,19 +34,19 @@ class CalendarController extends GetxController {
     super.onInit();
     await sharedFirebaseDataService.getAllLessons();
 
-    _filterLessons();
+    filterLessons(sharedFirebaseDataService.lessons);
   }
 
   /// FUNCTION: Convert lessons to calendar events
-  void _filterLessons() {
-    final lectures = sharedFirebaseDataService.lessons
+  void filterLessons(List<Lesson> lessons) {
+    final lectures = lessons
         .map((lesson) => Lesson(
             lessonName: lesson.lessonDetails!.lectureName,
             lessonStart: lesson.lessonDetails!.lectureStart,
             lessonEnd: lesson.lessonDetails!.lectureEnd))
         .toList();
 
-    final codeLabs = sharedFirebaseDataService.lessons
+    final codeLabs = lessons
         .map((lesson) => Lesson(
             lessonName: lesson.lessonDetails!.codeLabName,
             lessonStart: lesson.lessonDetails!.codeLabStart,
@@ -55,7 +55,6 @@ class CalendarController extends GetxController {
 
     events = lectures
         .map((lecture) => CalendarEvent(
-            eventID: 1.toString(),
             eventName: lecture.lessonName,
             eventDate: lecture.lessonStart,
             eventBackgroundColor: FCColors.darkPurple))

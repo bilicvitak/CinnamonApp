@@ -168,12 +168,13 @@ class __$LessonCopyWithImpl<$Res> extends _$LessonCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Lesson with DiagnosticableTreeMixin implements _Lesson {
+class _$_Lesson extends _Lesson with DiagnosticableTreeMixin {
   _$_Lesson(
       {required this.lessonName,
       required this.lessonStart,
       required this.lessonEnd,
-      this.lessonDetails});
+      this.lessonDetails})
+      : super._();
 
   factory _$_Lesson.fromJson(Map<String, dynamic> json) =>
       _$$_LessonFromJson(json);
@@ -203,25 +204,6 @@ class _$_Lesson with DiagnosticableTreeMixin implements _Lesson {
       ..add(DiagnosticsProperty('lessonDetails', lessonDetails));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _Lesson &&
-            (identical(other.lessonName, lessonName) ||
-                other.lessonName == lessonName) &&
-            (identical(other.lessonStart, lessonStart) ||
-                other.lessonStart == lessonStart) &&
-            (identical(other.lessonEnd, lessonEnd) ||
-                other.lessonEnd == lessonEnd) &&
-            (identical(other.lessonDetails, lessonDetails) ||
-                other.lessonDetails == lessonDetails));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, lessonName, lessonStart, lessonEnd, lessonDetails);
-
   @JsonKey(ignore: true)
   @override
   _$LessonCopyWith<_Lesson> get copyWith =>
@@ -233,12 +215,13 @@ class _$_Lesson with DiagnosticableTreeMixin implements _Lesson {
   }
 }
 
-abstract class _Lesson implements Lesson {
+abstract class _Lesson extends Lesson {
   factory _Lesson(
       {required String lessonName,
       required DateTime lessonStart,
       required DateTime lessonEnd,
       LessonDetails? lessonDetails}) = _$_Lesson;
+  _Lesson._() : super._();
 
   factory _Lesson.fromJson(Map<String, dynamic> json) = _$_Lesson.fromJson;
 

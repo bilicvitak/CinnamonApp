@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,6 +11,8 @@ DateTime timestampToDate(Timestamp timestamp) => timestamp.toDate();
 
 @freezed
 class LessonDetails with _$LessonDetails {
+  const LessonDetails._();
+
   factory LessonDetails({
     required String lessonName,
     required String description,
@@ -21,7 +24,7 @@ class LessonDetails with _$LessonDetails {
     @JsonKey(fromJson: timestampToDate) required DateTime codeLabStart,
     @JsonKey(fromJson: timestampToDate) required DateTime codeLabEnd,
     required List<String> fileUrl,
-    required int lessonNumber,
+    required int lessonNumber
   }) = _LessonDetails;
 
   factory LessonDetails.fromJson(Map<String, dynamic> json) => _$LessonDetailsFromJson(json);
@@ -39,4 +42,11 @@ class LessonDetails with _$LessonDetails {
         fileUrl: [],
         lessonNumber: 0,
       );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is LessonDetails && runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 0;
 }

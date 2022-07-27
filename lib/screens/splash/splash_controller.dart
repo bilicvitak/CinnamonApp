@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
 import '../../constants/strings.dart';
+import '../../services/storage_service.dart';
 import '../main_screen.dart';
 import '../onboarding/onboarding_screen.dart';
 
@@ -46,7 +47,7 @@ class SplashController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-
+    
     await runAnimation();
     await initializeStorage();
     await goToApp();

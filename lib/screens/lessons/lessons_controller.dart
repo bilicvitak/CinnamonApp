@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
 import '../../models/lesson/lesson.dart';
+import '../../services/shared_firebase_data_service.dart';
 import '../lesson_details/lesson_screen_details.dart';
 import '../lesson_reservations/lesson_screen_reservations.dart';
 
@@ -9,6 +10,8 @@ class LessonsController extends GetxController {
   /// ------------------------
   /// VARIABLES
   /// ------------------------
+
+  late final SharedFirebaseDataService sharedFirebaseDataService;
 
   final _upcomingLessonsCounter = 0.obs;
   final _upcomingLessons = <Lesson>[].obs;
@@ -51,11 +54,14 @@ class LessonsController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+
+    sharedFirebaseDataService = SharedFirebaseDataService.instance;
+
     await sharedFirebaseDataService.getAllLessons();
 
-    countUpcomingLessons(sharedFirebaseDataService.lessons);
-    filterPastLessons(sharedFirebaseDataService.lessons);
-    filterUpcomingLessons(sharedFirebaseDataService.lessons);
+    countUpcomingLessons();
+    filterPastLessons();
+    filterUpcomingLessons();
   }
 
   /// ------------------------
@@ -73,34 +79,34 @@ class LessonsController extends GetxController {
   void goToLessonScreenReserveSeat() => Get.toNamed(LessonScreenReservations.routeName);
 
   /// FUNCTION: count how many lessons are upcoming
-  void countUpcomingLessons(List<Lesson> lessons) {
+  void countUpcomingLessons() {
     upcomingLessonsCounter = 0;
 
-    for (var i = 0; i < lessons.length; ++i) {
-      if (lessons[i].lessonEnd.isAfter(DateTime.now())) {
+    for (var i = 0; i < sharedFirebaseDataService.lessons.length; ++i) {
+      if (sharedFirebaseDataService.lessons[i].lessonEnd.isAfter(DateTime.now())) {
         ++upcomingLessonsCounter;
       }
     }
   }
 
   /// FUNCTION: filter upcoming lessons and return list of upcoming lessons
-  void filterUpcomingLessons(List<Lesson> lessons) {
+  void filterUpcomingLessons() {
     upcomingLessons.clear();
 
-    for (var i = 0; i < lessons.length; ++i) {
-      if (lessons[i].lessonEnd.isAfter(DateTime.now())) {
-        upcomingLessons.add(lessons[i]);
+    for (var i = 0; i < sharedFirebaseDataService.lessons.length; ++i) {
+      if (sharedFirebaseDataService.lessons[i].lessonEnd.isAfter(DateTime.now())) {
+        upcomingLessons.add(sharedFirebaseDataService.lessons[i]);
       }
     }
   }
 
   /// FUNCTION: filter past lessons and return list of past lessons
-  void filterPastLessons(List<Lesson> lessons) {
+  void filterPastLessons() {
     pastLessons.clear();
 
-    for (var i = 0; i < lessons.length; ++i) {
-      if (lessons[i].lessonEnd.isBefore(DateTime.now())) {
-        pastLessons.add(lessons[i]);
+    for (var i = 0; i < sharedFirebaseDataService.lessons.length; ++i) {
+      if (sharedFirebaseDataService.lessons[i].lessonEnd.isBefore(DateTime.now())) {
+        pastLessons.add(sharedFirebaseDataService.lessons[i]);
       }
     }
   }

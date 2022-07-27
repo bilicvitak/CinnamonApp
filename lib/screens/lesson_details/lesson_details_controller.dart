@@ -130,7 +130,7 @@ class LessonDetailsController extends GetxController {
         .where('userId', isEqualTo: userRef)
         .get();
 
-    if (snapshot != null && snapshot.docs.isNotEmpty) {
+    if (snapshot.docs.isNotEmpty) {
       rating = await snapshot.docs.single.data()['rating'];
     }
   }
@@ -152,17 +152,15 @@ class LessonDetailsController extends GetxController {
         .where('userId', isEqualTo: userRef)
         .get();
 
-    if (snapshot != null) {
-      if (snapshot.docs.isEmpty) {
-        await ratingsCollection.add({'lectureId': lectureRef, 'rating': rating, 'userId': userRef});
-      } else {
-        final ratingId = snapshot.docs.first.id;
-        final result = await firebaseService.updateDoc(
-            collection: FCFirestoreCollections.lessonRatingsCollection,
-            doc: ratingId,
-            field: 'rating',
-            value: rating);
-      }
+    if (snapshot.docs.isEmpty) {
+      await ratingsCollection.add({'lectureId': lectureRef, 'rating': rating, 'userId': userRef});
+    } else {
+      final ratingId = snapshot.docs.first.id;
+      final result = await firebaseService.updateDoc(
+          collection: FCFirestoreCollections.lessonRatingsCollection,
+          doc: ratingId,
+          field: 'rating',
+          value: rating);
     }
   }
 

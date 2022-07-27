@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
+import '../../constants/dependencies.dart';
 import '../../constants/icons.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';

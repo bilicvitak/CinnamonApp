@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../constants/colors.dart';
 import '../../constants/dependencies.dart';
 import '../../models/lesson/lesson.dart';
+import '../../services/shared_firebase_data_service.dart';
 
 class CalendarController extends GetxController {
   /// ------------------------
@@ -12,6 +13,7 @@ class CalendarController extends GetxController {
 
   final _events = <CalendarEvent>[].obs;
   final cellCalendarPageController = CellCalendarPageController();
+  late final SharedFirebaseDataService sharedFirebaseDataService;
 
   /// ------------------------
   /// GETTERS
@@ -32,21 +34,23 @@ class CalendarController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    await sharedFirebaseDataService.getAllLessons();
 
-    filterLessons(sharedFirebaseDataService.lessons);
+    sharedFirebaseDataService = SharedFirebaseDataService.instance;
+
+    await sharedFirebaseDataService.getAllLessons();
+    filterLessons();
   }
 
   /// FUNCTION: Convert lessons to calendar events
-  void filterLessons(List<Lesson> lessons) {
-    final lectures = lessons
+  void filterLessons() {
+    final lectures = sharedFirebaseDataService.lessons
         .map((lesson) => Lesson(
             lessonName: lesson.lessonDetails!.lectureName,
             lessonStart: lesson.lessonDetails!.lectureStart,
             lessonEnd: lesson.lessonDetails!.lectureEnd))
         .toList();
 
-    final codeLabs = lessons
+    final codeLabs = sharedFirebaseDataService.lessons
         .map((lesson) => Lesson(
             lessonName: lesson.lessonDetails!.codeLabName,
             lessonStart: lesson.lessonDetails!.codeLabStart,

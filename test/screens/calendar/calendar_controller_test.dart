@@ -15,7 +15,8 @@ void main() {
   late CalendarController _calendarController;
 
   setUp(() {
-    _calendarController = CalendarController();
+    _calendarController = CalendarController()
+    ..sharedFirebaseDataService = MockSharedFirebaseDataService();
   });
 
   tearDown(() {
@@ -24,19 +25,15 @@ void main() {
 
   group('Check calendar events', () {
     test('Calendar events should be empty', () async {
-      final mock = MockSharedFirebaseDataService();
+      when(_calendarController.sharedFirebaseDataService.lessons).thenReturn([]);
 
-      when(mock.lessons).thenReturn([]);
-
-      _calendarController.filterLessons(mock.lessons);
+      _calendarController.filterLessons();
 
       expect(_calendarController.events, []);
     });
 
     test('Calendar events should be filtered as lectures and code labs', () async {
-      final mock = MockSharedFirebaseDataService();
-
-      when(mock.lessons).thenReturn([
+      when(_calendarController.sharedFirebaseDataService.lessons).thenReturn([
         Lesson(
           lessonName: 'Basics',
           lessonStart: DateTime.fromMillisecondsSinceEpoch(1655737200000),
@@ -60,7 +57,7 @@ void main() {
         ),
       ]);
 
-      _calendarController.filterLessons(mock.lessons);
+      _calendarController.filterLessons();
 
       expect(_calendarController.events, [
         CalendarEvent(

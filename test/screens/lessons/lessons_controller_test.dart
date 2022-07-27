@@ -14,7 +14,8 @@ void main() {
   late LessonsController _lessonsController;
 
   setUp(() {
-    _lessonsController = LessonsController();
+    _lessonsController = LessonsController()
+      ..sharedFirebaseDataService = MockSharedFirebaseDataService();
   });
 
   tearDown(() {
@@ -23,19 +24,15 @@ void main() {
 
   group('Filtering upcoming lessons', () {
     test('Upcoming lessons should be empty when empty list of lessons is passed', () {
-      final mock = MockSharedFirebaseDataService();
+      when(_lessonsController.sharedFirebaseDataService.lessons).thenReturn([]);
 
-      when(mock.lessons).thenReturn([]);
-
-      _lessonsController.filterUpcomingLessons(mock.lessons);
+      _lessonsController.filterUpcomingLessons();
 
       expect(_lessonsController.upcomingLessons, []);
     });
 
     test('Upcoming lessons should not be empty when non-empty list of lessons is passed', () {
-      final mock = MockSharedFirebaseDataService();
-
-      when(mock.lessons).thenReturn([
+      when(_lessonsController.sharedFirebaseDataService.lessons).thenReturn([
         Lesson(
             lessonName: 'Halfway through',
             lessonStart: DateTime.fromMillisecondsSinceEpoch(1658422800000),
@@ -50,7 +47,7 @@ void main() {
             lessonEnd: DateTime.fromMillisecondsSinceEpoch(1659466800000)),
       ]);
 
-      _lessonsController.filterUpcomingLessons(mock.lessons);
+      _lessonsController.filterUpcomingLessons();
 
       expect(_lessonsController.upcomingLessons, [
         Lesson(
@@ -63,19 +60,15 @@ void main() {
 
   group('Filtering past lessons', () {
     test('Past lessons should be empty when empty list of lessons is passed', () {
-      final mock = MockSharedFirebaseDataService();
+      when(_lessonsController.sharedFirebaseDataService.lessons).thenReturn([]);
 
-      when(mock.lessons).thenReturn([]);
-
-      _lessonsController.filterPastLessons(mock.lessons);
+      _lessonsController.filterPastLessons();
 
       expect(_lessonsController.pastLessons, []);
     });
 
     test('Past lessons should not be empty when non-empty list of lessons is passed', () {
-      final mock = MockSharedFirebaseDataService();
-
-      when(mock.lessons).thenReturn([
+      when(_lessonsController.sharedFirebaseDataService.lessons).thenReturn([
         Lesson(
             lessonName: 'Halfway through',
             lessonStart: DateTime.fromMillisecondsSinceEpoch(1658422800000),
@@ -90,7 +83,7 @@ void main() {
             lessonEnd: DateTime.fromMillisecondsSinceEpoch(1659466800000)),
       ]);
 
-      _lessonsController.filterPastLessons(mock.lessons);
+      _lessonsController.filterPastLessons();
 
       expect(_lessonsController.pastLessons, [
         Lesson(
@@ -106,9 +99,7 @@ void main() {
   });
 
   test('Upcoming lessons counter should be incremented', () {
-    final mock = MockSharedFirebaseDataService();
-
-    when(mock.lessons).thenReturn([
+    when(_lessonsController.sharedFirebaseDataService.lessons).thenReturn([
       Lesson(
           lessonName: 'Halfway through',
           lessonStart: DateTime.fromMillisecondsSinceEpoch(1658422800000),
@@ -123,9 +114,8 @@ void main() {
           lessonEnd: DateTime.fromMillisecondsSinceEpoch(1659466800000)),
     ]);
 
-    _lessonsController.countUpcomingLessons(mock.lessons);
+    _lessonsController.countUpcomingLessons();
 
     expect(_lessonsController.upcomingLessonsCounter, 1);
   });
-
 }

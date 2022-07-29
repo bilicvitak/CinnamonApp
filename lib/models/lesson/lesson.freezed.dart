@@ -168,7 +168,7 @@ class __$LessonCopyWithImpl<$Res> extends _$LessonCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Lesson extends _Lesson with DiagnosticableTreeMixin {
+class _$_Lesson extends _Lesson {
   _$_Lesson(
       {required this.lessonName,
       required this.lessonStart,
@@ -187,22 +187,6 @@ class _$_Lesson extends _Lesson with DiagnosticableTreeMixin {
   final DateTime lessonEnd;
   @override
   final LessonDetails? lessonDetails;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Lesson(lessonName: $lessonName, lessonStart: $lessonStart, lessonEnd: $lessonEnd, lessonDetails: $lessonDetails)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Lesson'))
-      ..add(DiagnosticsProperty('lessonName', lessonName))
-      ..add(DiagnosticsProperty('lessonStart', lessonStart))
-      ..add(DiagnosticsProperty('lessonEnd', lessonEnd))
-      ..add(DiagnosticsProperty('lessonDetails', lessonDetails));
-  }
 
   @JsonKey(ignore: true)
   @override

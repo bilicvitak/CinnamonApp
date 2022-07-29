@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../../constants/dependencies.dart';
 import '../../constants/firestore_collections.dart';
@@ -9,6 +9,8 @@ import '../../models/lesson/lesson.dart';
 import '../../models/notification/notification.dart';
 import '../../models/reservation/reservation.dart';
 import '../../models/seat/seat.dart';
+import '../../services/firebase_service.dart';
+import '../../services/shared_firebase_data_service.dart';
 import '../lesson_details/lesson_screen_details.dart';
 import '../lesson_reservations/lesson_screen_reservations.dart';
 
@@ -17,12 +19,15 @@ class HomeController extends GetxController {
   /// VARIABLES
   /// ------------------------
 
-  final _isSeatReserved = false.obs;
-  final _reservedSeat = Rx<Seat>(Seat.blank());
+  late SharedFirebaseDataService sharedFirebaseDataService;
+  late FirebaseService firebaseService;
 
-  final _upcomingLesson = sharedFirebaseDataService.upcomingLesson.obs;
-  final _upcomingLecture = sharedFirebaseDataService.upcomingLecture.obs;
-  final _upcomingCodeLab = sharedFirebaseDataService.upcomingCodeLab.obs;
+  final _isSeatReserved = false.obs;
+  final _reservedSeat = Seat.blank().obs;
+
+  late Rx<Lesson> _upcomingLesson;
+  late Rx<Lesson> _upcomingLecture;
+  late Rx<Lesson> _upcomingCodeLab;
 
   StreamSubscription? firebaseNotifications;
 
@@ -68,6 +73,11 @@ class HomeController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
 
+    sharedFirebaseDataService = SharedFirebaseDataService.instance;
+    firebaseService = FirebaseService.instance;
+
+    initializeLocalVariables();
+
     await sharedFirebaseDataService.getAllLessons();
     filterUpcomingLesson();
 
@@ -76,7 +86,7 @@ class HomeController extends GetxController {
     await sharedFirebaseDataService.getNotifications();
     checkNotifications();
 
-    await _listenNotificationsChanges();
+    listenNotificationsChanges();
   }
 
   @override
@@ -88,6 +98,12 @@ class HomeController extends GetxController {
   /// ------------------------
   /// METHODS
   /// ------------------------
+
+  void initializeLocalVariables() {
+    _upcomingLesson = Rx<Lesson>(sharedFirebaseDataService.upcomingLesson);
+    _upcomingLecture = Rx<Lesson>(sharedFirebaseDataService.upcomingLecture);
+    _upcomingCodeLab = Rx<Lesson>(sharedFirebaseDataService.upcomingCodeLab);
+  }
 
   /// home screen => lesson screen details
   void goToLessonScreenDetails() => Get.toNamed(LessonScreenDetails.routeName, arguments: {
@@ -108,23 +124,25 @@ class HomeController extends GetxController {
         .toList()
       ..sort((a, b) => a.lessonStart.compareTo(b.lessonStart));
 
-    final lesson = sortedLessons.first;
+    if (sortedLessons.isNotEmpty) {
+      final lesson = sortedLessons.first;
 
-    upcomingLesson = Lesson(
-        lessonName: lesson.lessonName,
-        lessonStart: lesson.lessonStart,
-        lessonEnd: lesson.lessonEnd,
-        lessonDetails: lesson.lessonDetails);
+      upcomingLesson = Lesson(
+          lessonName: lesson.lessonName,
+          lessonStart: lesson.lessonStart,
+          lessonEnd: lesson.lessonEnd,
+          lessonDetails: lesson.lessonDetails);
 
-    upcomingLecture = Lesson(
-        lessonName: lesson.lessonDetails!.lectureName,
-        lessonStart: lesson.lessonDetails!.lectureStart,
-        lessonEnd: lesson.lessonDetails!.lectureEnd);
+      upcomingLecture = Lesson(
+          lessonName: lesson.lessonDetails!.lectureName,
+          lessonStart: lesson.lessonDetails!.lectureStart,
+          lessonEnd: lesson.lessonDetails!.lectureEnd);
 
-    upcomingCodeLab = Lesson(
-        lessonName: lesson.lessonDetails!.codeLabName,
-        lessonStart: lesson.lessonDetails!.codeLabStart,
-        lessonEnd: lesson.lessonDetails!.codeLabEnd);
+      upcomingCodeLab = Lesson(
+          lessonName: lesson.lessonDetails!.codeLabName,
+          lessonStart: lesson.lessonDetails!.codeLabStart,
+          lessonEnd: lesson.lessonDetails!.codeLabEnd);
+    }
   }
 
   Future<void> getReservedSeat() async {
@@ -162,19 +180,21 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> _listenNotificationsChanges() async {
-    firebaseNotifications = firebaseService.firebaseFirestore
-        .collection(FCFirestoreCollections.notificationsCollection)
-        .doc(firebaseService.firebaseUser.value?.uid)
+  void listenNotificationsChanges() {
+    firebaseNotifications = firebaseService
+        .getDocumentReference(
+            collection: FCFirestoreCollections.notificationsCollection,
+            doc: firebaseService.firebaseUser.value!.uid)
         .snapshots()
-        .listen((snapshot) async {
-      final data = snapshot.data()!['notification'] as List<dynamic>;
-
-      sharedFirebaseDataService.notifications =
-          data.map((json) => Notification.fromJson(json)).toList();
-
-      checkNotifications();
+        .listen((snapshot) {
+          sharedFirebaseDataService.notifications = updateNotifications(snapshot);
+          checkNotifications();
     });
+  }
+
+  List<Notification> updateNotifications(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data()!['notification'] as List<dynamic>;
+    return data.map((json) => Notification.fromJson(json)).toList();
   }
 
   void checkNotifications() {

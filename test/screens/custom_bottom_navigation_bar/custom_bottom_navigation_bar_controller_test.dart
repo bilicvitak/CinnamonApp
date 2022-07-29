@@ -2,14 +2,13 @@ import 'dart:io';
 
 import 'package:cinnamon_flutter_template_1/models/lesson/lesson.dart';
 import 'package:cinnamon_flutter_template_1/screens/custom_bottom_navigation_bar/custom_bottom_navigation_bar_controller.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:test/test.dart';
 
+import '../../constants/mock_repository.dart';
 import 'custom_bottom_navigation_bar_controller_test.mocks.dart';
 
 @GenerateMocks([ImagePicker])
@@ -63,10 +62,7 @@ void main() {
     });
 
     test('Function should return File when user takes a picture', () async {
-      final data = await rootBundle.load('assets/images/profile.jpg');
-      final bytes = data.buffer.asUint8List();
-      final tempDir = await getTemporaryDirectory();
-      final xfile = XFile('${tempDir.path}/tmp.tmp', bytes: bytes);
+      final xfile = await MockRepository.imageFile;
       final file = File(xfile.path);
 
       when(_navigationBarController.imagePicker.pickImage(
@@ -80,10 +76,7 @@ void main() {
     });
 
     test('Function should return File when user selects a picture', () async {
-      final data = await rootBundle.load('assets/images/profile.jpg');
-      final bytes = data.buffer.asUint8List();
-      final tempDir = await getTemporaryDirectory();
-      final xfile = XFile('${tempDir.path}/tmp.tmp', bytes: bytes);
+      final xfile = await MockRepository.imageFile;
       final file = File(xfile.path);
 
       when(_navigationBarController.imagePicker.pickImage(

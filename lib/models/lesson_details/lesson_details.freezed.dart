@@ -268,7 +268,7 @@ class __$LessonDetailsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_LessonDetails extends _LessonDetails with DiagnosticableTreeMixin {
+class _$_LessonDetails extends _LessonDetails {
   _$_LessonDetails(
       {required this.lessonName,
       required this.description,
@@ -312,29 +312,6 @@ class _$_LessonDetails extends _LessonDetails with DiagnosticableTreeMixin {
   final List<String> fileUrl;
   @override
   final int lessonNumber;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LessonDetails(lessonName: $lessonName, description: $description, location: $location, lectureName: $lectureName, lectureStart: $lectureStart, lectureEnd: $lectureEnd, codeLabName: $codeLabName, codeLabStart: $codeLabStart, codeLabEnd: $codeLabEnd, fileUrl: $fileUrl, lessonNumber: $lessonNumber)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'LessonDetails'))
-      ..add(DiagnosticsProperty('lessonName', lessonName))
-      ..add(DiagnosticsProperty('description', description))
-      ..add(DiagnosticsProperty('location', location))
-      ..add(DiagnosticsProperty('lectureName', lectureName))
-      ..add(DiagnosticsProperty('lectureStart', lectureStart))
-      ..add(DiagnosticsProperty('lectureEnd', lectureEnd))
-      ..add(DiagnosticsProperty('codeLabName', codeLabName))
-      ..add(DiagnosticsProperty('codeLabStart', codeLabStart))
-      ..add(DiagnosticsProperty('codeLabEnd', codeLabEnd))
-      ..add(DiagnosticsProperty('fileUrl', fileUrl))
-      ..add(DiagnosticsProperty('lessonNumber', lessonNumber));
-  }
 
   @JsonKey(ignore: true)
   @override

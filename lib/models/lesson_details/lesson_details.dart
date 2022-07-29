@@ -10,22 +10,21 @@ part 'lesson_details.g.dart';
 DateTime timestampToDate(Timestamp timestamp) => timestamp.toDate();
 
 @freezed
-class LessonDetails with _$LessonDetails {
+class LessonDetails extends Equatable with _$LessonDetails {
   const LessonDetails._();
 
-  factory LessonDetails({
-    required String lessonName,
-    required String description,
-    required String location,
-    required String lectureName,
-    @JsonKey(fromJson: timestampToDate) required DateTime lectureStart,
-    @JsonKey(fromJson: timestampToDate) required DateTime lectureEnd,
-    required String codeLabName,
-    @JsonKey(fromJson: timestampToDate) required DateTime codeLabStart,
-    @JsonKey(fromJson: timestampToDate) required DateTime codeLabEnd,
-    required List<String> fileUrl,
-    required int lessonNumber
-  }) = _LessonDetails;
+  factory LessonDetails(
+      {required String lessonName,
+      required String description,
+      required String location,
+      required String lectureName,
+      @JsonKey(fromJson: timestampToDate) required DateTime lectureStart,
+      @JsonKey(fromJson: timestampToDate) required DateTime lectureEnd,
+      required String codeLabName,
+      @JsonKey(fromJson: timestampToDate) required DateTime codeLabStart,
+      @JsonKey(fromJson: timestampToDate) required DateTime codeLabEnd,
+      required List<String> fileUrl,
+      required int lessonNumber}) = _LessonDetails;
 
   factory LessonDetails.fromJson(Map<String, dynamic> json) => _$LessonDetailsFromJson(json);
 
@@ -44,9 +43,20 @@ class LessonDetails with _$LessonDetails {
       );
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is LessonDetails && runtimeType == other.runtimeType;
+  List<Object?> get props => [
+        lessonName,
+        description,
+        location,
+        lectureName,
+        lectureStart,
+        lectureEnd,
+        codeLabName,
+        codeLabStart,
+        codeLabEnd,
+        fileUrl,
+        lessonNumber,
+      ];
 
   @override
-  int get hashCode => 0;
+  bool get stringify => true;
 }

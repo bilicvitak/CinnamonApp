@@ -8,7 +8,7 @@ part 'lesson.freezed.dart';
 part 'lesson.g.dart';
 
 @freezed
-class Lesson with _$Lesson {
+class Lesson extends Equatable with _$Lesson {
   const Lesson._();
 
   factory Lesson({
@@ -21,9 +21,13 @@ class Lesson with _$Lesson {
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is Lesson && runtimeType == other.runtimeType;
+  List<Object?> get props => [
+        lessonName,
+        lessonStart,
+        lessonEnd,
+        lessonDetails,
+      ];
 
   @override
-  int get hashCode => 0;
+  bool get stringify => true;
 }

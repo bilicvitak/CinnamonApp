@@ -129,8 +129,9 @@ class __$SeatCopyWithImpl<$Res> extends _$SeatCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Seat with DiagnosticableTreeMixin implements _Seat {
-  _$_Seat({required this.id, required this.name, required this.position});
+class _$_Seat extends _Seat {
+  _$_Seat({required this.id, required this.name, required this.position})
+      : super._();
 
   factory _$_Seat.fromJson(Map<String, dynamic> json) => _$$_SeatFromJson(json);
 
@@ -140,35 +141,6 @@ class _$_Seat with DiagnosticableTreeMixin implements _Seat {
   final String name;
   @override
   final int position;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Seat(id: $id, name: $name, position: $position)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Seat'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('position', position));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _Seat &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.position, position) ||
-                other.position == position));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, position);
 
   @JsonKey(ignore: true)
   @override
@@ -181,11 +153,12 @@ class _$_Seat with DiagnosticableTreeMixin implements _Seat {
   }
 }
 
-abstract class _Seat implements Seat {
+abstract class _Seat extends Seat {
   factory _Seat(
       {required String id,
       required String name,
       required int position}) = _$_Seat;
+  _Seat._() : super._();
 
   factory _Seat.fromJson(Map<String, dynamic> json) = _$_Seat.fromJson;
 

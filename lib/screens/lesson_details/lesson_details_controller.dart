@@ -79,10 +79,10 @@ class LessonDetailsController extends GetxController {
       isSeatReserved = Get.arguments['isSeatReserved'];
       reservedSeat = Get.arguments['reservedSeat'];
     } else {
-      await _getReservedSeat();
+      await getReservedSeat();
     }
 
-    await _getLessonRating();
+    await getLessonRating();
   }
 
   /// lesson details => pdf viewer
@@ -114,7 +114,7 @@ class LessonDetailsController extends GetxController {
       lessonEnd: lesson.codeLabEnd);
 
   /// FUNCTION: Get user rating
-  Future<void> _getLessonRating() async {
+  Future<void> getLessonRating() async {
     final userRef = firebaseService.getDocumentReference(
         collection: FCFirestoreCollections.usersCollection,
         doc: firebaseService.firebaseUser.value!.uid);
@@ -165,7 +165,7 @@ class LessonDetailsController extends GetxController {
   }
 
   /// FUNCTION: Get user's seat for selected lesson
-  Future<void> _getReservedSeat() async {
+  Future<void> getReservedSeat() async {
     final firebaseReservations = await firebaseService.getDocuments(
         collectionPath: FCFirestoreCollections.reservationsCollection);
 

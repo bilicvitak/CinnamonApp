@@ -14,12 +14,12 @@ import 'custom_bottom_navigation_bar_controller_test.mocks.dart';
 @GenerateMocks([ImagePicker])
 void main() {
   late CustomBottomNavigationBarController _navigationBarController;
+  final _mockImagePicker = MockImagePicker();
 
   setUpAll(flutter_test.TestWidgetsFlutterBinding.ensureInitialized);
 
   setUp(() {
-    _navigationBarController = CustomBottomNavigationBarController()
-      ..imagePicker = MockImagePicker();
+    _navigationBarController = CustomBottomNavigationBarController()..imagePicker = _mockImagePicker;
   });
 
   tearDown(() {
@@ -38,36 +38,33 @@ void main() {
     expect(result, 'June 20th, 17 pm - 19 pm');
   });
 
-  group('Check image picker', () {
-    test("Function should return null when user doesn't take a picture", () async {
-      when(_navigationBarController.imagePicker.pickImage(
-        source: ImageSource.camera,
-        maxWidth: 1080,
-      )).thenAnswer((_) async => null);
+  group('Image picker returns null', () {
+    when(_mockImagePicker.pickImage(
+      source: anyNamed('source'),
+      maxWidth: anyNamed('maxWidth'),
+    )).thenAnswer((_) async => null);
 
+    test("Function should return null when user doesn't take a picture", () async {
       final result = await _navigationBarController.chooseImage(isCamera: true);
 
       expect(result, null);
     });
 
     test("Function should return null when user doesn't select a picture", () async {
-      when(_navigationBarController.imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 1080,
-      )).thenAnswer((_) async => null);
-
       final result = await _navigationBarController.chooseImage(isCamera: false);
 
       expect(result, null);
     });
+  });
 
+  group('Image picker returns file', () {
     test('Function should return File when user takes a picture', () async {
       final xfile = await MockRepository.imageFile;
       final file = File(xfile.path);
 
-      when(_navigationBarController.imagePicker.pickImage(
-        source: ImageSource.camera,
-        maxWidth: 1080,
+      when(_mockImagePicker.pickImage(
+        source: anyNamed('source'),
+        maxWidth: anyNamed('maxWidth'),
       )).thenAnswer((_) async => xfile);
 
       final result = await _navigationBarController.chooseImage(isCamera: true);
@@ -79,9 +76,9 @@ void main() {
       final xfile = await MockRepository.imageFile;
       final file = File(xfile.path);
 
-      when(_navigationBarController.imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 1080,
+      when(_mockImagePicker.pickImage(
+        source: anyNamed('source'),
+        maxWidth: anyNamed('maxWidth'),
       )).thenAnswer((_) async => xfile);
 
       final result = await _navigationBarController.chooseImage(isCamera: false);

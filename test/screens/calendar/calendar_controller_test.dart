@@ -1,7 +1,4 @@
-import 'package:cell_calendar/cell_calendar.dart';
-import 'package:cinnamon_flutter_template_1/constants/colors.dart';
-import 'package:cinnamon_flutter_template_1/models/lesson/lesson.dart';
-import 'package:cinnamon_flutter_template_1/models/lesson_details/lesson_details.dart';
+import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/screens/calendar/calendar_controller.dart';
 import 'package:cinnamon_flutter_template_1/services/shared_firebase_data_service.dart';
 import 'package:mockito/annotations.dart';
@@ -14,10 +11,12 @@ import 'calendar_controller_test.mocks.dart';
 @GenerateMocks([SharedFirebaseDataService])
 void main() {
   late CalendarController _calendarController;
+  final _mockSharedFirebaseDataService = MockSharedFirebaseDataService();
 
   setUp(() {
-    _calendarController = CalendarController()
-      ..sharedFirebaseDataService = MockSharedFirebaseDataService();
+    _calendarController = CalendarController();
+
+    sharedFirebaseDataService = _mockSharedFirebaseDataService;
   });
 
   tearDown(() {
@@ -26,7 +25,7 @@ void main() {
 
   group('Check calendar events', () {
     test('Calendar events should be empty', () async {
-      when(_calendarController.sharedFirebaseDataService.lessons).thenReturn([]);
+      when(_mockSharedFirebaseDataService.lessons).thenReturn([]);
 
       _calendarController.filterLessons();
 
@@ -34,7 +33,7 @@ void main() {
     });
 
     test('Calendar events should be filtered as lectures and code labs', () async {
-      when(_calendarController.sharedFirebaseDataService.lessons)
+      when(_mockSharedFirebaseDataService.lessons)
           .thenReturn([MockRepository.calendarLesson]);
 
       _calendarController.filterLessons();

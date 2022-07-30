@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/firestore_collections.dart';
 import 'package:cinnamon_flutter_template_1/models/notification/notification.dart';
 import 'package:cinnamon_flutter_template_1/models/seat/seat.dart';
@@ -33,20 +34,21 @@ Map<String, dynamic> getData() => {'key': 'value'};
 ])
 void main() {
   late HomeController _homeController;
+  final _mockSharedFirebaseDataService = MockSharedFirebaseDataService();
+  final _mockFirebaseService = MockFirebaseService();
 
   setUp(() {
-    _homeController = HomeController()
-      ..sharedFirebaseDataService = MockSharedFirebaseDataService()
-      ..firebaseService = MockFirebaseService();
+    sharedFirebaseDataService = _mockSharedFirebaseDataService;
+    firebaseService = _mockFirebaseService;
 
-    when(_homeController.sharedFirebaseDataService.upcomingLesson)
+    when(_mockSharedFirebaseDataService.upcomingLesson)
         .thenReturn(MockRepository.homeInitialUpcomingLesson);
-    when(_homeController.sharedFirebaseDataService.upcomingLecture)
+    when(_mockSharedFirebaseDataService.upcomingLecture)
         .thenReturn(MockRepository.homeInitialUpcomingLecture);
-    when(_homeController.sharedFirebaseDataService.upcomingCodeLab)
+    when(_mockSharedFirebaseDataService.upcomingCodeLab)
         .thenReturn(MockRepository.homeInitialUpcomingCodeLab);
 
-    _homeController.initializeLocalVariables();
+    _homeController = HomeController();
   });
 
   tearDown(() => _homeController.dispose());
@@ -55,7 +57,7 @@ void main() {
     test("Upcoming lessons don't exist", () {
       /// Arrange
       /// -- Stubbing
-      when(_homeController.sharedFirebaseDataService.lessons).thenReturn([]);
+      when(_mockSharedFirebaseDataService.lessons).thenReturn([]);
 
       /// Act
       _homeController.filterUpcomingLesson();
@@ -69,8 +71,7 @@ void main() {
     test('Upcoming lesson is filtered into upcoming lecture and code lab', () {
       /// Arrange
       /// -- Stubbing
-      when(_homeController.sharedFirebaseDataService.lessons)
-          .thenReturn(MockRepository.homeLessons);
+      when(_mockSharedFirebaseDataService.lessons).thenReturn(MockRepository.homeLessons);
 
       /// Act
       _homeController.filterUpcomingLesson();
@@ -99,8 +100,8 @@ void main() {
 
     test("Seat reservation doesn't exist in database", () async {
       /// -- Stubbing
-      when(_homeController.firebaseService
-              .getDocuments(collectionPath: FCFirestoreCollections.reservationsCollection))
+      when(_mockFirebaseService.getDocuments(
+              collectionPath: FCFirestoreCollections.reservationsCollection))
           .thenAnswer((_) async => Future.value(querySnapshot));
 
       when(querySnapshot.docs).thenReturn([queryDocumentSnaphsot]);
@@ -119,7 +120,7 @@ void main() {
       when(seat.path).thenReturn('seats/6hzAdnZPnUplxyvBuXgg');
       when(user.path).thenReturn('users/XON8xfws6bVg3FnLs2wEGl3mMPv1');
 
-      when(_homeController.firebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
       when(mockUser.uid).thenReturn('1234');
 
       /// Act
@@ -132,8 +133,8 @@ void main() {
 
     test('Seat reservation exists in database', () async {
       /// -- Stubbing
-      when(_homeController.firebaseService
-              .getDocuments(collectionPath: FCFirestoreCollections.reservationsCollection))
+      when(_mockFirebaseService.getDocuments(
+              collectionPath: FCFirestoreCollections.reservationsCollection))
           .thenAnswer((_) async => Future.value(querySnapshot));
 
       when(querySnapshot.docs).thenReturn([queryDocumentSnaphsot]);
@@ -152,14 +153,14 @@ void main() {
       when(seat.path).thenReturn('seats/6hzAdnZPnUplxyvBuXgg');
       when(user.path).thenReturn('users/XON8xfws6bVg3FnLs2wEGl3mMPv1');
 
-      when(_homeController.firebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
       when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
 
       /// -- Mock seat
       final DocumentSnapshot<Map<String, dynamic>> firebaseSeat = MockDocumentSnapshot();
 
       /// -- Stubbing seat
-      when(_homeController.firebaseService.getDocument(docPath: 'seats/6hzAdnZPnUplxyvBuXgg'))
+      when(_mockFirebaseService.getDocument(docPath: 'seats/6hzAdnZPnUplxyvBuXgg'))
           .thenAnswer((_) async => Future.value(firebaseSeat));
 
       when(firebaseSeat.id).thenReturn('6hzAdnZPnUplxyvBuXgg');
@@ -184,7 +185,7 @@ void main() {
     test('Notifications are not read', () {
       /// Arrange
       /// -- Stubbing
-      when(_homeController.sharedFirebaseDataService.notifications)
+      when(_mockSharedFirebaseDataService.notifications)
           .thenReturn(MockRepository.homeNotifications);
 
       _homeController.checkNotifications();
@@ -195,7 +196,7 @@ void main() {
     test('Notifications are read', () {
       /// Arrange
       /// -- Stubbing
-      when(_homeController.sharedFirebaseDataService.notifications).thenReturn(
+      when(_mockSharedFirebaseDataService.notifications).thenReturn(
           MockRepository.homeNotifications.map((item) => item.copyWith(isRead: true)).toList());
 
       /// Act
@@ -225,7 +226,7 @@ void main() {
     });
 
     when(lectureRef.path).thenReturn('lectures/Lesson1');
-    when(_homeController.sharedFirebaseDataService.notifications).thenReturn([]);
+    when(_mockSharedFirebaseDataService.notifications).thenReturn([]);
 
     /// Act
     final result = _homeController.updateNotifications(snapshot);
@@ -251,10 +252,10 @@ void main() {
         MockStreamSubscription();
 
     /// -- Stubbing
-    when(_homeController.firebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+    when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
     when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
 
-    when(_homeController.firebaseService.getDocumentReference(
+    when(_mockFirebaseService.getDocumentReference(
       collection: FCFirestoreCollections.notificationsCollection,
       doc: 'XON8xfws6bVg3FnLs2wEGl3mMPv1',
     )).thenReturn(notificationRef);

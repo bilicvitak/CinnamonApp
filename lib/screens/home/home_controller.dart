@@ -9,8 +9,6 @@ import '../../models/lesson/lesson.dart';
 import '../../models/notification/notification.dart';
 import '../../models/reservation/reservation.dart';
 import '../../models/seat/seat.dart';
-import '../../services/firebase_service.dart';
-import '../../services/shared_firebase_data_service.dart';
 import '../lesson_details/lesson_screen_details.dart';
 import '../lesson_reservations/lesson_screen_reservations.dart';
 
@@ -19,15 +17,12 @@ class HomeController extends GetxController {
   /// VARIABLES
   /// ------------------------
 
-  late SharedFirebaseDataService sharedFirebaseDataService;
-  late FirebaseService firebaseService;
-
   final _isSeatReserved = false.obs;
   final _reservedSeat = Seat.blank().obs;
 
-  late Rx<Lesson> _upcomingLesson;
-  late Rx<Lesson> _upcomingLecture;
-  late Rx<Lesson> _upcomingCodeLab;
+  final _upcomingLesson = sharedFirebaseDataService.upcomingLesson.obs;
+  final _upcomingLecture = sharedFirebaseDataService.upcomingLecture.obs;
+  final _upcomingCodeLab = sharedFirebaseDataService.upcomingCodeLab.obs;
 
   StreamSubscription? firebaseNotifications;
 
@@ -73,11 +68,6 @@ class HomeController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
 
-    sharedFirebaseDataService = SharedFirebaseDataService.instance;
-    firebaseService = FirebaseService.instance;
-
-    initializeLocalVariables();
-
     await sharedFirebaseDataService.getAllLessons();
     filterUpcomingLesson();
 
@@ -98,12 +88,6 @@ class HomeController extends GetxController {
   /// ------------------------
   /// METHODS
   /// ------------------------
-
-  void initializeLocalVariables() {
-    _upcomingLesson = Rx<Lesson>(sharedFirebaseDataService.upcomingLesson);
-    _upcomingLecture = Rx<Lesson>(sharedFirebaseDataService.upcomingLecture);
-    _upcomingCodeLab = Rx<Lesson>(sharedFirebaseDataService.upcomingCodeLab);
-  }
 
   /// home screen => lesson screen details
   void goToLessonScreenDetails() => Get.toNamed(LessonScreenDetails.routeName, arguments: {

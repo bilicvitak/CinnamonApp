@@ -12,9 +12,9 @@ import '../services/storage_service.dart';
 
 final aliceService = AliceService.instance;
 final dioService = DioService.instance;
-final firebaseService = FirebaseService.instance;
+var firebaseService = FirebaseService.instance;
 final logger = LoggerService.instance;
-final sharedFirebaseDataService = SharedFirebaseDataService.instance;
+var sharedFirebaseDataService = SharedFirebaseDataService.instance;
 final storageService = StorageService.instance;
 
 /// ------------------------

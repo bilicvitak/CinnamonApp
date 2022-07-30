@@ -11,8 +11,6 @@ class LessonsController extends GetxController {
   /// VARIABLES
   /// ------------------------
 
-  late final SharedFirebaseDataService sharedFirebaseDataService;
-
   final _upcomingLessonsCounter = 0.obs;
   final _upcomingLessons = <Lesson>[].obs;
   final _pastLessons = <Lesson>[].obs;
@@ -54,8 +52,6 @@ class LessonsController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-
-    sharedFirebaseDataService = SharedFirebaseDataService.instance;
 
     await sharedFirebaseDataService.getAllLessons();
 

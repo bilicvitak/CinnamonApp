@@ -272,4 +272,6 @@ class MockRepository {
       isRead: false,
     ),
   ];
+
+  /// Notifications controller
 }

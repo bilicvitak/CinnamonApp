@@ -7,6 +7,11 @@ part 'lesson.freezed.dart';
 
 part 'lesson.g.dart';
 
+Map<String, dynamic>? lessonDetailsToJson(LessonDetails? lessonDetails) => lessonDetails?.toJson();
+
+LessonDetails? lessonDetailsFromJson(Map<String, dynamic>? data) =>
+    data != null ? LessonDetails.fromJson(data) : null;
+
 @freezed
 class Lesson extends Equatable with _$Lesson {
   const Lesson._();
@@ -15,7 +20,8 @@ class Lesson extends Equatable with _$Lesson {
     required String lessonName,
     required DateTime lessonStart,
     required DateTime lessonEnd,
-    LessonDetails? lessonDetails,
+    @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
+        LessonDetails? lessonDetails,
   }) = _Lesson;
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);

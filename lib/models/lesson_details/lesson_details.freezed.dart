@@ -26,11 +26,15 @@ class _$LessonDetailsTearOff {
       required String description,
       required String location,
       required String lectureName,
-      @JsonKey(fromJson: timestampToDate) required DateTime lectureStart,
-      @JsonKey(fromJson: timestampToDate) required DateTime lectureEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required DateTime lectureStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required DateTime lectureEnd,
       required String codeLabName,
-      @JsonKey(fromJson: timestampToDate) required DateTime codeLabStart,
-      @JsonKey(fromJson: timestampToDate) required DateTime codeLabEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required DateTime codeLabStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required DateTime codeLabEnd,
       required List<String> fileUrl,
       required int lessonNumber}) {
     return _LessonDetails(
@@ -62,14 +66,14 @@ mixin _$LessonDetails {
   String get description => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
   String get lectureName => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   DateTime get lectureStart => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   DateTime get lectureEnd => throw _privateConstructorUsedError;
   String get codeLabName => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   DateTime get codeLabStart => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   DateTime get codeLabEnd => throw _privateConstructorUsedError;
   List<String> get fileUrl => throw _privateConstructorUsedError;
   int get lessonNumber => throw _privateConstructorUsedError;
@@ -90,11 +94,15 @@ abstract class $LessonDetailsCopyWith<$Res> {
       String description,
       String location,
       String lectureName,
-      @JsonKey(fromJson: timestampToDate) DateTime lectureStart,
-      @JsonKey(fromJson: timestampToDate) DateTime lectureEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          DateTime lectureStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          DateTime lectureEnd,
       String codeLabName,
-      @JsonKey(fromJson: timestampToDate) DateTime codeLabStart,
-      @JsonKey(fromJson: timestampToDate) DateTime codeLabEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          DateTime codeLabStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          DateTime codeLabEnd,
       List<String> fileUrl,
       int lessonNumber});
 }
@@ -183,11 +191,15 @@ abstract class _$LessonDetailsCopyWith<$Res>
       String description,
       String location,
       String lectureName,
-      @JsonKey(fromJson: timestampToDate) DateTime lectureStart,
-      @JsonKey(fromJson: timestampToDate) DateTime lectureEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          DateTime lectureStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          DateTime lectureEnd,
       String codeLabName,
-      @JsonKey(fromJson: timestampToDate) DateTime codeLabStart,
-      @JsonKey(fromJson: timestampToDate) DateTime codeLabEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          DateTime codeLabStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          DateTime codeLabEnd,
       List<String> fileUrl,
       int lessonNumber});
 }
@@ -274,11 +286,15 @@ class _$_LessonDetails extends _LessonDetails {
       required this.description,
       required this.location,
       required this.lectureName,
-      @JsonKey(fromJson: timestampToDate) required this.lectureStart,
-      @JsonKey(fromJson: timestampToDate) required this.lectureEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required this.lectureStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required this.lectureEnd,
       required this.codeLabName,
-      @JsonKey(fromJson: timestampToDate) required this.codeLabStart,
-      @JsonKey(fromJson: timestampToDate) required this.codeLabEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required this.codeLabStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required this.codeLabEnd,
       required this.fileUrl,
       required this.lessonNumber})
       : super._();
@@ -295,18 +311,18 @@ class _$_LessonDetails extends _LessonDetails {
   @override
   final String lectureName;
   @override
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   final DateTime lectureStart;
   @override
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   final DateTime lectureEnd;
   @override
   final String codeLabName;
   @override
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   final DateTime codeLabStart;
   @override
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   final DateTime codeLabEnd;
   @override
   final List<String> fileUrl;
@@ -330,11 +346,15 @@ abstract class _LessonDetails extends LessonDetails {
       required String description,
       required String location,
       required String lectureName,
-      @JsonKey(fromJson: timestampToDate) required DateTime lectureStart,
-      @JsonKey(fromJson: timestampToDate) required DateTime lectureEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required DateTime lectureStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required DateTime lectureEnd,
       required String codeLabName,
-      @JsonKey(fromJson: timestampToDate) required DateTime codeLabStart,
-      @JsonKey(fromJson: timestampToDate) required DateTime codeLabEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required DateTime codeLabStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
+          required DateTime codeLabEnd,
       required List<String> fileUrl,
       required int lessonNumber}) = _$_LessonDetails;
   _LessonDetails._() : super._();
@@ -351,18 +371,18 @@ abstract class _LessonDetails extends LessonDetails {
   @override
   String get lectureName;
   @override
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   DateTime get lectureStart;
   @override
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   DateTime get lectureEnd;
   @override
   String get codeLabName;
   @override
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   DateTime get codeLabStart;
   @override
-  @JsonKey(fromJson: timestampToDate)
+  @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   DateTime get codeLabEnd;
   @override
   List<String> get fileUrl;

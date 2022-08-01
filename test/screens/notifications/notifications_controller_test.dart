@@ -39,28 +39,84 @@ void main() {
     final mockUser = MockUser();
     final DocumentReference<Map<String, dynamic>> lectureRef = MockDocumentReference();
 
+    /// -- Stubbing
+    when(_mockFirebaseService.getDocumentReference(doc: anyNamed('doc'))).thenReturn(lectureRef);
+
+    when(_mockSharedFirebaseDataService.notifications).thenReturn(MockRepository.homeNotifications);
+
+    when(_mockFirebaseService.updateDoc(
+            collection: anyNamed('collection'),
+            doc: anyNamed('doc'),
+            field: anyNamed('field'),
+            value: anyNamed('value')))
+        .thenAnswer((_) async => true);
+
     test('Notifications at index 1 should be removed from list', () async {
       /// -- Stubbing
       when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
       when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
-
-      when(_mockSharedFirebaseDataService.notifications)
-          .thenReturn(MockRepository.homeNotifications);
-
-      when(_mockFirebaseService.getDocumentReference(doc: anyNamed('doc'))).thenReturn(lectureRef);
-
-      when(_mockFirebaseService.updateDoc(
-              collection: anyNamed('collection'),
-              doc: anyNamed('doc'),
-              field: anyNamed('field'),
-              value: anyNamed('value')))
-          .thenAnswer((_) async => true);
 
       /// Act
       final result = await _notificationsController.updateNotification(index: 1);
 
       /// Assert
       expect(result, true);
+      expect(sharedFirebaseDataService.notifications, MockRepository.homeNotifications);
+    });
+
+    test("Notification isn't removed when user is null", () async {
+      /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(null));
+
+      /// Act
+      final result = await _notificationsController.updateNotification(index: 1);
+
+      /// Assert
+      expect(result, false);
+      expect(sharedFirebaseDataService.notifications, MockRepository.homeNotifications);
+    });
+  });
+
+  group('Refresh notifications', () {
+    /// Arrange
+    /// -- Mock data
+    final mockUser = MockUser();
+
+    /// -- Stubbing
+    when(_mockSharedFirebaseDataService.notifications).thenReturn(MockRepository.homeNotifications);
+
+    when(
+      _mockFirebaseService.updateDoc(
+          collection: anyNamed('collection'),
+          doc: anyNamed('doc'),
+          field: anyNamed('field'),
+          value: anyNamed('value')),
+    ).thenAnswer((_) async => true);
+
+    when(_mockSharedFirebaseDataService.getNotifications()).thenAnswer((_) async {});
+
+    test('All notifications should be read', () async {
+      /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+      when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
+
+      /// Act
+      final result = await _notificationsController.refreshNotifications();
+
+      /// Assert
+      expect(result, true);
+      expect(sharedFirebaseDataService.notifications, MockRepository.homeNotifications);
+    });
+
+    test("Notifications aren't refreshed when user is null", () async {
+      /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(null));
+
+      /// Act
+      final result = await _notificationsController.refreshNotifications();
+
+      /// Assert
+      expect(result, false);
       expect(sharedFirebaseDataService.notifications, MockRepository.homeNotifications);
     });
   });

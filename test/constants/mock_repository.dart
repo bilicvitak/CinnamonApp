@@ -273,5 +273,22 @@ class MockRepository {
     ),
   ];
 
-  /// Notifications controller
+  /// SharedFirebaseDataService
+  static final sharedFirebaseLessons = [
+    Lesson(
+        lessonName: 'Lesson Past',
+        lessonStart: _dateTime.subtract(const Duration(hours: 2)),
+        lessonEnd: _dateTime.subtract(const Duration(hours: 2))),
+    Lesson(
+        lessonName: 'Lesson Upcoming',
+        lessonStart: _dateTime,
+        lessonEnd: _dateTime.add(const Duration(hours: 3))),
+  ];
+
+  static final sharedFirebaseNotificationJson = <String, dynamic>{
+    'notification': [
+      homeNotifications[0].toJson(),
+      homeNotifications[1].toJson(),
+    ]
+  };
 }

@@ -231,7 +231,7 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_User with DiagnosticableTreeMixin implements _User {
+class _$_User extends _User {
   _$_User(
       {required this.id,
       required this.email,
@@ -242,7 +242,8 @@ class _$_User with DiagnosticableTreeMixin implements _User {
       this.profilePicture,
       @JsonKey(fromJson: referenceToString, toJson: stringToReference)
           this.userGoals,
-      this.password});
+      this.password})
+      : super._();
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
@@ -266,59 +267,6 @@ class _$_User with DiagnosticableTreeMixin implements _User {
   @override
   final String? password;
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, email: $email, code: $code, codeIsVerified: $codeIsVerified, isValid: $isValid, name: $name, profilePicture: $profilePicture, userGoals: $userGoals, password: $password)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'User'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('email', email))
-      ..add(DiagnosticsProperty('code', code))
-      ..add(DiagnosticsProperty('codeIsVerified', codeIsVerified))
-      ..add(DiagnosticsProperty('isValid', isValid))
-      ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('profilePicture', profilePicture))
-      ..add(DiagnosticsProperty('userGoals', userGoals))
-      ..add(DiagnosticsProperty('password', password));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _User &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.codeIsVerified, codeIsVerified) ||
-                other.codeIsVerified == codeIsVerified) &&
-            (identical(other.isValid, isValid) || other.isValid == isValid) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.profilePicture, profilePicture) ||
-                other.profilePicture == profilePicture) &&
-            const DeepCollectionEquality().equals(other.userGoals, userGoals) &&
-            (identical(other.password, password) ||
-                other.password == password));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      email,
-      code,
-      codeIsVerified,
-      isValid,
-      name,
-      profilePicture,
-      const DeepCollectionEquality().hash(userGoals),
-      password);
-
   @JsonKey(ignore: true)
   @override
   _$UserCopyWith<_User> get copyWith =>
@@ -330,7 +278,7 @@ class _$_User with DiagnosticableTreeMixin implements _User {
   }
 }
 
-abstract class _User implements User {
+abstract class _User extends User {
   factory _User(
       {required String id,
       required String email,
@@ -342,6 +290,7 @@ abstract class _User implements User {
       @JsonKey(fromJson: referenceToString, toJson: stringToReference)
           List<String>? userGoals,
       String? password}) = _$_User;
+  _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 

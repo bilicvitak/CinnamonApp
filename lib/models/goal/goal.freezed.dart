@@ -129,8 +129,9 @@ class __$GoalCopyWithImpl<$Res> extends _$GoalCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Goal implements _Goal {
-  _$_Goal({required this.id, required this.name, required this.isChecked});
+class _$_Goal extends _Goal {
+  _$_Goal({required this.id, required this.name, required this.isChecked})
+      : super._();
 
   factory _$_Goal.fromJson(Map<String, dynamic> json) => _$$_GoalFromJson(json);
 
@@ -140,25 +141,6 @@ class _$_Goal implements _Goal {
   final String name;
   @override
   final bool isChecked;
-
-  @override
-  String toString() {
-    return 'Goal(id: $id, name: $name, isChecked: $isChecked)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _Goal &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.isChecked, isChecked) ||
-                other.isChecked == isChecked));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, isChecked);
 
   @JsonKey(ignore: true)
   @override
@@ -171,11 +153,12 @@ class _$_Goal implements _Goal {
   }
 }
 
-abstract class _Goal implements Goal {
+abstract class _Goal extends Goal {
   factory _Goal(
       {required String id,
       required String name,
       required bool isChecked}) = _$_Goal;
+  _Goal._() : super._();
 
   factory _Goal.fromJson(Map<String, dynamic> json) = _$_Goal.fromJson;
 

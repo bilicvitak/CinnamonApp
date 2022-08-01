@@ -161,13 +161,14 @@ class __$NotificationCopyWithImpl<$Res> extends _$NotificationCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Notification implements _Notification {
+class _$_Notification extends _Notification {
   _$_Notification(
       {required this.title,
       required this.description,
       @JsonKey(fromJson: referenceToString, toJson: stringToReference)
           required this.lectureId,
-      required this.isRead});
+      required this.isRead})
+      : super._();
 
   factory _$_Notification.fromJson(Map<String, dynamic> json) =>
       _$$_NotificationFromJson(json);
@@ -182,28 +183,6 @@ class _$_Notification implements _Notification {
   @override
   final bool isRead;
 
-  @override
-  String toString() {
-    return 'Notification(title: $title, description: $description, lectureId: $lectureId, isRead: $isRead)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _Notification &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.lectureId, lectureId) ||
-                other.lectureId == lectureId) &&
-            (identical(other.isRead, isRead) || other.isRead == isRead));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, title, description, lectureId, isRead);
-
   @JsonKey(ignore: true)
   @override
   _$NotificationCopyWith<_Notification> get copyWith =>
@@ -215,13 +194,14 @@ class _$_Notification implements _Notification {
   }
 }
 
-abstract class _Notification implements Notification {
+abstract class _Notification extends Notification {
   factory _Notification(
       {required String title,
       required String description,
       @JsonKey(fromJson: referenceToString, toJson: stringToReference)
           required String lectureId,
       required bool isRead}) = _$_Notification;
+  _Notification._() : super._();
 
   factory _Notification.fromJson(Map<String, dynamic> json) =
       _$_Notification.fromJson;

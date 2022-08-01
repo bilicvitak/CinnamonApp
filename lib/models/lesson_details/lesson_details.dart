@@ -9,6 +9,8 @@ part 'lesson_details.g.dart';
 
 DateTime timestampToDate(Timestamp timestamp) => timestamp.toDate();
 
+Timestamp dateToTimestamp(DateTime dateTime) => Timestamp.fromDate(dateTime);
+
 @freezed
 class LessonDetails extends Equatable with _$LessonDetails {
   const LessonDetails._();
@@ -18,11 +20,11 @@ class LessonDetails extends Equatable with _$LessonDetails {
       required String description,
       required String location,
       required String lectureName,
-      @JsonKey(fromJson: timestampToDate) required DateTime lectureStart,
-      @JsonKey(fromJson: timestampToDate) required DateTime lectureEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp) required DateTime lectureStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp) required DateTime lectureEnd,
       required String codeLabName,
-      @JsonKey(fromJson: timestampToDate) required DateTime codeLabStart,
-      @JsonKey(fromJson: timestampToDate) required DateTime codeLabEnd,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp) required DateTime codeLabStart,
+      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp) required DateTime codeLabEnd,
       required List<String> fileUrl,
       required int lessonNumber}) = _LessonDetails;
 

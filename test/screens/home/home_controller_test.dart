@@ -98,29 +98,30 @@ void main() {
     /// -- Mock user
     final User mockUser = MockUser();
 
+    /// -- Stubbing
+    when(_mockFirebaseService.getDocuments(collectionPath: anyNamed('collectionPath')))
+        .thenAnswer((_) async => querySnapshot);
+
+    when(querySnapshot.docs).thenReturn([queryDocumentSnaphsot]);
+
+    when(queryDocumentSnaphsot.data()).thenReturn({
+      'lectureId': lecture,
+      'students': [
+        {
+          'seatId': seat,
+          'userId': user,
+        }
+      ],
+    });
+
+    when(lecture.path).thenReturn('lectures/Lesson1');
+    when(seat.path).thenReturn('seats/6hzAdnZPnUplxyvBuXgg');
+    when(user.path).thenReturn('users/XON8xfws6bVg3FnLs2wEGl3mMPv1');
+
+    when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+
     test("Seat reservation doesn't exist in database", () async {
       /// -- Stubbing
-      when(_mockFirebaseService.getDocuments(
-              collectionPath: FCFirestoreCollections.reservationsCollection))
-          .thenAnswer((_) async => Future.value(querySnapshot));
-
-      when(querySnapshot.docs).thenReturn([queryDocumentSnaphsot]);
-
-      when(queryDocumentSnaphsot.data()).thenReturn({
-        'lectureId': lecture,
-        'students': [
-          {
-            'seatId': seat,
-            'userId': user,
-          }
-        ],
-      });
-
-      when(lecture.path).thenReturn('lectures/Lesson1');
-      when(seat.path).thenReturn('seats/6hzAdnZPnUplxyvBuXgg');
-      when(user.path).thenReturn('users/XON8xfws6bVg3FnLs2wEGl3mMPv1');
-
-      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
       when(mockUser.uid).thenReturn('1234');
 
       /// Act
@@ -133,35 +134,14 @@ void main() {
 
     test('Seat reservation exists in database', () async {
       /// -- Stubbing
-      when(_mockFirebaseService.getDocuments(
-              collectionPath: FCFirestoreCollections.reservationsCollection))
-          .thenAnswer((_) async => Future.value(querySnapshot));
-
-      when(querySnapshot.docs).thenReturn([queryDocumentSnaphsot]);
-
-      when(queryDocumentSnaphsot.data()).thenReturn({
-        'lectureId': lecture,
-        'students': [
-          {
-            'seatId': seat,
-            'userId': user,
-          }
-        ],
-      });
-
-      when(lecture.path).thenReturn('lectures/Lesson1');
-      when(seat.path).thenReturn('seats/6hzAdnZPnUplxyvBuXgg');
-      when(user.path).thenReturn('users/XON8xfws6bVg3FnLs2wEGl3mMPv1');
-
-      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
       when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
 
       /// -- Mock seat
       final DocumentSnapshot<Map<String, dynamic>> firebaseSeat = MockDocumentSnapshot();
 
       /// -- Stubbing seat
-      when(_mockFirebaseService.getDocument(docPath: 'seats/6hzAdnZPnUplxyvBuXgg'))
-          .thenAnswer((_) async => Future.value(firebaseSeat));
+      when(_mockFirebaseService.getDocument(docPath: anyNamed('docPath')))
+          .thenAnswer((_) async => firebaseSeat);
 
       when(firebaseSeat.id).thenReturn('6hzAdnZPnUplxyvBuXgg');
       when(firebaseSeat.data()).thenReturn({
@@ -256,8 +236,8 @@ void main() {
     when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
 
     when(_mockFirebaseService.getDocumentReference(
-      collection: FCFirestoreCollections.notificationsCollection,
-      doc: 'XON8xfws6bVg3FnLs2wEGl3mMPv1',
+      collection: anyNamed('collection'),
+      doc: anyNamed('doc'),
     )).thenReturn(notificationRef);
 
     when(notificationRef.snapshots()).thenAnswer((_) => stream);

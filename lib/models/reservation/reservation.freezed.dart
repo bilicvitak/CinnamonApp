@@ -135,10 +135,11 @@ class __$ReservationCopyWithImpl<$Res> extends _$ReservationCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Reservation implements _Reservation {
+class _$_Reservation extends _Reservation {
   _$_Reservation(
       {@JsonKey(fromJson: referenceToString) required this.lectureId,
-      @JsonKey(fromJson: referencesToString) required this.students});
+      @JsonKey(fromJson: referencesToString) required this.students})
+      : super._();
 
   factory _$_Reservation.fromJson(Map<String, dynamic> json) =>
       _$$_ReservationFromJson(json);
@@ -149,25 +150,6 @@ class _$_Reservation implements _Reservation {
   @override
   @JsonKey(fromJson: referencesToString)
   final List<Map<String, String>> students;
-
-  @override
-  String toString() {
-    return 'Reservation(lectureId: $lectureId, students: $students)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _Reservation &&
-            (identical(other.lectureId, lectureId) ||
-                other.lectureId == lectureId) &&
-            const DeepCollectionEquality().equals(other.students, students));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, lectureId, const DeepCollectionEquality().hash(students));
 
   @JsonKey(ignore: true)
   @override
@@ -180,12 +162,13 @@ class _$_Reservation implements _Reservation {
   }
 }
 
-abstract class _Reservation implements Reservation {
+abstract class _Reservation extends Reservation {
   factory _Reservation(
       {@JsonKey(fromJson: referenceToString)
           required String lectureId,
       @JsonKey(fromJson: referencesToString)
           required List<Map<String, String>> students}) = _$_Reservation;
+  _Reservation._() : super._();
 
   factory _Reservation.fromJson(Map<String, dynamic> json) =
       _$_Reservation.fromJson;

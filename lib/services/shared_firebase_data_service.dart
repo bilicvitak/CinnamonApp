@@ -81,29 +81,35 @@ class SharedFirebaseDataService extends GetxService {
   /// ------------------------
 
   Future<void> getAllLessons() async {
-    final snapshot = await firebaseService.firebaseFirestore
-        .collection(FCFirestoreCollections.lessonsCollection)
-        .get();
+    final snapshot = await firebaseService.getDocuments(
+        collectionPath: FCFirestoreCollections.lessonsCollection);
 
-    final lessonsDetails = snapshot.docs.map((doc) => LessonDetails.fromJson(doc.data()));
+    final lessonsDetails = snapshot?.docs.map((doc) => LessonDetails.fromJson(doc.data())).toList();
 
-    lessons.clear();
+    if (lessonsDetails != null) {
+      lessons.clear();
 
-    for (final lesson in lessonsDetails) {
-      lessons.add(Lesson(
-          lessonName: lesson.lessonName,
-          lessonStart: lesson.lectureStart,
-          lessonEnd: lesson.codeLabEnd,
-          lessonDetails: lesson));
+      for (final lesson in lessonsDetails) {
+        lessons.add(Lesson(
+            lessonName: lesson.lessonName,
+            lessonStart: lesson.lectureStart,
+            lessonEnd: lesson.codeLabEnd,
+            lessonDetails: lesson));
+      }
     }
   }
 
   Future<void> getNotifications() async {
+    if(firebaseService.firebaseUser.value == null) return;
+
     final docPath =
         '${FCFirestoreCollections.notificationsCollection}/${firebaseService.firebaseUser.value?.uid}';
 
     final snapshot = await firebaseService.getDocument(docPath: docPath);
-    final data = snapshot?.data()!['notification'] as List<dynamic>;
+
+    if(snapshot == null) return;
+
+    final data = snapshot.data()!['notification'] as List<dynamic>;
 
     notifications = data.map((json) => Notification.fromJson(json)).toList();
   }

@@ -25,7 +25,8 @@ class _$LessonTearOff {
       {required String lessonName,
       required DateTime lessonStart,
       required DateTime lessonEnd,
-      LessonDetails? lessonDetails}) {
+      @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
+          LessonDetails? lessonDetails}) {
     return _Lesson(
       lessonName: lessonName,
       lessonStart: lessonStart,
@@ -47,6 +48,7 @@ mixin _$Lesson {
   String get lessonName => throw _privateConstructorUsedError;
   DateTime get lessonStart => throw _privateConstructorUsedError;
   DateTime get lessonEnd => throw _privateConstructorUsedError;
+  @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
   LessonDetails? get lessonDetails => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -62,7 +64,8 @@ abstract class $LessonCopyWith<$Res> {
       {String lessonName,
       DateTime lessonStart,
       DateTime lessonEnd,
-      LessonDetails? lessonDetails});
+      @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
+          LessonDetails? lessonDetails});
 
   $LessonDetailsCopyWith<$Res>? get lessonDetails;
 }
@@ -123,7 +126,8 @@ abstract class _$LessonCopyWith<$Res> implements $LessonCopyWith<$Res> {
       {String lessonName,
       DateTime lessonStart,
       DateTime lessonEnd,
-      LessonDetails? lessonDetails});
+      @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
+          LessonDetails? lessonDetails});
 
   @override
   $LessonDetailsCopyWith<$Res>? get lessonDetails;
@@ -173,7 +177,8 @@ class _$_Lesson extends _Lesson {
       {required this.lessonName,
       required this.lessonStart,
       required this.lessonEnd,
-      this.lessonDetails})
+      @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
+          this.lessonDetails})
       : super._();
 
   factory _$_Lesson.fromJson(Map<String, dynamic> json) =>
@@ -186,6 +191,7 @@ class _$_Lesson extends _Lesson {
   @override
   final DateTime lessonEnd;
   @override
+  @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
   final LessonDetails? lessonDetails;
 
   @JsonKey(ignore: true)
@@ -204,7 +210,8 @@ abstract class _Lesson extends Lesson {
       {required String lessonName,
       required DateTime lessonStart,
       required DateTime lessonEnd,
-      LessonDetails? lessonDetails}) = _$_Lesson;
+      @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
+          LessonDetails? lessonDetails}) = _$_Lesson;
   _Lesson._() : super._();
 
   factory _Lesson.fromJson(Map<String, dynamic> json) = _$_Lesson.fromJson;
@@ -216,6 +223,7 @@ abstract class _Lesson extends Lesson {
   @override
   DateTime get lessonEnd;
   @override
+  @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
   LessonDetails? get lessonDetails;
   @override
   @JsonKey(ignore: true)

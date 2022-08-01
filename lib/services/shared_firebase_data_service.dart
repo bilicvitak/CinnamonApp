@@ -100,14 +100,12 @@ class SharedFirebaseDataService extends GetxService {
   }
 
   Future<void> getNotifications() async {
-    if(firebaseService.firebaseUser.value == null) return;
-
     final docPath =
-        '${FCFirestoreCollections.notificationsCollection}/${firebaseService.firebaseUser.value?.uid}';
+        '${FCFirestoreCollections.notificationsCollection}/${firebaseService.firebaseUser.value!.uid}';
 
     final snapshot = await firebaseService.getDocument(docPath: docPath);
 
-    if(snapshot == null) return;
+    if (snapshot == null) return;
 
     final data = snapshot.data()!['notification'] as List<dynamic>;
 

@@ -309,9 +309,13 @@ class FirebaseService extends GetxService {
 
   /// FUNCTION: Create or update document by id
   Future<bool> createDoc(
-      {required String collection, required String doc, required Map<String, dynamic> data}) async {
+      {required String collection, String? doc, required Map<String, dynamic> data}) async {
     try {
-      await firebaseFirestore.collection(collection).doc(doc).set(data);
+      if (doc != null) {
+        await firebaseFirestore.collection(collection).doc(doc).set(data);
+      } else {
+        await firebaseFirestore.collection(collection).add(data);
+      }
       return true;
     } catch (e) {
       logger.e(e);
@@ -349,6 +353,12 @@ class FirebaseService extends GetxService {
     }
 
     return null;
+  }
+
+  /// FUNCTION: Get reference name
+  String getRefFromUrl(String url) {
+    final ref = firebaseStorage.refFromURL(url);
+    return ref.name;
   }
 
   Future<bool> reauthenticate({required String email, required String password}) async {

@@ -19,7 +19,8 @@ void main() {
   setUpAll(flutter_test.TestWidgetsFlutterBinding.ensureInitialized);
 
   setUp(() {
-    _navigationBarController = CustomBottomNavigationBarController()..imagePicker = _mockImagePicker;
+    _navigationBarController = CustomBottomNavigationBarController()
+      ..imagePicker = _mockImagePicker;
   });
 
   tearDown(() {

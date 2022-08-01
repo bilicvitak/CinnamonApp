@@ -30,7 +30,8 @@ Map<String, dynamic> getData() => {'key': 'value'};
 ], customMocks: [
   MockSpec<QueryDocumentSnapshot>(
       unsupportedMembers: {#data}, fallbackGenerators: {#data: getData}),
-  MockSpec<DocumentSnapshot>(unsupportedMembers: {#data}, fallbackGenerators: {#data: getData})
+  MockSpec<DocumentSnapshot>(
+      unsupportedMembers: {#data}, fallbackGenerators: {#data: getData})
 ])
 void main() {
   late HomeController _homeController;
@@ -248,5 +249,6 @@ void main() {
 
     /// Assert
     expect(_homeController.firebaseNotifications, streamSubscription);
+    verify(stream.listen(any)).called(1);
   });
 }

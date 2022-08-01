@@ -62,6 +62,13 @@ void main() {
       /// Assert
       expect(result, true);
       expect(sharedFirebaseDataService.notifications, MockRepository.homeNotifications);
+
+      verify(_mockFirebaseService.updateDoc(
+              collection: anyNamed('collection'),
+              doc: anyNamed('doc'),
+              field: anyNamed('field'),
+              value: anyNamed('value')))
+          .called(1);
     });
 
     test("Notification isn't removed when user is null", () async {
@@ -74,6 +81,13 @@ void main() {
       /// Assert
       expect(result, false);
       expect(sharedFirebaseDataService.notifications, MockRepository.homeNotifications);
+
+      verifyNever(_mockFirebaseService.updateDoc(
+              collection: anyNamed('collection'),
+              doc: anyNamed('doc'),
+              field: anyNamed('field'),
+              value: anyNamed('value')))
+          .called(0);
     });
   });
 
@@ -106,6 +120,13 @@ void main() {
       /// Assert
       expect(result, true);
       expect(sharedFirebaseDataService.notifications, MockRepository.homeNotifications);
+
+      verify(_mockFirebaseService.updateDoc(
+              collection: anyNamed('collection'),
+              doc: anyNamed('doc'),
+              field: anyNamed('field'),
+              value: anyNamed('value')))
+          .called(1);
     });
 
     test("Notifications aren't refreshed when user is null", () async {
@@ -118,6 +139,13 @@ void main() {
       /// Assert
       expect(result, false);
       expect(sharedFirebaseDataService.notifications, MockRepository.homeNotifications);
+
+      verifyNever(_mockFirebaseService.updateDoc(
+              collection: anyNamed('collection'),
+              doc: anyNamed('doc'),
+              field: anyNamed('field'),
+              value: anyNamed('value')))
+          .called(0);
     });
   });
 }

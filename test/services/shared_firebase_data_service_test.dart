@@ -81,17 +81,6 @@ void main() {
     final DocumentReference<Map<String, dynamic>> firstDoc = MockDocumentReference();
     final DocumentReference<Map<String, dynamic>> secondDoc = MockDocumentReference();
 
-    test("List of notifications shouldn't be updated when user is null", () async {
-      /// -- Stubbing
-      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(null));
-
-      /// Act
-      await sharedFirebaseDataService.getNotifications();
-
-      /// Assert
-      expect(sharedFirebaseDataService.notifications, []);
-    });
-
     test("List of notifications shouldn't be updated when snapshot is null", () async {
       /// -- Stubbing
       when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));

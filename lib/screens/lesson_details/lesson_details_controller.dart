@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
 
@@ -23,6 +24,11 @@ class LessonDetailsController extends GetxController {
 
   final _isSeatReserved = false.obs;
   final _reservedSeat = Seat.blank().obs;
+
+  late DocumentReference<Map<String, dynamic>> userRef;
+  late DocumentReference<Map<String, dynamic>> lectureRef;
+  late CollectionReference<Map<String, dynamic>> ratingsCollection;
+  late QuerySnapshot<Map<String, dynamic>> firebaseRating;
 
   /// ------------------------
   /// GETTERS
@@ -113,55 +119,58 @@ class LessonDetailsController extends GetxController {
       lessonStart: lesson.codeLabStart,
       lessonEnd: lesson.codeLabEnd);
 
-  /// FUNCTION: Get user rating
-  Future<void> getLessonRating() async {
-    final userRef = firebaseService.getDocumentReference(
+  /// FUNCTION: Get rating snapshot by user id and lecture id
+  Future<void> getRatingSnapshot() async {
+    userRef = firebaseService.getDocumentReference(
         collection: FCFirestoreCollections.usersCollection,
         doc: firebaseService.firebaseUser.value!.uid);
 
-    final lectureRef = firebaseService.getDocumentReference(
+    lectureRef = firebaseService.getDocumentReference(
         collection: FCFirestoreCollections.lessonsCollection, doc: 'Lesson${lesson.lessonNumber}');
 
-    final ratingsCollection = firebaseService.getCollectionReference(
+    ratingsCollection = firebaseService.getCollectionReference(
         collection: FCFirestoreCollections.lessonRatingsCollection);
 
-    final snapshot = await ratingsCollection
+    firebaseRating = await ratingsCollection
         .where('lectureId', isEqualTo: lectureRef)
         .where('userId', isEqualTo: userRef)
         .get();
+  }
 
-    if (snapshot.docs.isNotEmpty) {
-      rating = await snapshot.docs.single.data()['rating'];
+  /// FUNCTION: Get user rating
+  Future<void> getLessonRating() async {
+    await getRatingSnapshot();
+
+    if (firebaseRating.docs.isNotEmpty) {
+      rating = await firebaseRating.docs.single.data()['rating'];
     }
   }
 
   /// FUNCTION: Set lesson rating in Firebase
-  Future<void> rateLesson() async {
-    final userRef = firebaseService.getDocumentReference(
-        collection: FCFirestoreCollections.usersCollection,
-        doc: firebaseService.firebaseUser.value!.uid);
+  Future<bool> rateLesson() async {
+    var result = false;
 
-    final lectureRef = firebaseService.getDocumentReference(
-        collection: FCFirestoreCollections.lessonsCollection, doc: 'Lesson${lesson.lessonNumber}');
+    await getRatingSnapshot();
 
-    final ratingsCollection = firebaseService.getCollectionReference(
-        collection: FCFirestoreCollections.lessonRatingsCollection);
+    if (firebaseRating.docs.isEmpty) {
+      final data = {
+        'lectureId': lectureRef,
+        'rating': rating,
+        'userId': userRef,
+      };
 
-    final snapshot = await ratingsCollection
-        .where('lectureId', isEqualTo: lectureRef)
-        .where('userId', isEqualTo: userRef)
-        .get();
-
-    if (snapshot.docs.isEmpty) {
-      await ratingsCollection.add({'lectureId': lectureRef, 'rating': rating, 'userId': userRef});
+      result = await firebaseService.createDoc(
+          collection: FCFirestoreCollections.lessonRatingsCollection, data: data);
     } else {
-      final ratingId = snapshot.docs.first.id;
-      final result = await firebaseService.updateDoc(
+      final ratingId = firebaseRating.docs.first.id;
+      result = await firebaseService.updateDoc(
           collection: FCFirestoreCollections.lessonRatingsCollection,
           doc: ratingId,
           field: 'rating',
           value: rating);
     }
+
+    return result;
   }
 
   /// FUNCTION: Get user's seat for selected lesson
@@ -201,11 +210,7 @@ class LessonDetailsController extends GetxController {
   }
 
   /// FUNCTION: Get file name from storage
-  /// TODO Add try-catch block
-  String getFileName(String url) {
-    final ref = firebaseService.firebaseStorage.refFromURL(url);
-    return ref.name;
-  }
+  String getFileName(String url) => firebaseService.getRefFromUrl(url);
 
   /// FUNCTION: Save file to device
   Future<void> saveFile({required String url, required String name}) async {

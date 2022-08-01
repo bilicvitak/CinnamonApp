@@ -25,7 +25,8 @@ class NotificationsController extends GetxController {
     if (userId != null) {
       sharedFirebaseDataService.notifications.removeAt(index);
 
-      final updatedNotifications = sharedFirebaseDataService.notifications.map((e) => e.toJson()).toList();
+      final updatedNotifications =
+          sharedFirebaseDataService.notifications.map((e) => e.toJson()).toList();
 
       final result = await firebaseService.updateDoc(
           collection: FCFirestoreCollections.notificationsCollection,

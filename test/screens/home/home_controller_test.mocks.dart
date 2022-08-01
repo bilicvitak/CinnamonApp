@@ -366,6 +366,10 @@ class MockFirebaseService extends _i1.Mock implements _i11.FirebaseService {
       (super.noSuchMethod(Invocation.method(#saveFile, [url, name]),
           returnValue: Future<String?>.value()) as _i8.Future<String?>);
   @override
+  String getRefFromUrl(String? url) =>
+      (super.noSuchMethod(Invocation.method(#getRefFromUrl, [url]),
+          returnValue: '') as String);
+  @override
   _i8.Future<bool> reauthenticate({String? email, String? password}) =>
       (super.noSuchMethod(
           Invocation.method(

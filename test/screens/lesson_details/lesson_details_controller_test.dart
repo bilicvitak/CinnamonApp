@@ -6,11 +6,10 @@ import 'package:cinnamon_flutter_template_1/services/firebase_service.dart';
 import 'package:cinnamon_flutter_template_1/services/shared_firebase_data_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:open_file/open_file.dart';
-import 'package:test/test.dart';
 
 import '../../constants/mock_repository.dart';
 import 'lesson_details_controller_test.mocks.dart';
@@ -56,9 +55,6 @@ void main() {
     final queryDocumentSnapshot = MockQueryDocumentSnapshot<Map<String, dynamic>>();
 
     /// -- Stubbing
-    when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
-    when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
-
     when(_mockFirebaseService.getDocumentReference(
             collection: FCFirestoreCollections.usersCollection, doc: anyNamed('doc')))
         .thenReturn(userRef);
@@ -84,6 +80,10 @@ void main() {
     )).thenAnswer((_) async => true);
 
     test('Get rating snapshot by user id and lecture id', () async {
+      /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+      when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
+
       /// Act
       await _lessonDetailsController.getRatingSnapshot();
 
@@ -96,6 +96,9 @@ void main() {
 
     test('Get lesson rating - Lesson rating should be 4', () async {
       /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+      when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
+
       when(querySnapshot.docs).thenReturn([queryDocumentSnapshot]);
       when(queryDocumentSnapshot.data()).thenReturn({
         'lectureId': 'lectures/Lesson1',
@@ -112,6 +115,9 @@ void main() {
 
     test('Get lesson rating - Lesson rating should be 0', () async {
       /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+      when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
+
       when(querySnapshot.docs).thenReturn([]);
 
       /// Act
@@ -124,6 +130,8 @@ void main() {
     test('Rate lesson - Create new rating - Result should be true', () async {
       /// Arrange
       /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+      when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
       when(querySnapshot.docs).thenReturn([]);
 
       /// Act
@@ -140,8 +148,11 @@ void main() {
     test('Rate lesson - Update rating - Result should be true', () async {
       /// Arrange
       /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
+      when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
+
       when(querySnapshot.docs).thenReturn([queryDocumentSnapshot]);
-      when(queryDocumentSnapshot.id).thenReturn('expected');
+      when(queryDocumentSnapshot.id).thenReturn('1');
 
       /// Act
       final result = await _lessonDetailsController.rateLesson();
@@ -193,10 +204,9 @@ void main() {
     when(seat.path).thenReturn('seats/6hzAdnZPnUplxyvBuXgg');
     when(user.path).thenReturn('users/XON8xfws6bVg3FnLs2wEGl3mMPv1');
 
-    when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
-
     test("Seat reservation doesn't exist in database", () async {
       /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
       when(mockUser.uid).thenReturn('1234');
 
       /// Act
@@ -209,6 +219,7 @@ void main() {
 
     test('Seat reservation exists in database', () async {
       /// -- Stubbing
+      when(_mockFirebaseService.firebaseUser).thenReturn(Rx<User?>(mockUser));
       when(mockUser.uid).thenReturn('XON8xfws6bVg3FnLs2wEGl3mMPv1');
 
       /// -- Mock seat

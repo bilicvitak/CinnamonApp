@@ -121,7 +121,7 @@ class RegistrationController extends GetxController {
     final settings = await firebaseService.firebaseMessaging.requestPermission();
     logger.i(settings.authorizationStatus);
 
-    goals = await _getGoals();
+    goals = await getGoals();
   }
 
   /// ------------------------
@@ -129,9 +129,7 @@ class RegistrationController extends GetxController {
   /// ------------------------
 
   /// reg. code screen -> reg. profile picture screen
-  void goToProfile() {
-    Get.toNamed(RegistrationScreenProfilePicture.routeName);
-  }
+  void goToProfile() => Get.toNamed(RegistrationScreenProfilePicture.routeName);
 
   /// reg. profile picture screen -> reg. goals screen
   void goToGoals() {
@@ -148,9 +146,7 @@ class RegistrationController extends GetxController {
   }
 
   /// reg. notifications screen -> reg. finish screen
-  void goToFinish() {
-    Get.toNamed(RegistrationScreenFinish.routeName);
-  }
+  void goToFinish() => Get.toNamed(RegistrationScreenFinish.routeName);
 
   /// reg. finish screen -> login/main screen
   void start() {
@@ -293,7 +289,7 @@ class RegistrationController extends GetxController {
   }
 
   /// FUNCTION: Get all goals from firebase
-  Future<List<Goal>> _getGoals() async {
+  Future<List<Goal>> getGoals() async {
     final firebaseGoals =
         await firebaseService.getDocuments(collectionPath: FCFirestoreCollections.goalsCollection);
 

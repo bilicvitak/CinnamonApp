@@ -85,8 +85,8 @@ class ProfileController extends GetxController {
   /// ------------------------
 
   Future<bool> init() async {
-    await _getCurrentUser();
-    await _getGoals();
+    await getCurrentUser();
+    await getGoals();
 
     name = user.name ?? '';
     email = user.email;
@@ -105,21 +105,14 @@ class ProfileController extends GetxController {
   /// METHODS
   /// ------------------------
 
-  void goToTerms() {
-    Get.toNamed(ProfileScreenTerms.routeName);
-  }
+  void goToTerms() => Get.toNamed(ProfileScreenTerms.routeName);
 
-  void goToEditGoals() {
-    Get.toNamed(ProfileScreenGoals.routeName);
-  }
+  void goToEditGoals() => Get.toNamed(ProfileScreenGoals.routeName);
 
-  void goToEditProfile() {
-    Get.toNamed(ProfileScreenEdit.routeName);
-  }
+  void goToEditProfile() => Get.toNamed(ProfileScreenEdit.routeName);
 
   /// FUNCTION: Get logged user
-
-  Future<void> _getCurrentUser() async {
+  Future<void> getCurrentUser() async {
     if (firebaseService.firebaseUser.value?.uid != null) {
       final userPath =
           '${FCFirestoreCollections.usersCollection}/${firebaseService.firebaseUser.value?.uid}';
@@ -130,16 +123,15 @@ class ProfileController extends GetxController {
   }
 
   /// FUNCTION: Log out
-
   Future<void> logOut() async {
     await firebaseService.logOut();
     await Get.offAllNamed(OnboardingScreen.routeName);
   }
 
   /// FUNCTION: Get goal name by id
-
   String getGoalName(String path) => goals.where((goal) => path.contains(goal.id)).single.name;
 
+  /// FUNCTION: Change checkbox selection
   void changeCheckbox(bool value, int index) {
     var checkedCounter = 0;
 
@@ -160,8 +152,7 @@ class ProfileController extends GetxController {
   }
 
   /// FUNCTION: Get all goals from firebase
-
-  Future<void> _getGoals() async {
+  Future<void> getGoals() async {
     final firebaseGoals =
         await firebaseService.getDocuments(collectionPath: FCFirestoreCollections.goalsCollection);
 
@@ -183,7 +174,6 @@ class ProfileController extends GetxController {
   }
 
   /// FUNCTION: Update goals in firebase
-
   Future<void> updateGoals() async {
     final uid = firebaseService.firebaseUser.value?.uid;
 
@@ -195,7 +185,6 @@ class ProfileController extends GetxController {
             ))
         .toList();
 
-    // TODO Use firebaseService method
     if (uid != null) {
       await firebaseService.updateDoc(
         collection: FCFirestoreCollections.usersCollection,
@@ -205,7 +194,7 @@ class ProfileController extends GetxController {
       );
     }
 
-    await _getCurrentUser();
+    await getCurrentUser();
     Get.back();
   }
 
@@ -240,7 +229,7 @@ class ProfileController extends GetxController {
     }
 
     await firebaseService.uploadFile(file: file);
-    await _getCurrentUser();
+    await getCurrentUser();
 
     profilePictureSet = firebaseService.urlSet;
 
@@ -259,7 +248,7 @@ class ProfileController extends GetxController {
       await firebaseService.firebaseUser.value?.updateDisplayName(updatedUser.name);
 
       // TODO Check success
-      await firebaseService.createDoc(
+      final success = await firebaseService.createDoc(
           collection: FCFirestoreCollections.usersCollection,
           doc: updatedUser.id,
           data: updatedUser.toJson());

@@ -81,10 +81,10 @@ class LessonReservationsController extends GetxController {
     isSeatReserved = Get.arguments['isSeatReserved'];
     selectedSeat = Get.arguments['selectedSeat'] ?? Seat.blank();
 
-    await _filterSeats();
-    await _getReservations();
+    await filterSeats();
+    await getReservations();
 
-    await _listenReservationChanges();
+    await listenReservationChanges();
   }
 
   @override
@@ -113,7 +113,7 @@ class LessonReservationsController extends GetxController {
     Get.back();
   }
 
-  Future<void> _filterSeats() async {
+  Future<void> filterSeats() async {
     final firebaseSeats =
         await firebaseService.getDocuments(collectionPath: FCFirestoreCollections.seatsCollection);
 
@@ -125,7 +125,7 @@ class LessonReservationsController extends GetxController {
     seats.sort((a, b) => a.position.compareTo(b.position));
   }
 
-  Future<void> _getReservations() async {
+  Future<void> getReservations() async {
     final lectureId = '${FCFirestoreCollections.lessonsCollection}/Lesson${lesson.lessonNumber}';
     final lectureRef =
         firebaseService.firebaseFirestore.doc(lectureId); // TODO Use firebaseService method
@@ -182,7 +182,7 @@ class LessonReservationsController extends GetxController {
     _reservationsDetails.refresh();
   }
 
-  Future<void> _listenReservationChanges() async {
+  Future<void> listenReservationChanges() async {
     final lectureId = '${FCFirestoreCollections.lessonsCollection}/Lesson${lesson.lessonNumber}';
     final lectureRef = firebaseService.getDocumentReference(doc: lectureId);
 

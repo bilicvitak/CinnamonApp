@@ -9,7 +9,6 @@ import 'package:get_storage/get_storage.dart';
 import 'constants/dependencies.dart';
 import 'global_binding.dart';
 import 'pages.dart';
-import 'screens/home/home_screen.dart';
 import 'screens/splash/splash_screen.dart';
 import 'services/alice_service.dart';
 import 'services/firebase_service.dart';
@@ -92,7 +91,7 @@ class FlutterAcademy extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ScreenUtilInit(
         designSize: const Size(375, 812),
-        builder: (child) => GetMaterialApp(
+        builder: (context, child) => GetMaterialApp(
             title: 'appName'.tr,
             navigatorKey: aliceService.alice.getNavigatorKey(),
             theme: theme,

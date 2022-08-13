@@ -11,11 +11,11 @@ import '../services/storage_service.dart';
 /// ------------------------
 
 final aliceService = AliceService.instance;
-final dioService = DioService.instance;
+var dioService = DioService.instance;
 var firebaseService = FirebaseService.instance;
 final logger = LoggerService.instance;
 var sharedFirebaseDataService = SharedFirebaseDataService.instance;
-final storageService = StorageService.instance;
+var storageService = StorageService.instance;
 
 /// ------------------------
 /// CONTROLLERS

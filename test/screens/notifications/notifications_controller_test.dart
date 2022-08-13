@@ -1,5 +1,4 @@
 import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
-import 'package:cinnamon_flutter_template_1/constants/firestore_collections.dart';
 import 'package:cinnamon_flutter_template_1/screens/notifications/notifications_controller.dart';
 import 'package:cinnamon_flutter_template_1/services/firebase_service.dart';
 import 'package:cinnamon_flutter_template_1/services/shared_firebase_data_service.dart';

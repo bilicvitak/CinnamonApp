@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
@@ -113,9 +112,7 @@ class LoginController extends GetxController {
   /// METHODS
   /// ------------------------
 
-  void goToLogIn() {
-    Get.toNamed(LoginScreen.routeName);
-  }
+  void goToLogIn() => Get.toNamed(LoginScreen.routeName);
 
   /// login screen -> password reset screen
   void goToPasswordReset() {
@@ -125,13 +122,9 @@ class LoginController extends GetxController {
   }
 
   /// email check screen -> new password screen
-  void goToNewPassword() {
-    Get.toNamed(LoginNewPasswordScreen.routeName);
-  }
+  void goToNewPassword() => Get.toNamed(LoginNewPasswordScreen.routeName);
 
-  void goToHome() {
-    Get.offAllNamed(MainScreen.routeNameTransition);
-  }
+  void goToHome() => Get.offAllNamed(MainScreen.routeNameTransition);
 
   /// FUNCTION: Validate login fields
   void validateLoginFields() {
@@ -189,14 +182,14 @@ class LoginController extends GetxController {
   }
 
   /// FUNCTION: Get user by email
-  Future<cinnamon_user.User?> _getUserByEmail() async {
+  Future<cinnamon_user.User?> getUserByEmail() async {
     try {
       final firebaseUsers = await firebaseService
           .getCollectionReference(collection: FCFirestoreCollections.usersCollection)
           .where('email', isEqualTo: email)
           .get();
 
-      if (firebaseUsers != null) {
+      if (firebaseUsers.docs.isNotEmpty) {
         return cinnamon_user.User.fromJson(firebaseUsers.docs.single.data());
       }
     } catch (e) {
@@ -208,7 +201,7 @@ class LoginController extends GetxController {
 
   /// FUNCTION: Send email with code to reset the password
   Future<void> sendEmailPasswordReset() async {
-    user = await _getUserByEmail();
+    user = await getUserByEmail();
 
     if (user == null) {
       return;
@@ -217,15 +210,17 @@ class LoginController extends GetxController {
     final data = baseUrl + user!.id;
     await dioService.getURL(Uri.parse(data).toString());
 
-    await firebaseService.firebaseAuth.signInAnonymously(); // TODO Extract method to firebaseService
-
     final success = await firebaseService.updateDoc(
         collection: FCFirestoreCollections.usersCollection,
         doc: user!.id,
         field: 'codeIsVerified',
         value: false);
 
-    await Get.toNamed(LoginCheckYourEmailScreen.routeName);
+    if (success) {
+      await Get.toNamed(LoginCheckYourEmailScreen.routeName);
+    } else {
+      Get.snackbar('Try again later', 'Please try to reset the password later!');
+    }
   }
 
   /// FUNCTION: Check code validation

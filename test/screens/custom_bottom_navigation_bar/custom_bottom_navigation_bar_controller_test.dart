@@ -30,13 +30,13 @@ void main() {
   test('Function should return formatted date', () {
     final lesson = Lesson(
       lessonName: 'Basics',
-      lessonStart: DateTime.fromMillisecondsSinceEpoch(1655737200000),
-      lessonEnd: DateTime.fromMillisecondsSinceEpoch(1655744400000),
+      lessonStart: DateTime.fromMillisecondsSinceEpoch(1655737200000, isUtc: true),
+      lessonEnd: DateTime.fromMillisecondsSinceEpoch(1655744400000, isUtc: true),
     );
 
     final result = _navigationBarController.writeLessonDate(lesson);
 
-    expect(result, 'June 20th, 17 pm - 19 pm');
+    expect(result, 'June 20th, 15 pm - 17 pm');
   });
 
   group('Image picker returns null', () {

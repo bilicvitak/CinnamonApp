@@ -50,8 +50,7 @@ class MockRepository {
   static Future<XFile> get imageFile async {
     final data = await rootBundle.load('assets/images/profile.jpg');
     final bytes = data.buffer.asUint8List();
-    final tempDir = await getTemporaryDirectory();
-    final xfile = XFile('${tempDir.path}/tmp.tmp', bytes: bytes);
+    final xfile = XFile(r'tempDir\tmp.tmp', bytes: bytes);
 
     return xfile;
   }

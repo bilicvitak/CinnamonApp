@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'lesson_details.dart';
@@ -11,54 +12,11 @@ part of 'lesson_details.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 LessonDetails _$LessonDetailsFromJson(Map<String, dynamic> json) {
   return _LessonDetails.fromJson(json);
 }
-
-/// @nodoc
-class _$LessonDetailsTearOff {
-  const _$LessonDetailsTearOff();
-
-  _LessonDetails call(
-      {required String lessonName,
-      required String description,
-      required String location,
-      required String lectureName,
-      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
-          required DateTime lectureStart,
-      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
-          required DateTime lectureEnd,
-      required String codeLabName,
-      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
-          required DateTime codeLabStart,
-      @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
-          required DateTime codeLabEnd,
-      required List<String> fileUrl,
-      required int lessonNumber}) {
-    return _LessonDetails(
-      lessonName: lessonName,
-      description: description,
-      location: location,
-      lectureName: lectureName,
-      lectureStart: lectureStart,
-      lectureEnd: lectureEnd,
-      codeLabName: codeLabName,
-      codeLabStart: codeLabStart,
-      codeLabEnd: codeLabEnd,
-      fileUrl: fileUrl,
-      lessonNumber: lessonNumber,
-    );
-  }
-
-  LessonDetails fromJson(Map<String, Object?> json) {
-    return LessonDetails.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $LessonDetails = _$LessonDetailsTearOff();
 
 /// @nodoc
 mixin _$LessonDetails {
@@ -180,11 +138,11 @@ class _$LessonDetailsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$LessonDetailsCopyWith<$Res>
+abstract class _$$_LessonDetailsCopyWith<$Res>
     implements $LessonDetailsCopyWith<$Res> {
-  factory _$LessonDetailsCopyWith(
-          _LessonDetails value, $Res Function(_LessonDetails) then) =
-      __$LessonDetailsCopyWithImpl<$Res>;
+  factory _$$_LessonDetailsCopyWith(
+          _$_LessonDetails value, $Res Function(_$_LessonDetails) then) =
+      __$$_LessonDetailsCopyWithImpl<$Res>;
   @override
   $Res call(
       {String lessonName,
@@ -205,15 +163,15 @@ abstract class _$LessonDetailsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$LessonDetailsCopyWithImpl<$Res>
+class __$$_LessonDetailsCopyWithImpl<$Res>
     extends _$LessonDetailsCopyWithImpl<$Res>
-    implements _$LessonDetailsCopyWith<$Res> {
-  __$LessonDetailsCopyWithImpl(
-      _LessonDetails _value, $Res Function(_LessonDetails) _then)
-      : super(_value, (v) => _then(v as _LessonDetails));
+    implements _$$_LessonDetailsCopyWith<$Res> {
+  __$$_LessonDetailsCopyWithImpl(
+      _$_LessonDetails _value, $Res Function(_$_LessonDetails) _then)
+      : super(_value, (v) => _then(v as _$_LessonDetails));
 
   @override
-  _LessonDetails get _value => super._value as _LessonDetails;
+  _$_LessonDetails get _value => super._value as _$_LessonDetails;
 
   @override
   $Res call({
@@ -229,7 +187,7 @@ class __$LessonDetailsCopyWithImpl<$Res>
     Object? fileUrl = freezed,
     Object? lessonNumber = freezed,
   }) {
-    return _then(_LessonDetails(
+    return _then(_$_LessonDetails(
       lessonName: lessonName == freezed
           ? _value.lessonName
           : lessonName // ignore: cast_nullable_to_non_nullable
@@ -267,7 +225,7 @@ class __$LessonDetailsCopyWithImpl<$Res>
           : codeLabEnd // ignore: cast_nullable_to_non_nullable
               as DateTime,
       fileUrl: fileUrl == freezed
-          ? _value.fileUrl
+          ? _value._fileUrl
           : fileUrl // ignore: cast_nullable_to_non_nullable
               as List<String>,
       lessonNumber: lessonNumber == freezed
@@ -295,9 +253,10 @@ class _$_LessonDetails extends _LessonDetails {
           required this.codeLabStart,
       @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
           required this.codeLabEnd,
-      required this.fileUrl,
+      required final List<String> fileUrl,
       required this.lessonNumber})
-      : super._();
+      : _fileUrl = fileUrl,
+        super._();
 
   factory _$_LessonDetails.fromJson(Map<String, dynamic> json) =>
       _$$_LessonDetailsFromJson(json);
@@ -324,39 +283,46 @@ class _$_LessonDetails extends _LessonDetails {
   @override
   @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
   final DateTime codeLabEnd;
+  final List<String> _fileUrl;
   @override
-  final List<String> fileUrl;
+  List<String> get fileUrl {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_fileUrl);
+  }
+
   @override
   final int lessonNumber;
 
   @JsonKey(ignore: true)
   @override
-  _$LessonDetailsCopyWith<_LessonDetails> get copyWith =>
-      __$LessonDetailsCopyWithImpl<_LessonDetails>(this, _$identity);
+  _$$_LessonDetailsCopyWith<_$_LessonDetails> get copyWith =>
+      __$$_LessonDetailsCopyWithImpl<_$_LessonDetails>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LessonDetailsToJson(this);
+    return _$$_LessonDetailsToJson(
+      this,
+    );
   }
 }
 
 abstract class _LessonDetails extends LessonDetails {
   factory _LessonDetails(
-      {required String lessonName,
-      required String description,
-      required String location,
-      required String lectureName,
+      {required final String lessonName,
+      required final String description,
+      required final String location,
+      required final String lectureName,
       @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
-          required DateTime lectureStart,
+          required final DateTime lectureStart,
       @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
-          required DateTime lectureEnd,
-      required String codeLabName,
+          required final DateTime lectureEnd,
+      required final String codeLabName,
       @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
-          required DateTime codeLabStart,
+          required final DateTime codeLabStart,
       @JsonKey(fromJson: timestampToDate, toJson: dateToTimestamp)
-          required DateTime codeLabEnd,
-      required List<String> fileUrl,
-      required int lessonNumber}) = _$_LessonDetails;
+          required final DateTime codeLabEnd,
+      required final List<String> fileUrl,
+      required final int lessonNumber}) = _$_LessonDetails;
   _LessonDetails._() : super._();
 
   factory _LessonDetails.fromJson(Map<String, dynamic> json) =
@@ -390,6 +356,6 @@ abstract class _LessonDetails extends LessonDetails {
   int get lessonNumber;
   @override
   @JsonKey(ignore: true)
-  _$LessonDetailsCopyWith<_LessonDetails> get copyWith =>
+  _$$_LessonDetailsCopyWith<_$_LessonDetails> get copyWith =>
       throw _privateConstructorUsedError;
 }

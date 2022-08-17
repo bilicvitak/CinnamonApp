@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'lesson.dart';
@@ -11,37 +12,11 @@ part of 'lesson.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Lesson _$LessonFromJson(Map<String, dynamic> json) {
   return _Lesson.fromJson(json);
 }
-
-/// @nodoc
-class _$LessonTearOff {
-  const _$LessonTearOff();
-
-  _Lesson call(
-      {required String lessonName,
-      required DateTime lessonStart,
-      required DateTime lessonEnd,
-      @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
-          LessonDetails? lessonDetails}) {
-    return _Lesson(
-      lessonName: lessonName,
-      lessonStart: lessonStart,
-      lessonEnd: lessonEnd,
-      lessonDetails: lessonDetails,
-    );
-  }
-
-  Lesson fromJson(Map<String, Object?> json) {
-    return Lesson.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Lesson = _$LessonTearOff();
 
 /// @nodoc
 mixin _$Lesson {
@@ -118,9 +93,9 @@ class _$LessonCopyWithImpl<$Res> implements $LessonCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$LessonCopyWith<$Res> implements $LessonCopyWith<$Res> {
-  factory _$LessonCopyWith(_Lesson value, $Res Function(_Lesson) then) =
-      __$LessonCopyWithImpl<$Res>;
+abstract class _$$_LessonCopyWith<$Res> implements $LessonCopyWith<$Res> {
+  factory _$$_LessonCopyWith(_$_Lesson value, $Res Function(_$_Lesson) then) =
+      __$$_LessonCopyWithImpl<$Res>;
   @override
   $Res call(
       {String lessonName,
@@ -134,13 +109,13 @@ abstract class _$LessonCopyWith<$Res> implements $LessonCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$LessonCopyWithImpl<$Res> extends _$LessonCopyWithImpl<$Res>
-    implements _$LessonCopyWith<$Res> {
-  __$LessonCopyWithImpl(_Lesson _value, $Res Function(_Lesson) _then)
-      : super(_value, (v) => _then(v as _Lesson));
+class __$$_LessonCopyWithImpl<$Res> extends _$LessonCopyWithImpl<$Res>
+    implements _$$_LessonCopyWith<$Res> {
+  __$$_LessonCopyWithImpl(_$_Lesson _value, $Res Function(_$_Lesson) _then)
+      : super(_value, (v) => _then(v as _$_Lesson));
 
   @override
-  _Lesson get _value => super._value as _Lesson;
+  _$_Lesson get _value => super._value as _$_Lesson;
 
   @override
   $Res call({
@@ -149,7 +124,7 @@ class __$LessonCopyWithImpl<$Res> extends _$LessonCopyWithImpl<$Res>
     Object? lessonEnd = freezed,
     Object? lessonDetails = freezed,
   }) {
-    return _then(_Lesson(
+    return _then(_$_Lesson(
       lessonName: lessonName == freezed
           ? _value.lessonName
           : lessonName // ignore: cast_nullable_to_non_nullable
@@ -196,22 +171,24 @@ class _$_Lesson extends _Lesson {
 
   @JsonKey(ignore: true)
   @override
-  _$LessonCopyWith<_Lesson> get copyWith =>
-      __$LessonCopyWithImpl<_Lesson>(this, _$identity);
+  _$$_LessonCopyWith<_$_Lesson> get copyWith =>
+      __$$_LessonCopyWithImpl<_$_Lesson>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LessonToJson(this);
+    return _$$_LessonToJson(
+      this,
+    );
   }
 }
 
 abstract class _Lesson extends Lesson {
   factory _Lesson(
-      {required String lessonName,
-      required DateTime lessonStart,
-      required DateTime lessonEnd,
+      {required final String lessonName,
+      required final DateTime lessonStart,
+      required final DateTime lessonEnd,
       @JsonKey(toJson: lessonDetailsToJson, fromJson: lessonDetailsFromJson)
-          LessonDetails? lessonDetails}) = _$_Lesson;
+          final LessonDetails? lessonDetails}) = _$_Lesson;
   _Lesson._() : super._();
 
   factory _Lesson.fromJson(Map<String, dynamic> json) = _$_Lesson.fromJson;
@@ -227,5 +204,6 @@ abstract class _Lesson extends Lesson {
   LessonDetails? get lessonDetails;
   @override
   @JsonKey(ignore: true)
-  _$LessonCopyWith<_Lesson> get copyWith => throw _privateConstructorUsedError;
+  _$$_LessonCopyWith<_$_Lesson> get copyWith =>
+      throw _privateConstructorUsedError;
 }

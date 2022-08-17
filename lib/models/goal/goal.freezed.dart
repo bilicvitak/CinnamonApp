@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'goal.dart';
@@ -11,32 +12,11 @@ part of 'goal.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Goal _$GoalFromJson(Map<String, dynamic> json) {
   return _Goal.fromJson(json);
 }
-
-/// @nodoc
-class _$GoalTearOff {
-  const _$GoalTearOff();
-
-  _Goal call(
-      {required String id, required String name, required bool isChecked}) {
-    return _Goal(
-      id: id,
-      name: name,
-      isChecked: isChecked,
-    );
-  }
-
-  Goal fromJson(Map<String, Object?> json) {
-    return Goal.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Goal = _$GoalTearOff();
 
 /// @nodoc
 mixin _$Goal {
@@ -88,21 +68,21 @@ class _$GoalCopyWithImpl<$Res> implements $GoalCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$GoalCopyWith<$Res> implements $GoalCopyWith<$Res> {
-  factory _$GoalCopyWith(_Goal value, $Res Function(_Goal) then) =
-      __$GoalCopyWithImpl<$Res>;
+abstract class _$$_GoalCopyWith<$Res> implements $GoalCopyWith<$Res> {
+  factory _$$_GoalCopyWith(_$_Goal value, $Res Function(_$_Goal) then) =
+      __$$_GoalCopyWithImpl<$Res>;
   @override
   $Res call({String id, String name, bool isChecked});
 }
 
 /// @nodoc
-class __$GoalCopyWithImpl<$Res> extends _$GoalCopyWithImpl<$Res>
-    implements _$GoalCopyWith<$Res> {
-  __$GoalCopyWithImpl(_Goal _value, $Res Function(_Goal) _then)
-      : super(_value, (v) => _then(v as _Goal));
+class __$$_GoalCopyWithImpl<$Res> extends _$GoalCopyWithImpl<$Res>
+    implements _$$_GoalCopyWith<$Res> {
+  __$$_GoalCopyWithImpl(_$_Goal _value, $Res Function(_$_Goal) _then)
+      : super(_value, (v) => _then(v as _$_Goal));
 
   @override
-  _Goal get _value => super._value as _Goal;
+  _$_Goal get _value => super._value as _$_Goal;
 
   @override
   $Res call({
@@ -110,7 +90,7 @@ class __$GoalCopyWithImpl<$Res> extends _$GoalCopyWithImpl<$Res>
     Object? name = freezed,
     Object? isChecked = freezed,
   }) {
-    return _then(_Goal(
+    return _then(_$_Goal(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -144,20 +124,22 @@ class _$_Goal extends _Goal {
 
   @JsonKey(ignore: true)
   @override
-  _$GoalCopyWith<_Goal> get copyWith =>
-      __$GoalCopyWithImpl<_Goal>(this, _$identity);
+  _$$_GoalCopyWith<_$_Goal> get copyWith =>
+      __$$_GoalCopyWithImpl<_$_Goal>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GoalToJson(this);
+    return _$$_GoalToJson(
+      this,
+    );
   }
 }
 
 abstract class _Goal extends Goal {
   factory _Goal(
-      {required String id,
-      required String name,
-      required bool isChecked}) = _$_Goal;
+      {required final String id,
+      required final String name,
+      required final bool isChecked}) = _$_Goal;
   _Goal._() : super._();
 
   factory _Goal.fromJson(Map<String, dynamic> json) = _$_Goal.fromJson;
@@ -170,5 +152,5 @@ abstract class _Goal extends Goal {
   bool get isChecked;
   @override
   @JsonKey(ignore: true)
-  _$GoalCopyWith<_Goal> get copyWith => throw _privateConstructorUsedError;
+  _$$_GoalCopyWith<_$_Goal> get copyWith => throw _privateConstructorUsedError;
 }

@@ -10,17 +10,18 @@ class YellowButton extends StatelessWidget {
   final Function() onPressed;
 
   const YellowButton({
+    Key? key,
     required this.text,
     required this.onPressed,
     this.enabled = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         height: 55.h,
         child: TextButton(
-          onPressed: onPressed,
+          onPressed: enabled ? onPressed : null,
           style: TextButton.styleFrom(
             primary: enabled ? FCColors.gray600 : FCColors.gray600.withOpacity(0.4),
             backgroundColor: enabled ? FCColors.yellow : FCColors.yellow.withOpacity(0.4),

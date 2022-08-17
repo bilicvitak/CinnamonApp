@@ -141,6 +141,8 @@ class LoginController extends GetxController {
       return;
     }
 
+    errorTextEmail = false;
+    errorTextPassword = false;
     validated = true;
   }
 

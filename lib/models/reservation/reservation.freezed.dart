@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'reservation.dart';
@@ -11,34 +12,11 @@ part of 'reservation.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Reservation _$ReservationFromJson(Map<String, dynamic> json) {
   return _Reservation.fromJson(json);
 }
-
-/// @nodoc
-class _$ReservationTearOff {
-  const _$ReservationTearOff();
-
-  _Reservation call(
-      {@JsonKey(fromJson: referenceToString)
-          required String lectureId,
-      @JsonKey(fromJson: referencesToString)
-          required List<Map<String, String>> students}) {
-    return _Reservation(
-      lectureId: lectureId,
-      students: students,
-    );
-  }
-
-  Reservation fromJson(Map<String, Object?> json) {
-    return Reservation.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Reservation = _$ReservationTearOff();
 
 /// @nodoc
 mixin _$Reservation {
@@ -92,11 +70,11 @@ class _$ReservationCopyWithImpl<$Res> implements $ReservationCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ReservationCopyWith<$Res>
+abstract class _$$_ReservationCopyWith<$Res>
     implements $ReservationCopyWith<$Res> {
-  factory _$ReservationCopyWith(
-          _Reservation value, $Res Function(_Reservation) then) =
-      __$ReservationCopyWithImpl<$Res>;
+  factory _$$_ReservationCopyWith(
+          _$_Reservation value, $Res Function(_$_Reservation) then) =
+      __$$_ReservationCopyWithImpl<$Res>;
   @override
   $Res call(
       {@JsonKey(fromJson: referenceToString)
@@ -106,27 +84,27 @@ abstract class _$ReservationCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ReservationCopyWithImpl<$Res> extends _$ReservationCopyWithImpl<$Res>
-    implements _$ReservationCopyWith<$Res> {
-  __$ReservationCopyWithImpl(
-      _Reservation _value, $Res Function(_Reservation) _then)
-      : super(_value, (v) => _then(v as _Reservation));
+class __$$_ReservationCopyWithImpl<$Res> extends _$ReservationCopyWithImpl<$Res>
+    implements _$$_ReservationCopyWith<$Res> {
+  __$$_ReservationCopyWithImpl(
+      _$_Reservation _value, $Res Function(_$_Reservation) _then)
+      : super(_value, (v) => _then(v as _$_Reservation));
 
   @override
-  _Reservation get _value => super._value as _Reservation;
+  _$_Reservation get _value => super._value as _$_Reservation;
 
   @override
   $Res call({
     Object? lectureId = freezed,
     Object? students = freezed,
   }) {
-    return _then(_Reservation(
+    return _then(_$_Reservation(
       lectureId: lectureId == freezed
           ? _value.lectureId
           : lectureId // ignore: cast_nullable_to_non_nullable
               as String,
       students: students == freezed
-          ? _value.students
+          ? _value._students
           : students // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
     ));
@@ -137,9 +115,12 @@ class __$ReservationCopyWithImpl<$Res> extends _$ReservationCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Reservation extends _Reservation {
   _$_Reservation(
-      {@JsonKey(fromJson: referenceToString) required this.lectureId,
-      @JsonKey(fromJson: referencesToString) required this.students})
-      : super._();
+      {@JsonKey(fromJson: referenceToString)
+          required this.lectureId,
+      @JsonKey(fromJson: referencesToString)
+          required final List<Map<String, String>> students})
+      : _students = students,
+        super._();
 
   factory _$_Reservation.fromJson(Map<String, dynamic> json) =>
       _$$_ReservationFromJson(json);
@@ -147,27 +128,33 @@ class _$_Reservation extends _Reservation {
   @override
   @JsonKey(fromJson: referenceToString)
   final String lectureId;
+  final List<Map<String, String>> _students;
   @override
   @JsonKey(fromJson: referencesToString)
-  final List<Map<String, String>> students;
+  List<Map<String, String>> get students {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_students);
+  }
 
   @JsonKey(ignore: true)
   @override
-  _$ReservationCopyWith<_Reservation> get copyWith =>
-      __$ReservationCopyWithImpl<_Reservation>(this, _$identity);
+  _$$_ReservationCopyWith<_$_Reservation> get copyWith =>
+      __$$_ReservationCopyWithImpl<_$_Reservation>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ReservationToJson(this);
+    return _$$_ReservationToJson(
+      this,
+    );
   }
 }
 
 abstract class _Reservation extends Reservation {
   factory _Reservation(
       {@JsonKey(fromJson: referenceToString)
-          required String lectureId,
+          required final String lectureId,
       @JsonKey(fromJson: referencesToString)
-          required List<Map<String, String>> students}) = _$_Reservation;
+          required final List<Map<String, String>> students}) = _$_Reservation;
   _Reservation._() : super._();
 
   factory _Reservation.fromJson(Map<String, dynamic> json) =
@@ -181,6 +168,6 @@ abstract class _Reservation extends Reservation {
   List<Map<String, String>> get students;
   @override
   @JsonKey(ignore: true)
-  _$ReservationCopyWith<_Reservation> get copyWith =>
+  _$$_ReservationCopyWith<_$_Reservation> get copyWith =>
       throw _privateConstructorUsedError;
 }

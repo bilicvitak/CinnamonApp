@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/icons.dart';
+import '../../constants/keys.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';
 import '../../widgets/yellow_back_button.dart';
@@ -15,7 +16,11 @@ import 'login_screens/login_screen_password_reset.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login_screen';
-  final loginController = Get.find<LoginController>();
+  late final LoginController loginController;
+
+  LoginScreen({LoginController? controller}) {
+    loginController = controller ?? Get.find<LoginController>();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -40,6 +45,7 @@ class LoginScreen extends StatelessWidget {
                   /// E-mail TextFormField
                   Expanded(
                     child: TextFormField(
+                      key: FAKeys.loginEmail,
                       onChanged: (value) => loginController
                         ..email = value
                         ..validateLoginFields(),
@@ -62,6 +68,7 @@ class LoginScreen extends StatelessWidget {
                   /// Password TextFormField
                   Expanded(
                     child: TextFormField(
+                      key: FAKeys.loginPassword,
                       onChanged: (value) => loginController
                         ..password = value
                         ..validateLoginFields(),
@@ -85,6 +92,7 @@ class LoginScreen extends StatelessWidget {
                         errorMaxLines: 2,
                         floatingLabelStyle: TextStyle(height: 0.5.h),
                         suffixIcon: GestureDetector(
+                          key: FAKeys.loginShowPassword,
                           onTap: loginController.showPassword,
                           child: Padding(
                             padding: EdgeInsets.all(15.r),
@@ -97,11 +105,12 @@ class LoginScreen extends StatelessWidget {
 
                   /// Forgot password text/link
                   GestureDetector(
-                    onTap: () => Get.toNamed(LoginPasswordResetScreen.routeName),
+                    onTap: loginController.goToPasswordReset,
                     child: Align(
                       alignment: Alignment.topRight,
                       child: Text(
                         FAStrings.loginForgotPassword,
+                        key: FAKeys.loginForgotPassword,
                         style: FATextStyles.linkDescription,
                       ),
                     ),
@@ -115,6 +124,7 @@ class LoginScreen extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: YellowButton(
+                          key: FAKeys.loginButton,
                           text: FAStrings.buttonLogIn,
                           enabled: loginController.validated,
                           onPressed: loginController.signIn,

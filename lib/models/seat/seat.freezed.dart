@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'seat.dart';
@@ -11,32 +12,11 @@ part of 'seat.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Seat _$SeatFromJson(Map<String, dynamic> json) {
   return _Seat.fromJson(json);
 }
-
-/// @nodoc
-class _$SeatTearOff {
-  const _$SeatTearOff();
-
-  _Seat call(
-      {required String id, required String name, required int position}) {
-    return _Seat(
-      id: id,
-      name: name,
-      position: position,
-    );
-  }
-
-  Seat fromJson(Map<String, Object?> json) {
-    return Seat.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Seat = _$SeatTearOff();
 
 /// @nodoc
 mixin _$Seat {
@@ -88,21 +68,21 @@ class _$SeatCopyWithImpl<$Res> implements $SeatCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$SeatCopyWith<$Res> implements $SeatCopyWith<$Res> {
-  factory _$SeatCopyWith(_Seat value, $Res Function(_Seat) then) =
-      __$SeatCopyWithImpl<$Res>;
+abstract class _$$_SeatCopyWith<$Res> implements $SeatCopyWith<$Res> {
+  factory _$$_SeatCopyWith(_$_Seat value, $Res Function(_$_Seat) then) =
+      __$$_SeatCopyWithImpl<$Res>;
   @override
   $Res call({String id, String name, int position});
 }
 
 /// @nodoc
-class __$SeatCopyWithImpl<$Res> extends _$SeatCopyWithImpl<$Res>
-    implements _$SeatCopyWith<$Res> {
-  __$SeatCopyWithImpl(_Seat _value, $Res Function(_Seat) _then)
-      : super(_value, (v) => _then(v as _Seat));
+class __$$_SeatCopyWithImpl<$Res> extends _$SeatCopyWithImpl<$Res>
+    implements _$$_SeatCopyWith<$Res> {
+  __$$_SeatCopyWithImpl(_$_Seat _value, $Res Function(_$_Seat) _then)
+      : super(_value, (v) => _then(v as _$_Seat));
 
   @override
-  _Seat get _value => super._value as _Seat;
+  _$_Seat get _value => super._value as _$_Seat;
 
   @override
   $Res call({
@@ -110,7 +90,7 @@ class __$SeatCopyWithImpl<$Res> extends _$SeatCopyWithImpl<$Res>
     Object? name = freezed,
     Object? position = freezed,
   }) {
-    return _then(_Seat(
+    return _then(_$_Seat(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -144,20 +124,22 @@ class _$_Seat extends _Seat {
 
   @JsonKey(ignore: true)
   @override
-  _$SeatCopyWith<_Seat> get copyWith =>
-      __$SeatCopyWithImpl<_Seat>(this, _$identity);
+  _$$_SeatCopyWith<_$_Seat> get copyWith =>
+      __$$_SeatCopyWithImpl<_$_Seat>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SeatToJson(this);
+    return _$$_SeatToJson(
+      this,
+    );
   }
 }
 
 abstract class _Seat extends Seat {
   factory _Seat(
-      {required String id,
-      required String name,
-      required int position}) = _$_Seat;
+      {required final String id,
+      required final String name,
+      required final int position}) = _$_Seat;
   _Seat._() : super._();
 
   factory _Seat.fromJson(Map<String, dynamic> json) = _$_Seat.fromJson;
@@ -170,5 +152,5 @@ abstract class _Seat extends Seat {
   int get position;
   @override
   @JsonKey(ignore: true)
-  _$SeatCopyWith<_Seat> get copyWith => throw _privateConstructorUsedError;
+  _$$_SeatCopyWith<_$_Seat> get copyWith => throw _privateConstructorUsedError;
 }

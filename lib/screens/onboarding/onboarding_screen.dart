@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/images.dart';
+import '../../constants/keys.dart';
 import '../../constants/logo.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';
@@ -23,6 +24,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: FCColors.gray100,
         appBar: AppBar(
+          key: FAKeys.appBar,
           automaticallyImplyLeading: false,
           backgroundColor: FCColors.white,
           elevation: 1,
@@ -43,12 +45,16 @@ class OnboardingScreen extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: PageView(
+                    key: FAKeys.onboardingPageView,
                     onPageChanged: (value) => onboardingController.updatePosition(value.toDouble()),
                     children: [
                       /// First onboarding page
                       Column(
                         children: [
-                          SvgPicture.asset(FAImages.lessonAndSchedule),
+                          SvgPicture.asset(
+                            FAImages.lessonAndSchedule,
+                            key: FAKeys.onboardingLessonSchedule,
+                          ),
                           //   SizedBox(height: 30.h),
                           Text(
                             FAStrings.onboardingFirstText,
@@ -62,7 +68,10 @@ class OnboardingScreen extends StatelessWidget {
                       /// Second onboarding page
                       Column(
                         children: [
-                          SvgPicture.asset(FAImages.chooseSeat),
+                          SvgPicture.asset(
+                            FAImages.chooseSeat,
+                            key: FAKeys.onboardingSeats,
+                          ),
                           //  SizedBox(height: 30.h),
                           Text(
                             FAStrings.onboardingSecondText,
@@ -76,7 +85,10 @@ class OnboardingScreen extends StatelessWidget {
                       /// Third onboarding page
                       Column(
                         children: [
-                          SvgPicture.asset(FAImages.whiteImage),
+                          SvgPicture.asset(
+                            FAImages.whiteImage,
+                            key: FAKeys.onboardingFirstWhiteImage,
+                          ),
                           //  SizedBox(height: 30.h),
                           Text(
                             FAStrings.onboardingThirdText,
@@ -90,7 +102,10 @@ class OnboardingScreen extends StatelessWidget {
                       /// Fourth onboarding page
                       Column(
                         children: [
-                          SvgPicture.asset(FAImages.whiteImage),
+                          SvgPicture.asset(
+                            FAImages.whiteImage,
+                            key: FAKeys.onboardingSecondWhiteImage,
+                          ),
                           // SizedBox(height: 30.h),
                           Text(
                             FAStrings.onboardingFourthText,
@@ -109,6 +124,7 @@ class OnboardingScreen extends StatelessWidget {
                       /// DotsIndicator:
                       Obx(
                         () => DotsIndicator(
+                          key: FAKeys.onboardingDotsIndicator,
                           dotsCount: onboardingController.numberOfDots,
                           position: onboardingController.currentPosition,
                           decorator: const DotsDecorator(
@@ -121,11 +137,13 @@ class OnboardingScreen extends StatelessWidget {
                       /// Buttons
                       SizedBox(height: 50.h),
                       YellowButton(
+                        key: FAKeys.onboardingRegistrationButton,
                         text: FAStrings.buttonCreateAccount,
                         onPressed: () => Get.toNamed(RegistrationScreen.routeName),
                       ),
                       SizedBox(height: 20.h),
                       OutlinedGrayButton(
+                        key: FAKeys.onboardingLoginButton,
                         width: 340.w,
                         height: 55.h,
                         text: FAStrings.buttonLogIn,

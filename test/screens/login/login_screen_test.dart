@@ -7,13 +7,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'login_screen_test_mocks.dart';
 
 void main() {
-  late Widget loginScreen;
+  late Widget _loginScreen;
   late MockLoginController _mockLoginController;
 
   setUp(() {
+    /// Arrange
     _mockLoginController = MockLoginController();
 
-    loginScreen = ScreenUtilInit(
+    _loginScreen = ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) => MaterialApp(
         home: LoginScreen(
@@ -25,60 +26,68 @@ void main() {
 
   tearDown(() => _mockLoginController.dispose());
 
-  testWidgets('email and password fields are valid, sign in method is called', (tester) async {
-    // Build widget
-    await tester.pumpWidget(loginScreen);
+  group('login screen widgets testing', () {
+    /// Arrange
+    final _loginEmail = find.byKey(FAKeys.loginEmail);
+    final _loginPassword = find.byKey(FAKeys.loginPassword);
+    final _loginButton = find.byKey(FAKeys.loginButton);
+    final _loginShowPassword = find.byKey(FAKeys.loginShowPassword);
+    final _loginForgotPassword = find.byKey(FAKeys.loginForgotPassword);
 
-    await tester.enterText(find.byKey(FAKeys.loginEmail), 'ipapac@foi.hr');
-    await tester.enterText(find.byKey(FAKeys.loginPassword), '123456789');
+    testWidgets('email and password fields are valid, sign in method is called', (tester) async {
+      /// Act
+      await tester.pumpWidget(_loginScreen); // Build widget
+      await tester.enterText(_loginEmail, 'ipapac@foi.hr');
+      await tester.enterText(_loginPassword, '123456789');
+      await tester.pump();
+      await tester.tap(_loginButton);
+      await tester.pump();
 
-    // Rebuild widget with entered values
-    await tester.pump();
+      /// Assert
+      expect(_mockLoginController.errorTextEmail, false);
+      expect(_mockLoginController.errorTextPassword, false);
+      expect(_mockLoginController.validated, true);
+      expect(_mockLoginController.isSignInCalled, true);
+    });
 
-    await tester.tap(find.byKey(FAKeys.loginButton));
+    testWidgets('email and password fields are not valid, sign in method is not called',
+        (tester) async {
+      /// Act
+      await tester.pumpWidget(_loginScreen);
+      await tester.enterText(_loginEmail, 'ipapac');
+      await tester.enterText(_loginPassword, '12345');
+      await tester.pump();
+      await tester.tap(_loginButton);
+      await tester.pump();
 
-    expect(_mockLoginController.errorTextEmail, false);
-    expect(_mockLoginController.errorTextPassword, false);
-    expect(_mockLoginController.validated, true);
-    expect(_mockLoginController.isSignInCalled, true);
-  });
+      /// Assert
+      expect(_mockLoginController.errorTextEmail, true);
+      expect(_mockLoginController.errorTextPassword, true);
+      expect(_mockLoginController.validated, false);
+      expect(_mockLoginController.isSignInCalled, false);
+    });
 
-  testWidgets('email and password fields are not valid, sign in method is not called',
-      (tester) async {
-    // Build widget
-    await tester.pumpWidget(loginScreen);
+    testWidgets('show password', (tester) async {
+      /// Arrange
+      final isObscure = _mockLoginController.obscureText;
 
-    await tester.enterText(find.byKey(FAKeys.loginEmail), 'ipapac');
-    await tester.enterText(find.byKey(FAKeys.loginPassword), '12345');
+      /// Act
+      await tester.pumpWidget(_loginScreen);
+      await tester.enterText(_loginPassword, '12345');
+      await tester.pump();
+      await tester.tap(_loginShowPassword);
 
-    // Rebuild widget with entered values
-    await tester.pump();
+      /// Arrange
+      expect(_mockLoginController.obscureText, !isObscure);
+    });
 
-    await tester.tap(find.byKey(FAKeys.loginButton));
+    testWidgets('go to reset password screen', (tester) async {
+      /// Act
+      await tester.pumpWidget(_loginScreen);
+      await tester.tap(_loginForgotPassword);
 
-    expect(_mockLoginController.errorTextEmail, true);
-    expect(_mockLoginController.errorTextPassword, true);
-    expect(_mockLoginController.validated, false);
-    expect(_mockLoginController.isSignInCalled, false);
-  });
-
-  testWidgets('show password', (tester) async {
-    // Build widget
-    await tester.pumpWidget(loginScreen);
-    final isObscure = _mockLoginController.obscureText;
-
-    await tester.enterText(find.byKey(FAKeys.loginPassword), '12345');
-    await tester.tap(find.byKey(FAKeys.loginShowPassword));
-
-    expect(_mockLoginController.obscureText, !isObscure);
-  });
-  
-  testWidgets('go to reset password screen', (tester) async {
-    // Build widget
-    await tester.pumpWidget(loginScreen);
-    
-    await tester.tap(find.byKey(FAKeys.loginForgotPassword));
-
-    expect(_mockLoginController.isGoToPasswordResetCalled, true);
+      /// Assert
+      expect(_mockLoginController.isGoToPasswordResetCalled, true);
+    });
   });
 }

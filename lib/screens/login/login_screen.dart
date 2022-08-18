@@ -12,7 +12,6 @@ import '../../constants/text_styles.dart';
 import '../../widgets/yellow_back_button.dart';
 import '../../widgets/yellow_button.dart';
 import 'login_controller.dart';
-import 'login_screens/login_screen_password_reset.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login_screen';

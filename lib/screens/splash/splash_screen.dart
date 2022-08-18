@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
+import '../../constants/keys.dart';
 import '../../constants/logo.dart';
 import 'splash_controller.dart';
 
@@ -18,6 +19,7 @@ class SplashScreen extends StatelessWidget {
           children: [
             /// First Yellow Container
             Container(
+              key: FAKeys.splashFirstYellowContainer,
               color: FCColors.yellow,
             ),
 
@@ -28,6 +30,7 @@ class SplashScreen extends StatelessWidget {
                 curve: Curves.easeInCubic,
                 bottom: splashController.whiteContainerHeight,
                 child: Container(
+                  key: FAKeys.splashWhiteContainer,
                   color: FCColors.white,
                   height: Get.height,
                   width: Get.width,
@@ -48,6 +51,7 @@ class SplashScreen extends StatelessWidget {
                       curve: Curves.ease,
                       child: SvgPicture.asset(
                         FCLogo.fcLogoFull,
+                        key: FAKeys.splashLogoFull,
                         height: 56.h,
                       ),
                     ),
@@ -63,6 +67,7 @@ class SplashScreen extends StatelessWidget {
                 curve: Curves.easeInCubic,
                 bottom: splashController.yellowContainerHeight,
                 child: Container(
+                  key: FAKeys.splashSecondYellowContainer,
                   color: FCColors.yellow,
                   height: Get.height,
                   width: Get.width,

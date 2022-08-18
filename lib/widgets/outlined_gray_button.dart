@@ -14,7 +14,8 @@ class OutlinedGrayButton extends StatelessWidget {
     required this.onPressed,
     required this.width,
     required this.height,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SizedBox(

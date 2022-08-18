@@ -8,6 +8,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MockRepository {
+  /// ------------------------
+  /// UNIT TESTS
+  /// ------------------------
+
   static final _dateTime = DateTime.now();
 
   /// Calendar controller
@@ -290,4 +294,8 @@ class MockRepository {
       homeNotifications[1].toJson(),
     ]
   };
+
+  /// ------------------------
+  /// WIDGET TESTS
+  /// ------------------------
 }

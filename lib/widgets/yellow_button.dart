@@ -10,10 +10,10 @@ class YellowButton extends StatelessWidget {
   final Function() onPressed;
 
   const YellowButton({
-    Key? key,
     required this.text,
     required this.onPressed,
     this.enabled = true,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -25,5 +25,6 @@ class FAKeys {
   static const loginShowPassword = Key('icShowPassword');
   static const loginForgotPassword = Key('txtForgotPassword');
 
-  static const appBar = Key('appBar');
+  /// Main screen
+  static const mainScreen = Key('mainScreen');
 }

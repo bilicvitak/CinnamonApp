@@ -24,7 +24,6 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: FCColors.gray100,
         appBar: AppBar(
-          key: FAKeys.appBar,
           automaticallyImplyLeading: false,
           backgroundColor: FCColors.white,
           elevation: 1,

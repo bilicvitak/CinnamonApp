@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../constants/colors.dart';
 import '../constants/dependencies.dart';
+import '../constants/keys.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 import 'calendar/calendar_screen.dart';
 import 'home/home_screen.dart';
@@ -22,6 +23,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        key: FAKeys.mainScreen,
         backgroundColor: FCColors.gray100,
         body: Obx(
           () => SafeArea(

@@ -1,7 +1,9 @@
+import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:cinnamon_flutter_template_1/main.dart' as app;
 import 'package:cinnamon_flutter_template_1/screens/onboarding/onboarding_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:integration_test/integration_test.dart';
@@ -35,7 +37,6 @@ void main() {
       /// Arrange
       await app.main();
 
-      final _appBar = find.byKey(FAKeys.appBar);
       final _lessonAndSchedule = find.byKey(FAKeys.onboardingLessonSchedule);
       final _onboardingFirstText = find.text(FAStrings.onboardingFirstText);
       final _dotsIndicator = find.byKey(FAKeys.onboardingDotsIndicator);
@@ -46,7 +47,6 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 4));
 
       /// Assert
-      expect(_appBar, findsOneWidget);
       expect(_lessonAndSchedule, findsOneWidget);
       expect(_onboardingFirstText, findsOneWidget);
       expect(_dotsIndicator, findsOneWidget);
@@ -93,6 +93,45 @@ void main() {
       expect(_onboardingController.currentPosition, 3);
       expect(_onboardingFourthText, findsOneWidget);
       expect(_onboardingSecondWhiteImage, findsOneWidget);
+    });
+  });
+
+  group('Login', () {
+    testWidgets('login fields are valid and correct, user is signed in', (tester) async {
+      /// Arrange
+      await app.main();
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+
+      const duration = Duration(seconds: 1);
+      final _onboardingLoginButton = find.byKey(FAKeys.onboardingLoginButton);
+      final _loginEmail = find.byKey(FAKeys.loginEmail);
+      final _loginPassword = find.byKey(FAKeys.loginPassword);
+      final _loginButton = find.byKey(FAKeys.loginButton);
+      final _mainScreen = find.byKey(FAKeys.mainScreen);
+
+      /// Act & Assert
+      /// --- go to login screen
+      await tester.tap(_onboardingLoginButton);
+      await tester.pumpAndSettle(duration);
+
+      /// --- enter text in email field
+      await tester.tap(_loginEmail);
+      await tester.enterText(_loginEmail, 'ivapapac22@gmail.com');
+
+      /// --- enter text in password field
+      await tester.tap(_loginPassword);
+      await tester.enterText(_loginPassword, 'cinnamon12');
+
+      /// --- close keyboard
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pump(duration);
+
+      /// --- tap on the login button
+      await tester.tap(_loginButton);
+      await tester.pumpAndSettle(duration);
+
+      expect(firebaseService.firebaseUser.value != null, true);
+      expect(_mainScreen, findsOneWidget);
     });
   });
 }

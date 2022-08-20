@@ -1,4 +1,4 @@
-# Automatically generated on 2022-08-13 UTC from https://codemagic.io/app/62f79ab3b44a1ffc4d8afdf7/settings
+# Automatically generated on 2022-08-19 UTC from https://codemagic.io/app/62f79ab3b44a1ffc4d8afdf7/settings
 # Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
 
 workflows:
@@ -51,6 +51,9 @@ workflows:
         # set up local properties
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
+      - |
+        #!/bin/sh
+        echo $ANDROID_FIREBASE_JSON | base64 --decode > $CM_BUILD_DIR/android/app/google-services.json
       - flutter test integration_test
       - flutter test
       - |

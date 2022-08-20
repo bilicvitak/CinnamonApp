@@ -26,7 +26,7 @@ void main() {
 
   tearDown(() => _mockLoginController.dispose());
 
-  group('login screen widgets testing', () {
+  group('Login screen', () {
     /// Arrange
     final _loginEmail = find.byKey(FAKeys.loginEmail);
     final _loginPassword = find.byKey(FAKeys.loginPassword);
@@ -37,9 +37,15 @@ void main() {
     testWidgets('email and password fields are valid, sign in method is called', (tester) async {
       /// Act
       await tester.pumpWidget(_loginScreen); // Build widget
+
+      await tester.tap(_loginEmail);
       await tester.enterText(_loginEmail, 'ipapac@foi.hr');
+      await tester.tap(_loginPassword);
       await tester.enterText(_loginPassword, '123456789');
       await tester.pump();
+
+      FocusManager.instance.primaryFocus?.unfocus();
+
       await tester.tap(_loginButton);
       await tester.pump();
 
@@ -54,9 +60,15 @@ void main() {
         (tester) async {
       /// Act
       await tester.pumpWidget(_loginScreen);
+
+      await tester.tap(_loginEmail);
       await tester.enterText(_loginEmail, 'ipapac');
+      await tester.tap(_loginPassword);
       await tester.enterText(_loginPassword, '12345');
       await tester.pump();
+
+      FocusManager.instance.primaryFocus?.unfocus();
+
       await tester.tap(_loginButton);
       await tester.pump();
 
@@ -73,11 +85,12 @@ void main() {
 
       /// Act
       await tester.pumpWidget(_loginScreen);
+      await tester.tap(_loginPassword);
       await tester.enterText(_loginPassword, '12345');
       await tester.pump();
       await tester.tap(_loginShowPassword);
 
-      /// Arrange
+      /// Assert
       expect(_mockLoginController.obscureText, !isObscure);
     });
 

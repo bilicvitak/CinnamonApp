@@ -1,137 +1,69 @@
-import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
-import 'package:cinnamon_flutter_template_1/constants/keys.dart';
-import 'package:cinnamon_flutter_template_1/constants/strings.dart';
+import 'package:cinnamon_flutter_template_1/constants/errors.dart';
 import 'package:cinnamon_flutter_template_1/main.dart' as app;
-import 'package:cinnamon_flutter_template_1/screens/onboarding/onboarding_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:integration_test/integration_test.dart';
+
+import 'robots/login_robot.dart';
+import 'robots/onboarding_robot.dart';
+import 'robots/splash_robot.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('Splash screen and onboarding', () {
-    testWidgets('splash screen is loaded', (tester) async {
-      /// Arrange
-      final _splashFirstYellowContainer = find.byKey(FAKeys.splashFirstYellowContainer);
-      final _splashWhiteContainer = find.byKey(FAKeys.splashWhiteContainer);
-      final _splashLogoFull = find.byKey(FAKeys.splashLogoFull);
-      final _splashSecondYellowContainer = find.byKey(FAKeys.splashSecondYellowContainer);
-
-      /// Act
-      await app.main();
-      await tester.pumpAndSettle();
-
-      /// Assert
-      expect(_splashFirstYellowContainer, findsOneWidget);
-      await tester.pump(const Duration(seconds: 1));
-      expect(_splashWhiteContainer, findsOneWidget);
-      await tester.pump(const Duration(seconds: 1));
-      expect(_splashLogoFull, findsOneWidget);
-      await tester.pump(const Duration(seconds: 2));
-      expect(_splashSecondYellowContainer, findsOneWidget);
-    });
-
-    testWidgets('onboarding screen is loaded', (tester) async {
-      /// Arrange
+  group('Integration tests', () {
+    testWidgets('First scenario', (tester) async {
+      /// Start the app
       await app.main();
 
-      final _lessonAndSchedule = find.byKey(FAKeys.onboardingLessonSchedule);
-      final _onboardingFirstText = find.text(FAStrings.onboardingFirstText);
-      final _dotsIndicator = find.byKey(FAKeys.onboardingDotsIndicator);
-      final _registrationButton = find.byKey(FAKeys.onboardingRegistrationButton);
-      final _loginButton = find.byKey(FAKeys.onboardingLoginButton);
+      /// Splash screen
+      final splashRobot = SplashRobot(tester);
+      await splashRobot.findFirstYellowContainer();
+      await splashRobot.findWhiteContainer();
+      await splashRobot.findLogo();
+      await splashRobot.findSecondYellowContainer();
 
-      /// Act
-      await tester.pumpAndSettle(const Duration(seconds: 4));
+      /// Onboarding screen
+      final onboardingRobot = OnboardingRobot(tester);
+      await onboardingRobot.findFirstSlide();
+      await onboardingRobot.swipeToLeft();
+      await onboardingRobot.findSecondSlide();
+      await onboardingRobot.swipeToLeft();
+      await onboardingRobot.findThirdSlide();
+      await onboardingRobot.swipeToLeft();
+      await onboardingRobot.findFourthSlide();
+      await onboardingRobot.clickLoginButton();
 
-      /// Assert
-      expect(_lessonAndSchedule, findsOneWidget);
-      expect(_onboardingFirstText, findsOneWidget);
-      expect(_dotsIndicator, findsOneWidget);
-      expect(Get.find<OnboardingController>().currentPosition, 0);
-      expect(_registrationButton, findsOneWidget);
-      expect(_loginButton, findsOneWidget);
-    });
+      /// Login screen
+      final loginRobot = LoginRobot(tester);
+      await loginRobot.goBack();
+      await onboardingRobot.clickLoginButton();
 
-    testWidgets('change slides on swiping on onboarding screen', (tester) async {
-      /// Arrange
-      await app.main();
-      await tester.pumpAndSettle(const Duration(seconds: 4));
+      /// --- invalid email and password
+      await loginRobot.enterEmail(email: 'ivapapac22');
+      await loginRobot.findEmailError();
 
-      final _onboardingController = Get.find<OnboardingController>();
-      final _onboardingPageView = find.byKey(FAKeys.onboardingPageView);
-      final _onboardingSecondText = find.text(FAStrings.onboardingSecondText);
-      final _onboardingThirdText = find.text(FAStrings.onboardingThirdText);
-      final _onboardingFourthText = find.text(FAStrings.onboardingFourthText);
-      final _onboardingSeats = find.byKey(FAKeys.onboardingSeats);
-      final _onboardingFirstWhiteImage = find.byKey(FAKeys.onboardingFirstWhiteImage);
-      final _onboardingSecondWhiteImage = find.byKey(FAKeys.onboardingSecondWhiteImage);
+      await loginRobot.enterPassword(password: '1234');
+      await loginRobot.findPasswordError();
 
-      /// Act & Assert
-      /// --- second slide
-      await tester.drag(_onboardingPageView, const Offset(-500, 0));
-      await tester.pumpAndSettle();
+      await loginRobot.findDisabledLoginButton();
 
-      expect(_onboardingController.currentPosition, 1);
-      expect(_onboardingSecondText, findsOneWidget);
-      expect(_onboardingSeats, findsOneWidget);
+      /// --- user does not exist
+      await loginRobot.enterEmail(email: 'ivo.ivic@gmail.com');
+      await loginRobot.enterPassword(password: 'lozinka1234');
+      await loginRobot.clickLoginButton(resultCode: FCErrors.userNotFound);
 
-      /// --- third slide
-      await tester.drag(_onboardingPageView, const Offset(-500, 0));
-      await tester.pumpAndSettle();
+      /// --- wrong password
+      await loginRobot.enterEmail(email: 'ivapapac22@gmail.com');
+      await loginRobot.enterPassword(password: 'lozinka1234');
+      await loginRobot.clickLoginButton(resultCode: FCErrors.wrongPassword);
 
-      expect(_onboardingController.currentPosition, 2);
-      expect(_onboardingThirdText, findsOneWidget);
-      expect(_onboardingFirstWhiteImage, findsOneWidget);
+      /// --- valid user
+      await loginRobot.enterEmail(email: 'ivapapac22@gmail.com');
+      await loginRobot.toggleObscureText();
+      await loginRobot.enterPassword(password: 'cinnamon12');
+      await loginRobot.clickLoginButton();
 
-      /// --- fourth slide
-      await tester.drag(_onboardingPageView, const Offset(-500, 0));
-      await tester.pumpAndSettle();
-
-      expect(_onboardingController.currentPosition, 3);
-      expect(_onboardingFourthText, findsOneWidget);
-      expect(_onboardingSecondWhiteImage, findsOneWidget);
-    });
-  });
-
-  group('Login', () {
-    testWidgets('login fields are valid and correct, user is signed in', (tester) async {
-      /// Arrange
-      await app.main();
-      await tester.pumpAndSettle(const Duration(seconds: 4));
-
-      const duration = Duration(seconds: 1);
-      final _onboardingLoginButton = find.byKey(FAKeys.onboardingLoginButton);
-      final _loginEmail = find.byKey(FAKeys.loginEmail);
-      final _loginPassword = find.byKey(FAKeys.loginPassword);
-      final _loginButton = find.byKey(FAKeys.loginButton);
-      final _mainScreen = find.byKey(FAKeys.mainScreen);
-
-      /// Act & Assert
-      /// --- go to login screen
-      await tester.tap(_onboardingLoginButton);
-      await tester.pumpAndSettle(duration);
-
-      /// --- enter text in email field
-      await tester.tap(_loginEmail);
-      await tester.enterText(_loginEmail, 'ivapapac22@gmail.com');
-
-      /// --- enter text in password field
-      await tester.tap(_loginPassword);
-      await tester.enterText(_loginPassword, 'cinnamon12');
-
-      /// --- close keyboard
-      FocusManager.instance.primaryFocus?.unfocus();
-      await tester.pump(duration);
-
-      /// --- tap on the login button
-      await tester.tap(_loginButton);
-      await tester.pumpAndSettle(duration);
-
-      expect(firebaseService.firebaseUser.value != null, true);
-      expect(_mainScreen, findsOneWidget);
+      /// Main Screen
     });
   });
 }

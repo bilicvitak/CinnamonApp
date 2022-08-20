@@ -56,9 +56,11 @@ class LoginScreen extends StatelessWidget {
                         floatingLabelStyle: TextStyle(height: 0.5.h),
                         errorText: !loginController.errorTextEmail
                             ? null
-                            : !loginController.email.isEmail
-                                ? FAStrings.registrationValidationValidEmail
-                                : null,
+                            : loginController.email.isEmpty
+                                ? FAStrings.registrationValidationRequiredField
+                                : !loginController.email.isEmail
+                                    ? FAStrings.registrationValidationValidEmail
+                                    : null,
                         errorStyle: FATextStyles.errorDescription,
                       ),
                     ),

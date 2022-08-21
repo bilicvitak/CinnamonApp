@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/icons.dart';
+import '../../constants/keys.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';
 import '../../widgets/outlined_gray_button.dart';
@@ -26,6 +27,7 @@ class LessonScreenReservations extends StatelessWidget {
           backgroundColor: FCColors.white,
           elevation: 1,
           leading: IconButton(
+            key: FAKeys.reservationsClose,
             onPressed: lessonReservationsController.getBackAndRefresh,
             icon: SvgPicture.asset(
               FCIcons.close,

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../constants/colors.dart';
 import '../../constants/dependencies.dart';
 import '../../constants/icons.dart';
+import '../../constants/keys.dart';
 import '../../constants/logo.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';
@@ -47,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
               () => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: GestureDetector(
+                  key: FAKeys.homeNotificationButton,
                   child: homeController.areNotificationsRead
                       ? SvgPicture.asset(FCIcons.noNotification)
                       : SvgPicture.asset(FCIcons.notification),

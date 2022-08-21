@@ -11,7 +11,7 @@ class CalendarController extends GetxController {
   /// ------------------------
 
   final _events = <CalendarEvent>[].obs;
-  final cellCalendarPageController = CellCalendarPageController();
+  var _cellCalendarPageController = CellCalendarPageController();
 
   /// ------------------------
   /// GETTERS
@@ -65,10 +65,16 @@ class CalendarController extends GetxController {
           eventBackgroundColor: FCColors.mint)));
   }
 
+  CellCalendarPageController getCellCalendarPageController() {
+    final _newController = CellCalendarPageController();
+    _cellCalendarPageController = _newController;
+    return _newController;
+  }
+
   /// FUNCTION: Show previous page
   void previousPage(DateTime? datetime) {
     if (datetime != null) {
-      cellCalendarPageController.jumpToDate(
+      _cellCalendarPageController.jumpToDate(
         DateTime(
           datetime.year,
           datetime.month - 1,
@@ -80,7 +86,7 @@ class CalendarController extends GetxController {
   /// FUNCTION: Show next page
   void nextPage(DateTime? datetime) {
     if (datetime != null) {
-      cellCalendarPageController.jumpToDate(
+      _cellCalendarPageController.jumpToDate(
         DateTime(
           datetime.year,
           datetime.month + 1,

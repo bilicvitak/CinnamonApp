@@ -38,7 +38,11 @@ void main() {
 
       _calendarController.filterLessons();
 
-      expect(_calendarController.events, MockRepository.calendarEvents);
+      expect(_calendarController.events[0].eventName, MockRepository.calendarEvents[0].eventName);
+      expect(_calendarController.events[0].eventDate, MockRepository.calendarEvents[0].eventDate);
+
+      expect(_calendarController.events[1].eventName, MockRepository.calendarEvents[1].eventName);
+      expect(_calendarController.events[1].eventDate, MockRepository.calendarEvents[1].eventDate);
     });
   });
 }

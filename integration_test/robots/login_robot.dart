@@ -24,11 +24,12 @@ class LoginRobot {
     final _loginEmail = find.byKey(FAKeys.loginEmail);
 
     await tester.tap(_loginEmail);
+    await tester.pump(const Duration(milliseconds: 500));
     await tester.enterText(_loginEmail, email);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
 
     FocusManager.instance.primaryFocus?.unfocus();
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
   }
 
   Future<void> findEmailError({bool isEmpty = false}) async {
@@ -45,11 +46,12 @@ class LoginRobot {
     final _loginPassword = find.byKey(FAKeys.loginPassword);
 
     await tester.tap(_loginPassword);
+    await tester.pump(const Duration(milliseconds: 500));
     await tester.enterText(_loginPassword, password);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
 
     FocusManager.instance.primaryFocus?.unfocus();
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
   }
 
   Future<void> findPasswordError({bool isEmpty = false}) async {
@@ -65,11 +67,12 @@ class LoginRobot {
   Future<void> toggleObscureText() async {
     final _showPassword = find.byKey(FAKeys.loginShowPassword);
     await tester.tap(_showPassword);
-    await tester.pumpAndSettle();
+    await tester.pump();
   }
 
   Future<void> findDisabledLoginButton() async {
     final _loginButton = find.byKey(FAKeys.loginButton);
+
     expect(tester.widget<YellowButton>(_loginButton).enabled, false);
   }
 

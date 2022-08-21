@@ -23,7 +23,6 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        key: FAKeys.mainScreen,
         backgroundColor: FCColors.gray100,
         body: Obx(
           () => SafeArea(

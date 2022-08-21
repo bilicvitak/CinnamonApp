@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../constants/colors.dart';
 import '../constants/dependencies.dart';
+import '../constants/keys.dart';
 import '../constants/text_styles.dart';
 import '../screens/notifications/notifications_controller.dart';
 import 'notification_card.dart';
@@ -14,6 +15,7 @@ class NotificationsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => RefreshIndicator(
+        key: FAKeys.notificationsRefreshIndicator,
         color: FCColors.yellow,
         onRefresh: notificationsController.refreshNotifications,
         child: LayoutBuilder(
@@ -25,6 +27,8 @@ class NotificationsList extends StatelessWidget {
                 height: Get.height,
                 child: Obx(
                   () => ListView.builder(
+                    key: FAKeys.notificationsListView,
+                    controller: ScrollController(),
                     physics: const ScrollPhysics(),
                     itemCount: sharedFirebaseDataService.notifications.length,
                     itemBuilder: (context, index) => NotificationCard(

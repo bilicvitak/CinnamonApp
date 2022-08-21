@@ -11,10 +11,10 @@ class OnboardingRobot {
   OnboardingRobot(this.tester);
 
   Future<void> findFirstSlide() async {
-    await tester.pumpAndSettle(const Duration(seconds: 1));
-    
     final _lessonAndSchedule = find.byKey(FAKeys.onboardingLessonSchedule);
     final _onboardingFirstText = find.text(FAStrings.onboardingFirstText);
+
+    await tester.pumpAndSettle(const Duration(seconds: 1));
 
     expect(_lessonAndSchedule, findsOneWidget);
     expect(_onboardingFirstText, findsOneWidget);
@@ -62,7 +62,6 @@ class OnboardingRobot {
 
     await tester.ensureVisible(_registrationButton);
     await tester.tap(_registrationButton);
-
     await tester.pumpAndSettle();
   }
 
@@ -71,7 +70,6 @@ class OnboardingRobot {
 
     await tester.ensureVisible(_loginButton);
     await tester.tap(_loginButton);
-
     await tester.pumpAndSettle();
   }
 }

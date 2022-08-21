@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../constants/colors.dart';
 import '../constants/icons.dart';
+import '../constants/keys.dart';
 import '../constants/strings.dart';
 import '../constants/text_styles.dart';
 import '../screens/home/home_controller.dart';
@@ -41,6 +42,7 @@ class UpcomingLesson extends StatelessWidget {
                           width: 271.w,
                           child: Text(
                             lessonName,
+                            key: FAKeys.homeLessonTitle,
                             style: FATextStyles.lessonTitle,
                           ),
                         ),
@@ -48,6 +50,7 @@ class UpcomingLesson extends StatelessWidget {
                           width: 271.w,
                           child: Text(
                             lessonTime,
+                            key: FAKeys.homeLessonTime,
                             style: FATextStyles.description,
                           ),
                         ),
@@ -56,6 +59,7 @@ class UpcomingLesson extends StatelessWidget {
 
                     /// chevron right
                     GestureDetector(
+                      key: FAKeys.homeChevronRight,
                       onTap: homeController.goToLessonScreenDetails,
                       child: Align(
                         alignment: Alignment.centerRight,

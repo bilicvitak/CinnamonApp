@@ -5,8 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
-import '../../constants/dependencies.dart';
 import '../../constants/icons.dart';
+import '../../constants/keys.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';
 import 'calendar_controller.dart';
@@ -47,7 +47,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         body: Padding(
           padding: EdgeInsets.only(top: 32.h),
           child: CellCalendar(
-            cellCalendarPageController: calendarController.cellCalendarPageController,
+            cellCalendarPageController: calendarController.getCellCalendarPageController(),
             dateTextStyle: FATextStyles.calendarNumbers,
             events: calendarController.events,
             todayMarkColor: FCColors.darkerYellow,
@@ -71,6 +71,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
+                      key: FAKeys.calendarSwipeRight,
                       onTap: () => calendarController.previousPage(datetime),
                       child: SvgPicture.asset(
                         FCIcons.chevronLeft,
@@ -85,6 +86,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
                     GestureDetector(
+                      key: FAKeys.calendarSwipeLeft,
                       onTap: () => calendarController.nextPage(datetime),
                       child: SvgPicture.asset(
                         FCIcons.chevronRight,

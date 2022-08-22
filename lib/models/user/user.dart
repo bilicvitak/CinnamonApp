@@ -37,7 +37,13 @@ class User extends Equatable with _$User {
   factory User.blank() => User(id: '', email: '');
 
   @override
-  List<Object?> get props => [id, email];
+  List<Object?> get props => [
+        id,
+        email,
+        name,
+        userGoals,
+        profilePicture,
+      ];
 
   @override
   bool get stringify => true;

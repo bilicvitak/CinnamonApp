@@ -57,7 +57,7 @@ dependencies:
   flutter_local_notifications: ^9.6.1
   http: ^0.13.4
   equatable: ^2.0.3
-  freezed: ^2.1.0+1
+  freezed: ^2.1.0+1 # flutter packages pub run build_runner build --delete-conflicting-outputs
 
 dev_dependencies:
   integration_test:

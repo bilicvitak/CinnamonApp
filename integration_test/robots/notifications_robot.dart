@@ -42,11 +42,12 @@ class NotificationsRobot {
 
   Future<void> dismissNotification() async {
     final _notificationCard = find.byType(Dismissible).at(0);
+    final _key = tester.widget<Dismissible>(_notificationCard).key;
 
-    await tester.drag(_notificationCard, const Offset(-200, 0));
+    await tester.timedDrag(_notificationCard, const Offset(-500, 0), const Duration(milliseconds: 500));
     await tester.pumpAndSettle();
 
-    /// TODO: Add assert
+    expect(find.byKey(_key!), findsNothing);
   }
 
   Future<void> closeNotifications() async {

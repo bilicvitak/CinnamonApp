@@ -10,7 +10,7 @@ class NavigationBarRobot {
     final _bottomNavigationBar = tester.widget<BottomNavigationBar>(find.byType(BottomNavigationBar));
 
     _bottomNavigationBar.onTap!(index);
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
   }
 
   Future<void> findNavigationBar() async {

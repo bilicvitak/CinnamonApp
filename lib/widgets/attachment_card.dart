@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../constants/colors.dart';
 import '../constants/icons.dart';
+import '../constants/keys.dart';
 import '../constants/text_styles.dart';
 import '../screens/lesson_details/lesson_details_controller.dart';
 
@@ -45,6 +46,7 @@ class AttachmentCard extends StatelessWidget {
                   onTap: () => detailsController.saveFile(url: fileUrl, name: fileName),
                   child: SvgPicture.asset(
                     FCIcons.fileDownload,
+                    key: FAKeys.lessonAttachmentDownload,
                     color: FCColors.yellow,
                   ),
                 ),

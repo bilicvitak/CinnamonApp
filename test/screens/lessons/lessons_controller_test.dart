@@ -82,7 +82,7 @@ void main() {
     when(_mockSharedFirebaseDataService.lessons).thenReturn(MockRepository.lessonsLessons);
 
     /// Act
-    _lessonsController.countUpcomingLessons();
+    _lessonsController.countUpcomingAndPastLessons();
 
     /// Assert
     expect(_lessonsController.upcomingLessonsCounter, 1);

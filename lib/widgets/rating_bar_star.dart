@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../constants/colors.dart';
 import '../constants/icons.dart';
+import '../constants/keys.dart';
 import '../screens/lesson_details/lesson_details_controller.dart';
 
 class RatingBarStar extends StatelessWidget {
@@ -24,11 +25,13 @@ class RatingBarStar extends StatelessWidget {
             child: index <= lessonDetailsController.rating
                 ? SvgPicture.asset(
                     FCIcons.starFilled,
+                    key: FAKeys.lessonStarFilled,
                     color: FCColors.yellow,
                     height: 40.h,
                   )
                 : SvgPicture.asset(
                     FCIcons.starEmpty,
+                    key: FAKeys.lessonStarEmpty,
                     color: FCColors.yellow,
                     height: 40.h,
                   ),

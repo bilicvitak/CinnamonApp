@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../constants/dependencies.dart';
+import '../constants/keys.dart';
 import '../constants/strings.dart';
 import '../constants/text_styles.dart';
 import '../screens/lessons/lessons_controller.dart';
@@ -14,6 +15,7 @@ class LessonsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
+          key: FAKeys.lessonsScrollView,
           physics: const BouncingScrollPhysics(),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -36,6 +38,7 @@ class LessonsList extends StatelessWidget {
                   /// list: Upcoming lessons
 
                   ListView.builder(
+                    key: FAKeys.lessonsUpcomingListView,
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
                     itemCount: lessonsController.upcomingLessonsCounter,
@@ -70,10 +73,10 @@ class LessonsList extends StatelessWidget {
                   /// list: Past lessons
 
                   ListView.builder(
+                    key: FAKeys.lessonsPastListView,
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
-                    itemCount: sharedFirebaseDataService.lessons.length -
-                        lessonsController.upcomingLessonsCounter,
+                    itemCount: lessonsController.pastLessonsCounter,
                     itemBuilder: (context, index) => Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.h),
                       child: GestureDetector(

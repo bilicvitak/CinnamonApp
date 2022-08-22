@@ -1,14 +1,19 @@
 import 'package:cinnamon_flutter_template_1/constants/errors.dart';
 import 'package:cinnamon_flutter_template_1/main.dart' as app;
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import 'robots/calendar_robot.dart';
 import 'robots/home_robot.dart';
+import 'robots/lesson_details_robot.dart';
+import 'robots/lesson_reservations_robot.dart';
+import 'robots/lessons_robot.dart';
 import 'robots/login_robot.dart';
 import 'robots/navigation_bar_robot.dart';
 import 'robots/notifications_robot.dart';
 import 'robots/onboarding_robot.dart';
+import 'robots/profile_robot.dart';
 import 'robots/splash_robot.dart';
 
 void main() {
@@ -25,6 +30,10 @@ void main() {
       final _notificationsRobot = NotificationsRobot(tester);
       final _navigationBarRobot = NavigationBarRobot(tester);
       final _calendarRobot = CalendarRobot(tester);
+      final _lessonsRobot = LessonsRobot(tester);
+      final _lessonDetailsRobot = LessonDetailsRobot(tester);
+      final _lessonReservationsRobot = LessonReservationsRobot(tester);
+      final _profileRobot = ProfileRobot(tester);
 
       /// Start the app
       await app.main();
@@ -91,9 +100,9 @@ void main() {
 
       /// Notifications screen
       await _notificationsRobot.findNotifications();
+      //await _notificationsRobot.dismissNotification();
       await _notificationsRobot.scrollPage();
       await _notificationsRobot.refreshNotifications();
-      await _notificationsRobot.dismissNotification();
       await _notificationsRobot.closeNotifications();
 
       /// Calendar screen
@@ -105,6 +114,84 @@ void main() {
       await _calendarRobot.clickChevronRight();
       await _calendarRobot.swipeRight();
       await _calendarRobot.clickChevronLeft();
+
+      /// Lessons screen
+      /// --- go to lessons screen, find upcoming & past lessons, scroll page
+      await _navigationBarRobot.clickNavigationBarItem(index: 1);
+      await _lessonsRobot.findUpcomingLessons();
+      await _lessonsRobot.scrollPageVertically();
+      await _lessonsRobot.findPastLessons();
+      //await _lessonsRobot.scrollPageVertically(direction: AxisDirection.down);
+
+      /// Lesson details & Lesson reservations screen
+      /// --- go to lesson (past) details screen, rate lesson
+      await _lessonsRobot.clickOnPastLesson();
+      await _lessonDetailsRobot.findLessonDetails(isPastLesson: true);
+      await _lessonDetailsRobot.scrollPageVertically();
+      await _lessonDetailsRobot.rateLesson(rating: 3);
+
+      /// --- open pdf viewer, go back
+      await _lessonDetailsRobot.openPdfFile();
+      await _lessonDetailsRobot.goBack();
+
+      /// --- scroll down, go back to lessons
+      await _lessonDetailsRobot.scrollPageVertically(direction: AxisDirection.down);
+      await _lessonDetailsRobot.goBack();
+
+      /// --- go to lesson (upcoming) details screen, click reserve a seat
+      await _lessonsRobot.clickOnUpcomingLesson();
+      await _lessonDetailsRobot.findLessonDetails();
+      await _lessonDetailsRobot.clickReserveButton();
+
+      /// --- find seat & reserve button, make a reservation, close screen
+      await _lessonReservationsRobot.findSeats();
+      await _lessonReservationsRobot.findReserveButton();
+      await _lessonReservationsRobot.selectSeat();
+      await _lessonReservationsRobot.reserveSeat();
+      await _lessonReservationsRobot.closeScreen();
+
+      /// --- find reserved seat, change reservation
+      await _lessonDetailsRobot.findReservedSeat();
+      await _lessonDetailsRobot.changeReservation();
+
+      /// --- cancel reservation, go back
+      await _lessonReservationsRobot.cancelReservations();
+      await _lessonReservationsRobot.goBack();
+
+      /// --- find reserve button, go back
+      await _lessonDetailsRobot.findReserveButton();
+      await _lessonDetailsRobot.goBack();
+
+      /// Profile screen
+      /// --- find settings
+      await _navigationBarRobot.clickNavigationBarItem(index: 3);
+      await _profileRobot.findProfileSettings();
+
+      /// --- toggle notifications, toggle dark mode
+      await _profileRobot.toggleNotifications();
+      await _profileRobot.toggleDarkMode();
+
+      /// --- go to terms
+      await _profileRobot.clickTerms();
+      await _profileRobot.goBack();
+
+      /// --- edit user info
+      await _profileRobot.clickEditUserInfo();
+      await _profileRobot.editProfilePicture();
+      await _profileRobot.editName();
+      await _profileRobot.editEmail();
+      await _profileRobot.clickSaveButton();
+      await _profileRobot.findUserInfo();
+
+      /// --- edit user's goals
+      await _profileRobot.clickEditGoals();
+      await _profileRobot.selectGoals();
+      await _profileRobot.deselectGoals();
+      await _profileRobot.clickSaveButton();
+      await _profileRobot.findUserGoals();
+
+      /// --- sign out
+      await _profileRobot.signOut();
     });
   });
 }

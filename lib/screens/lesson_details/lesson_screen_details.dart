@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/dependencies.dart';
+import '../../constants/keys.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';
 import '../../widgets/attachment_card.dart';
@@ -40,6 +41,7 @@ class LessonScreenDetails extends StatelessWidget {
               /// lesson details
 
               SingleChildScrollView(
+                key: FAKeys.lessonDetailsScrollView,
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
@@ -56,6 +58,7 @@ class LessonScreenDetails extends StatelessWidget {
                             /// description text
                             Text(
                               FAStrings.lessonsDescription,
+                              key: FAKeys.lessonDescription,
                               style: FATextStyles.headline,
                             ),
 
@@ -96,6 +99,7 @@ class LessonScreenDetails extends StatelessWidget {
                             /// lesson location
                             Text(
                               detailsController.lesson.location,
+                              key: FAKeys.lessonLocation,
                               style: FATextStyles.description,
                             ),
 
@@ -111,6 +115,7 @@ class LessonScreenDetails extends StatelessWidget {
                             /// lesson date
                             Text(
                               dashboardController.writeLessonDate(detailsController.getLesson()),
+                              key: FAKeys.lessonDate,
                               style: FATextStyles.description,
                             ),
 

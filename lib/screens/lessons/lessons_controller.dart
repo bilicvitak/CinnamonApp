@@ -12,6 +12,7 @@ class LessonsController extends GetxController {
   /// ------------------------
 
   final _upcomingLessonsCounter = 0.obs;
+  final _pastLessonsCounter = 0.obs;
   final _upcomingLessons = <Lesson>[].obs;
   final _pastLessons = <Lesson>[].obs;
 
@@ -27,6 +28,8 @@ class LessonsController extends GetxController {
 
   int get upcomingLessonsCounter => _upcomingLessonsCounter.value;
 
+  int get pastLessonsCounter => _pastLessonsCounter.value;
+
   List<Lesson> get upcomingLessons => _upcomingLessons;
 
   List<Lesson> get pastLessons => _pastLessons;
@@ -38,6 +41,8 @@ class LessonsController extends GetxController {
   /// ------------------------
 
   set upcomingLessonsCounter(int value) => _upcomingLessonsCounter.value = value;
+
+  set pastLessonsCounter(int value) => _pastLessonsCounter.value = value;
 
   set upcomingLessons(List<Lesson> value) => _upcomingLessons.assignAll(value);
 
@@ -55,9 +60,9 @@ class LessonsController extends GetxController {
 
     await sharedFirebaseDataService.getAllLessons();
 
-    countUpcomingLessons();
     filterPastLessons();
     filterUpcomingLessons();
+    countUpcomingAndPastLessons();
   }
 
   /// ------------------------
@@ -75,7 +80,7 @@ class LessonsController extends GetxController {
   void goToLessonScreenReserveSeat() => Get.toNamed(LessonScreenReservations.routeName);
 
   /// FUNCTION: count how many lessons are upcoming
-  void countUpcomingLessons() {
+  void countUpcomingAndPastLessons() {
     upcomingLessonsCounter = 0;
 
     for (var i = 0; i < sharedFirebaseDataService.lessons.length; ++i) {
@@ -83,6 +88,8 @@ class LessonsController extends GetxController {
         ++upcomingLessonsCounter;
       }
     }
+
+    pastLessonsCounter = sharedFirebaseDataService.lessons.length - upcomingLessonsCounter;
   }
 
   /// FUNCTION: filter upcoming lessons and return list of upcoming lessons

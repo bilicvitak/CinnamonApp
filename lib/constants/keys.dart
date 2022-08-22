@@ -48,4 +48,17 @@ class FAKeys {
   static const calendarSwipeRight = Key('calendarSwipeRight');
   static const calendarSwipeLeft = Key('calendarSwipeLeft');
 
+  /// Lessons screen
+  static const lessonsScrollView = Key('lessonsScrollView');
+  static const lessonsUpcomingListView = Key('lessonsUpcomingListView');
+  static const lessonsPastListView = Key('lessonsPastListView');
+
+  /// Lesson Details screen
+  static const lessonDescription = Key('lessonDescription');
+  static const lessonLocation = Key('lessonLocation');
+  static const lessonDate = Key('lessonDate');
+  static const lessonStarFilled = Key('lessonStarFilled');
+  static const lessonStarEmpty = Key('lessonStarEmpty');
+  static const lessonDetailsScrollView = Key('lessonDetailsScrollView');
+  static const lessonAttachmentDownload = Key('lessonAttachmentDownload');
 }

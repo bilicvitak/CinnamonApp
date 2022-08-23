@@ -1,86 +1,86 @@
-import 'dart:math';
-
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
-import 'package:cinnamon_flutter_template_1/models/seat/seat.dart';
 import 'package:cinnamon_flutter_template_1/widgets/outlined_gray_button.dart';
 import 'package:cinnamon_flutter_template_1/widgets/seat_card.dart';
 import 'package:cinnamon_flutter_template_1/widgets/white_button.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class LessonReservationsRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  LessonReservationsRobot(this.tester);
+  LessonReservationsRobot(this._tester);
 
   Future<void> findSeats() async {
-    final _seats = find.byType(SeatCard);
-    expect(_seats, findsWidgets);
+    final seats = find.byType(SeatCard);
+    expect(seats, findsWidgets);
   }
 
   Future<void> findSeatLegend() async {
-    final _seatAvailableText = find.text(FAStrings.lessonsSeatAvailable);
-    final _seatNotAvailableText = find.text(FAStrings.lessonsSeatNotAvailable);
-    final _seatSelectedText = find.text(FAStrings.lessonsSeatSelected);
+    final seatAvailableText = find.text(FAStrings.lessonsSeatAvailable);
+    final seatNotAvailableText = find.text(FAStrings.lessonsSeatNotAvailable);
+    final seatSelectedText = find.text(FAStrings.lessonsSeatSelected);
 
-    expect(_seatAvailableText, findsOneWidget);
-    expect(_seatNotAvailableText, findsOneWidget);
-    expect(_seatSelectedText, findsOneWidget);
+    expect(seatAvailableText, findsOneWidget);
+    expect(seatNotAvailableText, findsOneWidget);
+    expect(seatSelectedText, findsOneWidget);
   }
 
   Future<void> findReserveButton() async {
-    final _reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
-    final _selectedSeatTitle = find.textContaining(FAStrings.lessonsSelectedSeat);
+    final reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
+    final selectedSeatTitle = find.textContaining(FAStrings.lessonsSelectedSeat);
 
-    expect(_selectedSeatTitle, findsOneWidget);
-    expect(_reserveButton, findsOneWidget);
+    expect(selectedSeatTitle, findsOneWidget);
+    expect(reserveButton, findsOneWidget);
   }
 
   Future<void> selectSeat() async {
-    final _seat = find.byType(SeatCard).at(0);
-    final _seatWidget = tester.widget<SeatCard>(_seat);
-    final _position = _seatWidget.reservation.seat.name;
-    final _selectedSeat = find.textContaining('${FAStrings.lessonsSelectedSeat}\n$_position');
+    final seat = find.byType(SeatCard).at(0);
 
-    await tester.tap(_seat);
-    await tester.pump();
+    await _tester.tap(seat);
+    await _tester.pump();
 
-    expect(_seatWidget.isSelected, true);
-    expect(_selectedSeat, findsOneWidget);
+    final seatWidget = _tester.widget<SeatCard>(seat);
+    final seatName = seatWidget.reservation.seat.name;
+    final selectedSeat = find.textContaining('${FAStrings.lessonsSelectedSeat}\n$seatName');
+
+    expect(seatWidget.isSelected, true);
+    expect(selectedSeat, findsOneWidget);
   }
 
   Future<void> reserveSeat() async {
-    final _seat = find.byType(SeatCard).at(0);
-    final _seatWidget = tester.widget<SeatCard>(_seat);
-    final _reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
-    final _cancelButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonCancel);
+    final seat = find.byType(SeatCard).at(0);
+    final reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
+    final cancelButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonCancel);
 
-    await tester.tap(_reserveButton);
-    await tester.pump(const Duration(milliseconds: 500));
+    await _tester.tap(reserveButton);
+    await _tester.pump(const Duration(milliseconds: 500));
 
-    expect(_reserveButton, findsNothing);
-    expect(_cancelButton, findsOneWidget);
-    expect(_seatWidget.isReserved, true);
+    final seatWidget = _tester.widget<SeatCard>(seat);
+
+    expect(reserveButton, findsNothing);
+    expect(cancelButton, findsOneWidget);
+    expect(seatWidget.isReserved, true);
   }
 
   Future<void> closeScreen() async {
-    final _closeButton = find.byKey(FAKeys.reservationsClose);
+    final closeButton = find.byKey(FAKeys.reservationsClose);
 
-    await tester.tap(_closeButton);
-    await tester.pumpAndSettle();
+    await _tester.tap(closeButton);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> cancelReservations() async {
-    final _cancelButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonCancel);
-    final _seat = find.byType(SeatCard).at(0);
-    final _seatWidget = tester.widget<SeatCard>(_seat);
-    final _reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
+    final cancelButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonCancel);
+    final seat = find.byType(SeatCard).at(0);
+    final reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
 
-    await tester.tap(_cancelButton);
-    await tester.pump(const Duration(milliseconds: 500));
+    await _tester.tap(cancelButton);
+    await _tester.pump(const Duration(milliseconds: 500));
 
-    expect(_cancelButton, findsNothing);
-    expect(_reserveButton, findsOneWidget);
-    expect(_seatWidget.isReserved, false);
+    final seatWidget = _tester.widget<SeatCard>(seat);
+
+    expect(cancelButton, findsNothing);
+    expect(reserveButton, findsOneWidget);
+    expect(seatWidget.isReserved, false);
   }
 }

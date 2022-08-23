@@ -6,119 +6,121 @@ import 'package:cinnamon_flutter_template_1/widgets/rating_bar.dart';
 import 'package:cinnamon_flutter_template_1/widgets/rating_bar_star.dart';
 import 'package:cinnamon_flutter_template_1/widgets/yellow_back_button.dart';
 import 'package:cinnamon_flutter_template_1/widgets/yellow_button.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class LessonDetailsRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  LessonDetailsRobot(this.tester);
+  LessonDetailsRobot(this._tester);
 
   Future<void> findLessonDetails({bool isPastLesson = false}) async {
-    final _descriptionTitle = find.text(FAStrings.lessonsDescription);
-    final _description = find.byKey(FAKeys.lessonDescription);
-    final _lessonScheduleTitle = find.text(FAStrings.lessonsLessonSchedule);
-    final _lessonSchedule = find.byType(CustomPaint);
-    final _locationTitle = find.text(FAStrings.lessonsLocation);
-    final _location = find.byKey(FAKeys.lessonLocation);
-    final _dateTitle = find.text(FAStrings.lessonsDate);
-    final _date = find.byKey(FAKeys.lessonDate);
-    final _attachmentsTitle = find.text(FAStrings.lessonsAttachments);
-    final _attachments = find.byType(AttachmentCard);
+    final descriptionTitle = find.text(FAStrings.lessonsDescription);
+    final description = find.byKey(FAKeys.lessonDescription);
+    final lessonScheduleTitle = find.text(FAStrings.lessonsLessonSchedule);
+    final lessonSchedule = find.byType(CustomPaint);
+    final locationTitle = find.text(FAStrings.lessonsLocation);
+    final location = find.byKey(FAKeys.lessonLocation);
+    final dateTitle = find.text(FAStrings.lessonsDate);
+    final date = find.byKey(FAKeys.lessonDate);
+    final attachmentsTitle = find.text(FAStrings.lessonsAttachments);
+    final attachments = find.byType(AttachmentCard);
 
-    expect(_descriptionTitle, findsOneWidget);
-    expect(_description, findsOneWidget);
-    expect(_lessonScheduleTitle, findsOneWidget);
-    expect(_lessonSchedule, findsWidgets);
-    expect(_locationTitle, findsOneWidget);
-    expect(_location, findsOneWidget);
-    expect(_dateTitle, findsOneWidget);
-    expect(_date, findsOneWidget);
-    expect(_attachmentsTitle, findsOneWidget);
-    expect(_attachments, findsWidgets);
+    expect(descriptionTitle, findsOneWidget);
+    expect(description, findsOneWidget);
+    expect(lessonScheduleTitle, findsOneWidget);
+    expect(lessonSchedule, findsWidgets);
+    expect(locationTitle, findsOneWidget);
+    expect(location, findsOneWidget);
+    expect(dateTitle, findsOneWidget);
+    expect(date, findsOneWidget);
+    expect(attachmentsTitle, findsOneWidget);
+    expect(attachments, findsWidgets);
 
     if (isPastLesson) {
-      final _rateLessonTitle = find.text(FAStrings.lessonsRating);
-      final _ratingBar = find.byType(RatingBar);
+      final rateLessonTitle = find.text(FAStrings.lessonsRating);
+      final ratingBar = find.byType(RatingBar);
 
-      expect(_rateLessonTitle, findsOneWidget);
-      expect(_ratingBar, findsOneWidget);
+      expect(rateLessonTitle, findsOneWidget);
+      expect(ratingBar, findsOneWidget);
     } else {
       await findReserveButton();
     }
   }
 
   Future<void> scrollPageVertically({AxisDirection direction = AxisDirection.up}) async {
-    final _scrollView = find.byKey(FAKeys.lessonDetailsScrollView);
-    final _locationTitle = find.text(FAStrings.lessonsLocation);
-    final _initialPosition = tester.getCenter(_locationTitle);
-    final _dy = direction == AxisDirection.up ? -500.0 : 500.0;
+    final scrollView = find.byKey(FAKeys.lessonDetailsScrollView);
+    final locationTitle = find.text(FAStrings.lessonsLocation);
+    final initialPosition = _tester.getCenter(locationTitle);
+    final dy = direction == AxisDirection.up ? -500.0 : 500.0;
 
-    await tester.drag(_scrollView, Offset(0, _dy));
-    await tester.pump();
+    await _tester.drag(scrollView, Offset(0, dy));
+    await _tester.pump();
 
-    final _newPosition = tester.getCenter(_locationTitle);
+    final newPosition = _tester.getCenter(locationTitle);
 
-    expect(_newPosition.dy < _initialPosition.dy, direction == AxisDirection.up);
+    expect(newPosition.dy < initialPosition.dy, direction == AxisDirection.up);
   }
 
   Future<void> rateLesson({required int rating}) async {
-    final _ratingBar = find.byType(RatingBar);
-    final _ratingBarStar =
-        find.descendant(of: _ratingBar, matching: find.byType(RatingBarStar)).at(rating - 1);
-    final _filledStars = find.descendant(
+    final ratingBar = find.byType(RatingBar);
+    final ratingBarStar =
+        find.descendant(of: ratingBar, matching: find.byType(RatingBarStar)).at(rating - 1);
+    final filledStars = find.descendant(
         of: find.byType(RatingBarStar), matching: find.byKey(FAKeys.lessonStarFilled));
-    final _emptyStars = find.descendant(
+    final emptyStars = find.descendant(
         of: find.byType(RatingBarStar), matching: find.byKey(FAKeys.lessonStarEmpty));
 
-    await tester.tap(_ratingBarStar);
-    await tester.pump(const Duration(seconds: 1));
+    await _tester.ensureVisible(ratingBar);
+    await _tester.tap(ratingBarStar);
+    await _tester.pump(const Duration(milliseconds: 500));
 
-    expect(_filledStars, findsNWidgets(rating));
-    expect(_emptyStars, findsNWidgets(5 - rating));
+    expect(filledStars, findsNWidgets(rating));
+    expect(emptyStars, findsNWidgets(5 - rating));
   }
 
   Future<void> openPdfFile() async {
-    final _attachmentCard = find.byType(AttachmentCard).at(0);
+    final attachmentCard = find.byType(AttachmentCard).at(0);
+    final pdfViewer = find.byKey(FAKeys.lessonPdfViewer);
 
-    await tester.tap(_attachmentCard);
-    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await _tester.ensureVisible(attachmentCard);
+    await _tester.tap(attachmentCard);
+    await _tester.pumpAndSettle();
 
-    expect(find.byType(SfPdfViewer), findsOneWidget);
+    expect(pdfViewer, findsOneWidget);
   }
 
   Future<void> goBack() async {
-    final _yellowBackButton = find.byType(YellowBackButton);
+    final yellowBackButton = find.byType(YellowBackButton);
 
-    await tester.tap(_yellowBackButton);
-    await tester.pumpAndSettle();
+    await _tester.tap(yellowBackButton);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> clickReserveButton() async {
-    final _reserveButton = find.widgetWithText(YellowButton, FAStrings.buttonReserve);
+    final reserveButton = find.widgetWithText(YellowButton, FAStrings.buttonReserve);
 
-    await tester.tap(_reserveButton);
-    await tester.pumpAndSettle();
+    await _tester.tap(reserveButton);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> findReservedSeat() async {
-    final _selectedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
-    final _changeButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonChange);
+    final selectedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
+    final changeButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonChange);
 
-    expect(_selectedSeat, findsOneWidget);
-    expect(_changeButton, findsOneWidget);
+    expect(selectedSeat, findsOneWidget);
+    expect(changeButton, findsOneWidget);
   }
 
   Future<void> changeReservation() async {
-    final _changeButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonChange);
+    final changeButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonChange);
 
-    await tester.tap(_changeButton);
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await _tester.tap(changeButton);
+    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
   }
 
   Future<void> findReserveButton() async {
-    final _reserveButton = find.widgetWithText(YellowButton, FAStrings.buttonReserve);
-    expect(_reserveButton, findsOneWidget);
+    final reserveButton = find.widgetWithText(YellowButton, FAStrings.buttonReserve);
+    expect(reserveButton, findsOneWidget);
   }
 }

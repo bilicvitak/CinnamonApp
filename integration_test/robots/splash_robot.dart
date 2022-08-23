@@ -2,39 +2,39 @@ import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class SplashRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  SplashRobot(this.tester);
+  SplashRobot(this._tester);
 
   Future<void> findFirstYellowContainer() async {
-    final _splashFirstYellowContainer = find.byKey(FAKeys.splashFirstYellowContainer);
+    final splashFirstYellowContainer = find.byKey(FAKeys.splashFirstYellowContainer);
 
-    await tester.pumpAndSettle();
+    await _tester.pumpAndSettle();
 
-    expect(_splashFirstYellowContainer, findsOneWidget);
+    expect(splashFirstYellowContainer, findsOneWidget);
   }
 
   Future<void> findWhiteContainer() async {
-    final _splashWhiteContainer = find.byKey(FAKeys.splashWhiteContainer);
+    final splashWhiteContainer = find.byKey(FAKeys.splashWhiteContainer);
 
-    await tester.pump(const Duration(seconds: 1));
+    await _tester.pump(const Duration(seconds: 1));
 
-    expect(_splashWhiteContainer, findsOneWidget);
+    expect(splashWhiteContainer, findsOneWidget);
   }
 
   Future<void> findLogo() async {
-    final _splashLogoFull = find.byKey(FAKeys.splashLogoFull);
+    final splashLogoFull = find.byKey(FAKeys.splashLogoFull);
 
-    await tester.pump(const Duration(seconds: 1));
+    await _tester.pump(const Duration(seconds: 1));
 
-    expect(_splashLogoFull, findsOneWidget);
+    expect(splashLogoFull, findsOneWidget);
   }
 
   Future<void> findSecondYellowContainer() async {
-    final _splashSecondYellowContainer = find.byKey(FAKeys.splashSecondYellowContainer);
+    final splashSecondYellowContainer = find.byKey(FAKeys.splashSecondYellowContainer);
 
-    await tester.pump(const Duration(seconds: 2));
+    await _tester.pump(const Duration(seconds: 2));
 
-    expect(_splashSecondYellowContainer, findsOneWidget);
+    expect(splashSecondYellowContainer, findsOneWidget);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 class RegistrationRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  RegistrationRobot(this.tester);
+  RegistrationRobot(this._tester);
 }

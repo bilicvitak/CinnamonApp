@@ -1,4 +1,3 @@
-import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:cinnamon_flutter_template_1/widgets/notification_card.dart';
@@ -7,54 +6,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class NotificationsRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  NotificationsRobot(this.tester);
+  NotificationsRobot(this._tester);
 
   Future<void> findNotifications() async {
-    final _notificationTitle = find.text(FAStrings.notificationsNotifications);
-    final _notificationCards = find.byType(NotificationCard);
+    final notificationTitle = find.text(FAStrings.notificationsNotifications);
+    final notificationCards = find.byType(NotificationCard);
 
-    expect(_notificationTitle, findsOneWidget);
-    expect(_notificationCards, findsWidgets);
+    expect(notificationTitle, findsOneWidget);
+    expect(notificationCards, findsWidgets);
   }
 
   Future<void> refreshNotifications() async {
-    final _refreshIndicator = find.byKey(FAKeys.notificationsRefreshIndicator);
+    final refreshIndicator = find.byKey(FAKeys.notificationsRefreshIndicator);
 
-    await tester.drag(_refreshIndicator, const Offset(0, 500));
-    await tester.pump();
+    await _tester.drag(refreshIndicator, const Offset(0, 500));
+    await _tester.pump();
 
     expect(FAKeys.notificationsRefreshIndicator.currentState != null, true);
   }
 
   Future<void> scrollPage() async {
-    final _listView = find.byKey(FAKeys.notificationsListView);
-    final _initialPosition = tester.getCenter(_listView);
+    final listView = find.byKey(FAKeys.notificationsListView);
+    final initialPosition = _tester.getCenter(listView);
 
-    await tester.drag(_listView, const Offset(0, -500));
-    await tester.pumpAndSettle();
+    await _tester.drag(listView, const Offset(0, -500));
+    await _tester.pumpAndSettle();
 
-    final _newPosition = tester.getCenter(_listView);
+    final newPosition = _tester.getCenter(listView);
 
-    expect(_newPosition.dy < _initialPosition.dy, true);
+    expect(newPosition.dy < initialPosition.dy, true);
   }
 
   Future<void> dismissNotification() async {
-    final _notificationCard = find.byType(Dismissible).at(0);
-    final _key = tester.widget<Dismissible>(_notificationCard).key;
+    final notificationCard = find.byType(Dismissible).at(0);
+    final key = _tester.widget<Dismissible>(notificationCard).key;
 
-    await tester.timedDrag(_notificationCard, const Offset(-500, 0), const Duration(milliseconds: 500));
-    await tester.pumpAndSettle();
+    await _tester.timedDrag(notificationCard, const Offset(-500, 0), const Duration(milliseconds: 500));
+    await _tester.pumpAndSettle();
 
-    expect(find.byKey(_key!), findsNothing);
+    expect(find.byKey(key!), findsNothing);
   }
 
   Future<void> closeNotifications() async {
-    final _yellowCloseButton = find.byType(YellowCloseButton);
+    final yellowCloseButton = find.byType(YellowCloseButton);
 
-    await tester.ensureVisible(_yellowCloseButton);
-    await tester.tap(_yellowCloseButton);
-    await tester.pumpAndSettle();
+    await _tester.ensureVisible(yellowCloseButton);
+    await _tester.tap(yellowCloseButton);
+    await _tester.pumpAndSettle();
   }
 }

@@ -160,23 +160,25 @@ class LessonReservationsController extends GetxController {
       reservationsDetails.addAll({seat.position: ReservationSeat(seat: seat)});
     }
 
-    await Future.forEach<Map<String, String>>(students, (student) async {
-      final seat = _getSeat(student['seatId']!);
-      final user = await _getUser(student['userId']!);
+    if (students.isNotEmpty) {
+      await Future.forEach<Map<String, String>>(students, (student) async {
+        final seat = _getSeat(student['seatId']!);
+        final user = await _getUser(student['userId']!);
 
-      // TODO Use firebaseService method
-      reservations.add({
-        'seatId': firebaseService.firebaseFirestore.doc(student['seatId']!),
-        'userId': firebaseService.firebaseFirestore.doc(student['userId']!),
+        // TODO Use firebaseService method
+        reservations.add({
+          'seatId': firebaseService.firebaseFirestore.doc(student['seatId']!),
+          'userId': firebaseService.firebaseFirestore.doc(student['userId']!),
+        });
+
+        reservationsDetails.addAll({seat.position: ReservationSeat(seat: seat, student: user)});
+
+        if (user.id == firebaseService.firebaseUser.value?.uid) {
+          isSeatReserved = true;
+          selectedSeat = seat;
+        }
       });
-
-      reservationsDetails.addAll({seat.position: ReservationSeat(seat: seat, student: user)});
-
-      if (user.id == firebaseService.firebaseUser.value?.uid) {
-        isSeatReserved = true;
-        selectedSeat = seat;
-      }
-    });
+    }
 
     _reservations.refresh();
     _reservationsDetails.refresh();

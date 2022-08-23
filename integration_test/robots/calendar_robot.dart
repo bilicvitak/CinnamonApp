@@ -3,78 +3,78 @@ import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class CalendarRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  CalendarRobot(this.tester);
+  CalendarRobot(this._tester);
 
   Future<void> findCellCalendar() async {
-    final _cellCalendar = find.byType(CellCalendar);
-    expect(_cellCalendar, findsOneWidget);
+    final cellCalendar = find.byType(CellCalendar);
+    expect(cellCalendar, findsOneWidget);
   }
 
   Future<void> swipeLeft() async {
-    final _cellCalendar = find.byType(CellCalendar);
-    final _cellCalendarController =
-        tester.widget<CellCalendar>(_cellCalendar).cellCalendarPageController;
-    final _page = _cellCalendarController?.page;
+    final cellCalendar = find.byType(CellCalendar);
+    final cellCalendarController =
+        _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
+    final page = cellCalendarController?.page;
 
-    await tester.drag(_cellCalendar, const Offset(-500, 0));
-    await tester.pumpAndSettle();
+    await _tester.drag(cellCalendar, const Offset(-500, 0));
+    await _tester.pumpAndSettle();
 
-    await _findNextPage(initialPage: _page!);
+    await _findNextPage(initialPage: page!);
   }
 
   Future<void> swipeRight() async {
-    final _cellCalendar = find.byType(CellCalendar);
-    final _cellCalendarController =
-        tester.widget<CellCalendar>(_cellCalendar).cellCalendarPageController;
-    final _page = _cellCalendarController?.page;
+    final cellCalendar = find.byType(CellCalendar);
+    final cellCalendarController =
+        _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
+    final page = cellCalendarController?.page;
 
-    await tester.drag(_cellCalendar, const Offset(500, 0));
-    await tester.pumpAndSettle();
+    await _tester.drag(cellCalendar, const Offset(500, 0));
+    await _tester.pumpAndSettle();
 
-    await _findPreviousPage(initialPage: _page!);
+    await _findPreviousPage(initialPage: page!);
   }
 
   Future<void> clickChevronRight() async {
-    final _cellCalendar = find.byType(CellCalendar);
-    final _cellCalendarController =
-        tester.widget<CellCalendar>(_cellCalendar).cellCalendarPageController;
-    final _page = _cellCalendarController?.page;
-    final _chevronRight = find.byKey(FAKeys.calendarSwipeLeft);
+    final cellCalendar = find.byType(CellCalendar);
+    final cellCalendarController =
+        _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
+    final page = cellCalendarController?.page;
+    final chevronRight = find.byKey(FAKeys.calendarSwipeLeft);
 
-    await tester.tap(_chevronRight);
-    await tester.pumpAndSettle();
+    await _tester.tap(chevronRight);
+    await _tester.pumpAndSettle();
 
-    await _findNextPage(initialPage: _page!);
+    await _findNextPage(initialPage: page!);
   }
 
   Future<void> clickChevronLeft() async {
-    final _cellCalendar = find.byType(CellCalendar);
-    final _cellCalendarController =
-        tester.widget<CellCalendar>(_cellCalendar).cellCalendarPageController;
-    final _page = _cellCalendarController?.page;
-    final _chevronLeft = find.byKey(FAKeys.calendarSwipeRight);
+    final cellCalendar = find.byType(CellCalendar);
+    final cellCalendarController =
+        _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
+    final page = cellCalendarController?.page;
+    final chevronLeft = find.byKey(FAKeys.calendarSwipeRight);
 
-    await tester.tap(_chevronLeft);
-    await tester.pumpAndSettle();
+    await _tester.tap(chevronLeft);
+    await _tester.pumpAndSettle();
 
-    await _findPreviousPage(initialPage: _page!);
+    await _findPreviousPage(initialPage: page!);
   }
 
   Future<void> _findPreviousPage({double initialPage = 0}) async {
-    final _cellCalendar = find.byType(CellCalendar);
-    final _cellCalendarController =
-        tester.widget<CellCalendar>(_cellCalendar).cellCalendarPageController;
+    final cellCalendar = find.byType(CellCalendar);
+    final cellCalendarController =
+        _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
 
-    expect(_cellCalendarController?.page, initialPage - 1);
+    expect(cellCalendarController?.page, initialPage - 1);
   }
 
   Future<void> _findNextPage({double initialPage = 0}) async {
-    final _cellCalendar = find.byType(CellCalendar);
-    final _cellCalendarController =
-        tester.widget<CellCalendar>(_cellCalendar).cellCalendarPageController;
+    final cellCalendar = find.byType(CellCalendar);
+    final cellCalendarController =
+        _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
 
-    expect(_cellCalendarController?.page, initialPage + 1);
+    expect(cellCalendarController?.page, initialPage + 1);
   }
 }

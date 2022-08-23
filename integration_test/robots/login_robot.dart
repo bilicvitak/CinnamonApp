@@ -9,92 +9,92 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 
 class LoginRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  LoginRobot(this.tester);
+  LoginRobot(this._tester);
 
   Future<void> goBack() async {
-    final _backButton = find.byType(YellowBackButton);
+    final backButton = find.byType(YellowBackButton);
 
-    await tester.tap(_backButton);
-    await tester.pumpAndSettle();
+    await _tester.tap(backButton);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> enterEmail({required String email}) async {
-    final _loginEmail = find.byKey(FAKeys.loginEmail);
+    final loginEmail = find.byKey(FAKeys.loginEmail);
 
-    await tester.tap(_loginEmail);
-    await tester.pump(const Duration(milliseconds: 500));
-    await tester.enterText(_loginEmail, email);
-    await tester.pump(const Duration(seconds: 1));
+    await _tester.tap(loginEmail);
+    await _tester.pump(const Duration(milliseconds: 500));
+    await _tester.enterText(loginEmail, email);
+    await _tester.pump(const Duration(seconds: 1));
 
     FocusManager.instance.primaryFocus?.unfocus();
-    await tester.pump(const Duration(milliseconds: 500));
+    await _tester.pump(const Duration(milliseconds: 500));
   }
 
   Future<void> findEmailError({bool isEmpty = false}) async {
     if (isEmpty) {
-      final _emailEmptyError = find.text(FAStrings.registrationValidationRequiredField);
-      expect(_emailEmptyError, findsOneWidget);
+      final emailEmptyError = find.text(FAStrings.registrationValidationRequiredField);
+      expect(emailEmptyError, findsOneWidget);
     } else {
-      final _emailInvalidError = find.text(FAStrings.registrationValidationValidEmail);
-      expect(_emailInvalidError, findsOneWidget);
+      final emailInvalidError = find.text(FAStrings.registrationValidationValidEmail);
+      expect(emailInvalidError, findsOneWidget);
     }
   }
 
   Future<void> enterPassword({required String password}) async {
-    final _loginPassword = find.byKey(FAKeys.loginPassword);
+    final loginPassword = find.byKey(FAKeys.loginPassword);
 
-    await tester.tap(_loginPassword);
-    await tester.pump(const Duration(milliseconds: 500));
-    await tester.enterText(_loginPassword, password);
-    await tester.pump(const Duration(seconds: 1));
+    await _tester.tap(loginPassword);
+    await _tester.pump(const Duration(milliseconds: 500));
+    await _tester.enterText(loginPassword, password);
+    await _tester.pump(const Duration(seconds: 1));
 
     FocusManager.instance.primaryFocus?.unfocus();
-    await tester.pump(const Duration(milliseconds: 500));
+    await _tester.pump(const Duration(milliseconds: 500));
   }
 
   Future<void> findPasswordError({bool isEmpty = false}) async {
     if (isEmpty) {
-      final _passwordEmptyError = find.text(FAStrings.registrationValidationRequiredField);
-      expect(_passwordEmptyError, findsOneWidget);
+      final passwordEmptyError = find.text(FAStrings.registrationValidationRequiredField);
+      expect(passwordEmptyError, findsOneWidget);
     } else {
-      final _passwordInvalidError = find.text(FAStrings.registrationValidationShortPassword);
-      expect(_passwordInvalidError, findsOneWidget);
+      final passwordInvalidError = find.text(FAStrings.registrationValidationShortPassword);
+      expect(passwordInvalidError, findsOneWidget);
     }
   }
 
   Future<void> toggleObscureText() async {
-    final _showPassword = find.byKey(FAKeys.loginShowPassword);
-    await tester.tap(_showPassword);
-    await tester.pump();
+    final showPassword = find.byKey(FAKeys.loginShowPassword);
+    await _tester.tap(showPassword);
+    await _tester.pump();
   }
 
   Future<void> findDisabledLoginButton() async {
-    final _loginButton = find.byKey(FAKeys.loginButton);
+    final loginButton = find.byKey(FAKeys.loginButton);
 
-    expect(tester.widget<YellowButton>(_loginButton).enabled, false);
+    expect(_tester.widget<YellowButton>(loginButton).enabled, false);
   }
 
   Future<void> clickLoginButton({int resultCode = 0}) async {
-    final _loginButton = find.byKey(FAKeys.loginButton);
+    final loginButton = find.byKey(FAKeys.loginButton);
 
-    await tester.ensureVisible(_loginButton);
-    await tester.tap(_loginButton);
-    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await _tester.ensureVisible(loginButton);
+    await _tester.tap(loginButton);
+    await _tester.pumpAndSettle(const Duration(seconds: 1));
 
     switch (resultCode) {
       case 0:
-        final _firebaseUser = firebaseService.firebaseUser.value;
-        expect(_firebaseUser != null, true);
+        final firebaseUser = firebaseService.firebaseUser.value;
+        expect(firebaseUser != null, true);
         break;
       case FCErrors.userNotFound:
-        final _snackbar = find.widgetWithText(GetSnackBar, FAStrings.errorUserNotFound);
-        expect(_snackbar, findsOneWidget);
+        final snackbar = find.widgetWithText(GetSnackBar, FAStrings.errorUserNotFound);
+        expect(snackbar, findsOneWidget);
         break;
       case FCErrors.wrongPassword:
-        final _snackbar = find.widgetWithText(GetSnackBar, FAStrings.errorWrongPassword);
-        expect(_snackbar, findsOneWidget);
+        final snackbar = find.widgetWithText(GetSnackBar, FAStrings.errorWrongPassword);
+        expect(snackbar, findsOneWidget);
         break;
     }
   }

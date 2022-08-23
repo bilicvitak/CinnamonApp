@@ -5,56 +5,56 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class LessonsRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  LessonsRobot(this.tester);
+  LessonsRobot(this._tester);
 
   Future<void> findUpcomingLessons() async {
-    final _upcomingTitle = find.text(FAStrings.homeUpcoming);
-    final _upcomingListView = find.byKey(FAKeys.lessonsUpcomingListView);
+    final upcomingTitle = find.text(FAStrings.homeUpcoming);
+    final upcomingListView = find.byKey(FAKeys.lessonsUpcomingListView);
 
-    expect(_upcomingTitle, findsOneWidget);
-    expect(_upcomingListView, findsOneWidget);
+    expect(upcomingTitle, findsOneWidget);
+    expect(upcomingListView, findsOneWidget);
   }
 
   Future<void> findPastLessons() async {
-    final _pastTitle = find.text(FAStrings.lessonsPast);
-    final _pastListView = find.byKey(FAKeys.lessonsPastListView);
+    final pastTitle = find.text(FAStrings.lessonsPast);
+    final pastListView = find.byKey(FAKeys.lessonsPastListView);
 
-    expect(_pastTitle, findsOneWidget);
-    expect(_pastListView, findsOneWidget);
+    expect(pastTitle, findsOneWidget);
+    expect(pastListView, findsOneWidget);
   }
 
   Future<void> scrollPageVertically({AxisDirection direction = AxisDirection.up}) async {
-    final _scrollView = find.byKey(FAKeys.lessonsScrollView);
-    final _upcomingListView = find.byKey(FAKeys.lessonsUpcomingListView);
-    final _initialPosition = tester.getCenter(_upcomingListView);
-    final _dy = direction == AxisDirection.up ? -500.0 : 500.0;
+    final scrollView = find.byKey(FAKeys.lessonsScrollView);
+    final upcomingListView = find.byKey(FAKeys.lessonsUpcomingListView);
+    final initialPosition = _tester.getCenter(upcomingListView);
+    final dy = direction == AxisDirection.up ? -500.0 : 500.0;
 
-    await tester.drag(_scrollView, Offset(0, _dy));
-    await tester.pump();
+    await _tester.drag(scrollView, Offset(0, dy));
+    await _tester.pump();
 
-    final _newPosition = tester.getCenter(_upcomingListView);
+    final newPosition = _tester.getCenter(upcomingListView);
 
-    expect(_newPosition.dy < _initialPosition.dy, direction == AxisDirection.up);
+    expect(newPosition.dy < initialPosition.dy, direction == AxisDirection.up);
   }
 
   Future<void> clickOnUpcomingLesson() async {
-    final _upcomingLessons = find.byKey(FAKeys.lessonsUpcomingListView);
-    final _upcomingLesson =
-        find.descendant(of: _upcomingLessons, matching: find.byType(LessonCard)).at(1);
+    final upcomingLessons = find.byKey(FAKeys.lessonsUpcomingListView);
+    final upcomingLesson =
+        find.descendant(of: upcomingLessons, matching: find.byType(LessonCard)).at(1);
 
-    await tester.ensureVisible(_upcomingLesson);
-    await tester.tap(_upcomingLesson);
-    await tester.pumpAndSettle();
+    await _tester.ensureVisible(upcomingLesson);
+    await _tester.tap(upcomingLesson);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> clickOnPastLesson() async {
-    final _pastLessons = find.byKey(FAKeys.lessonsPastListView);
-    final _pastLesson = find.descendant(of: _pastLessons, matching: find.byType(LessonCard)).at(0);
+    final pastLessons = find.byKey(FAKeys.lessonsPastListView);
+    final pastLesson = find.descendant(of: pastLessons, matching: find.byType(LessonCard)).at(0);
 
-    await tester.ensureVisible(_pastLesson);
-    await tester.tap(_pastLesson);
-    await tester.pumpAndSettle();
+    await _tester.ensureVisible(pastLesson);
+    await _tester.tap(pastLesson);
+    await _tester.pumpAndSettle();
   }
 }

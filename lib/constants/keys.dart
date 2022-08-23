@@ -61,4 +61,5 @@ class FAKeys {
   static const lessonStarEmpty = Key('lessonStarEmpty');
   static const lessonDetailsScrollView = Key('lessonDetailsScrollView');
   static const lessonAttachmentDownload = Key('lessonAttachmentDownload');
+  static const lessonPdfViewer = Key('lessonPdfViewer');
 }

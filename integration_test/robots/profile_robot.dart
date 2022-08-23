@@ -1,13 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 
 class ProfileRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  ProfileRobot(this.tester);
+  ProfileRobot(this._tester);
 
-  Future<void> findProfileSettings() async {}
+  Future<void> findProfileSettings() async {
 
-  Future<void> toggleNotifications() async {}
+  }
+
+  Future<void> toggleNotifications() async {
+
+  }
 
   Future<void> toggleDarkMode() async {}
 

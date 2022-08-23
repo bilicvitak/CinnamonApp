@@ -6,65 +6,65 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class HomeRobot {
-  final WidgetTester tester;
+  final WidgetTester _tester;
 
-  HomeRobot(this.tester);
+  HomeRobot(this._tester);
 
   Future<void> findUpcomingLesson() async {
-    final _upcomingHeadline = find.text(FAStrings.homeUpcoming);
-    final _lessonTitle = find.byKey(FAKeys.homeLessonTitle);
-    final _lessonTime = find.byKey(FAKeys.homeLessonTime);
-    final _scheduleHeadline = find.textContaining(FAStrings.homeLessonNameSchedule);
-    final _schedulePainter = find.byType(CustomPaint);
-    final _reservedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
+    final upcomingHeadline = find.text(FAStrings.homeUpcoming);
+    final lessonTitle = find.byKey(FAKeys.homeLessonTitle);
+    final lessonTime = find.byKey(FAKeys.homeLessonTime);
+    final scheduleHeadline = find.textContaining(FAStrings.homeLessonNameSchedule);
+    final schedulePainter = find.byType(CustomPaint);
+    final reservedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
 
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-    expect(_upcomingHeadline, findsOneWidget);
-    expect(_lessonTitle, findsOneWidget);
-    expect(_lessonTime, findsOneWidget);
-    expect(_reservedSeat, findsNothing);
-    expect(_scheduleHeadline, findsOneWidget);
-    expect(_schedulePainter, findsWidgets);
+    expect(upcomingHeadline, findsOneWidget);
+    expect(lessonTitle, findsOneWidget);
+    expect(lessonTime, findsOneWidget);
+    expect(reservedSeat, findsNothing);
+    expect(scheduleHeadline, findsOneWidget);
+    expect(schedulePainter, findsWidgets);
   }
 
   Future<void> goToUpcomingLessonDetails() async {
-    final _chevronRight = find.byKey(FAKeys.homeChevronRight);
+    final chevronRight = find.byKey(FAKeys.homeChevronRight);
 
-    await tester.ensureVisible(_chevronRight);
-    await tester.tap(_chevronRight);
-    await tester.pumpAndSettle();
+    await _tester.ensureVisible(chevronRight);
+    await _tester.tap(chevronRight);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> goBackToHome() async {
-    final _yellowBackButton = find.byType(YellowBackButton);
+    final yellowBackButton = find.byType(YellowBackButton);
 
-    await tester.ensureVisible(_yellowBackButton);
-    await tester.tap(_yellowBackButton);
-    await tester.pumpAndSettle();
+    await _tester.ensureVisible(yellowBackButton);
+    await _tester.tap(yellowBackButton);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> goToReserveSeat() async {
-    final _reserveSeatButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserveSeat);
+    final reserveSeatButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserveSeat);
 
-    await tester.ensureVisible(_reserveSeatButton);
-    await tester.tap(_reserveSeatButton);
-    await tester.pumpAndSettle();
+    await _tester.ensureVisible(reserveSeatButton);
+    await _tester.tap(reserveSeatButton);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> closeAndGoToHome() async {
-    final _closeButton = find.byKey(FAKeys.reservationsClose);
+    final closeButton = find.byKey(FAKeys.reservationsClose);
 
-    await tester.ensureVisible(_closeButton);
-    await tester.tap(_closeButton);
-    await tester.pumpAndSettle();
+    await _tester.ensureVisible(closeButton);
+    await _tester.tap(closeButton);
+    await _tester.pumpAndSettle();
   }
 
   Future<void> goToNotifications() async {
-    final _notificationsButton = find.byKey(FAKeys.homeNotificationButton);
+    final notificationsButton = find.byKey(FAKeys.homeNotificationButton);
 
-    await tester.ensureVisible(_notificationsButton);
-    await tester.tap(_notificationsButton);
-    await tester.pumpAndSettle();
+    await _tester.ensureVisible(notificationsButton);
+    await _tester.tap(notificationsButton);
+    await _tester.pumpAndSettle();
   }
 }

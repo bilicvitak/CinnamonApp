@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../constants/colors.dart';
+import '../../../constants/keys.dart';
 import '../../../constants/text_styles.dart';
 import '../../../widgets/yellow_back_button.dart';
 import '../lesson_details_controller.dart';
@@ -25,6 +26,7 @@ class LessonScreenPdfViewer extends StatelessWidget {
           ),
         ),
         body: Container(
+          key: FAKeys.lessonPdfViewer,
           child: SfPdfViewer.network(controller.selectedFileUrl),
         ),
       );

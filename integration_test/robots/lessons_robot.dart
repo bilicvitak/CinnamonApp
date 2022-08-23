@@ -46,7 +46,7 @@ class LessonsRobot {
 
     await _tester.ensureVisible(upcomingLesson);
     await _tester.tap(upcomingLesson);
-    await _tester.pumpAndSettle();
+    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
   }
 
   Future<void> clickOnPastLesson() async {
@@ -55,6 +55,6 @@ class LessonsRobot {
 
     await _tester.ensureVisible(pastLesson);
     await _tester.tap(pastLesson);
-    await _tester.pumpAndSettle();
+    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
   }
 }

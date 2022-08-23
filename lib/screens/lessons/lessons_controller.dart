@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 
 import '../../constants/dependencies.dart';
 import '../../models/lesson/lesson.dart';
-import '../../services/shared_firebase_data_service.dart';
 import '../lesson_details/lesson_screen_details.dart';
 import '../lesson_reservations/lesson_screen_reservations.dart';
 

@@ -58,13 +58,13 @@ class LessonScreenDetails extends StatelessWidget {
                             /// description text
                             Text(
                               FAStrings.lessonsDescription,
-                              key: FAKeys.lessonDescription,
                               style: FATextStyles.headline,
                             ),
 
                             /// lesson description
                             Text(
                               detailsController.lesson.description,
+                              key: FAKeys.lessonDescription,
                               style: FATextStyles.description,
                             ),
 

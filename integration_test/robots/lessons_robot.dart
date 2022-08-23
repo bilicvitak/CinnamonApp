@@ -44,6 +44,7 @@ class LessonsRobot {
     final _upcomingLesson =
         find.descendant(of: _upcomingLessons, matching: find.byType(LessonCard)).at(1);
 
+    await tester.ensureVisible(_upcomingLesson);
     await tester.tap(_upcomingLesson);
     await tester.pumpAndSettle();
   }
@@ -52,6 +53,7 @@ class LessonsRobot {
     final _pastLessons = find.byKey(FAKeys.lessonsPastListView);
     final _pastLesson = find.descendant(of: _pastLessons, matching: find.byType(LessonCard)).at(0);
 
+    await tester.ensureVisible(_pastLesson);
     await tester.tap(_pastLesson);
     await tester.pumpAndSettle();
   }

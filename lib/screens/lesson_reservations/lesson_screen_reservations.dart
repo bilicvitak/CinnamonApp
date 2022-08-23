@@ -44,7 +44,8 @@ class LessonScreenReservations extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Obx(() => lessonReservationsController.reservationsDetails.isEmpty
+            Obx(
+              () => lessonReservationsController.reservationsDetails.isEmpty
                   ? const LinearProgressIndicator()
                   : Padding(
                       padding: EdgeInsets.only(top: 24.h, right: 16.w, left: 16.w),

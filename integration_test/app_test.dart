@@ -21,7 +21,6 @@ void main() {
 
   group('Integration tests', () {
     testWidgets('First scenario', (tester) async {
-
       /// Initialize robots
       final _splashRobot = SplashRobot(tester);
       final _onboardingRobot = OnboardingRobot(tester);
@@ -121,14 +120,13 @@ void main() {
       await _lessonsRobot.findUpcomingLessons();
       await _lessonsRobot.scrollPageVertically();
       await _lessonsRobot.findPastLessons();
-      //await _lessonsRobot.scrollPageVertically(direction: AxisDirection.down);
 
       /// Lesson details & Lesson reservations screen
       /// --- go to lesson (past) details screen, rate lesson
       await _lessonsRobot.clickOnPastLesson();
       await _lessonDetailsRobot.findLessonDetails(isPastLesson: true);
-      await _lessonDetailsRobot.scrollPageVertically();
-      await _lessonDetailsRobot.rateLesson(rating: 3);
+      //await _lessonDetailsRobot.scrollPageVertically();
+      await _lessonDetailsRobot.rateLesson(rating: 4);
 
       /// --- open pdf viewer, go back
       await _lessonDetailsRobot.openPdfFile();
@@ -139,12 +137,14 @@ void main() {
       await _lessonDetailsRobot.goBack();
 
       /// --- go to lesson (upcoming) details screen, click reserve a seat
+      await _lessonsRobot.scrollPageVertically(direction: AxisDirection.down);
       await _lessonsRobot.clickOnUpcomingLesson();
       await _lessonDetailsRobot.findLessonDetails();
       await _lessonDetailsRobot.clickReserveButton();
 
       /// --- find seat & reserve button, make a reservation, close screen
       await _lessonReservationsRobot.findSeats();
+      await _lessonReservationsRobot.findSeatLegend();
       await _lessonReservationsRobot.findReserveButton();
       await _lessonReservationsRobot.selectSeat();
       await _lessonReservationsRobot.reserveSeat();
@@ -154,9 +154,9 @@ void main() {
       await _lessonDetailsRobot.findReservedSeat();
       await _lessonDetailsRobot.changeReservation();
 
-      /// --- cancel reservation, go back
+      /// --- cancel reservation, close screen
       await _lessonReservationsRobot.cancelReservations();
-      await _lessonReservationsRobot.goBack();
+      await _lessonReservationsRobot.closeScreen();
 
       /// --- find reserve button, go back
       await _lessonDetailsRobot.findReserveButton();

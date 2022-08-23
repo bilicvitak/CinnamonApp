@@ -45,9 +45,9 @@ class LessonsList extends StatelessWidget {
                     itemBuilder: (context, index) => Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.h),
                       child: GestureDetector(
-                        onTap: () => lessonsController
-                          ..selectedLesson = lessonsController.upcomingLessons[index]
-                          ..goToLessonScreenDetails(),
+                        onTap: () => lessonsController.goToLessonScreenDetails(
+                          index: index,
+                        ),
                         child: LessonCard(
                           lessonName: lessonsController.upcomingLessons[index].lessonName,
                           lessonDate: dashboardController
@@ -80,9 +80,10 @@ class LessonsList extends StatelessWidget {
                     itemBuilder: (context, index) => Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.h),
                       child: GestureDetector(
-                        onTap: () => lessonsController
-                          ..selectedLesson = lessonsController.pastLessons[index]
-                          ..goToLessonScreenDetails(),
+                        onTap: () => lessonsController.goToLessonScreenDetails(
+                          index: index,
+                          isUpcoming: false,
+                        ),
                         child: LessonCard(
                           lessonName: lessonsController.pastLessons[index].lessonName,
                           lessonDate: dashboardController

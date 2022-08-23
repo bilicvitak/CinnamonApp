@@ -1,8 +1,10 @@
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
+import 'package:cinnamon_flutter_template_1/screens/lessons/lessons_controller.dart';
 import 'package:cinnamon_flutter_template_1/widgets/lesson_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 
 class LessonsRobot {
   final WidgetTester _tester;
@@ -46,7 +48,10 @@ class LessonsRobot {
 
     await _tester.ensureVisible(upcomingLesson);
     await _tester.tap(upcomingLesson);
-    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+    print(Get.find<LessonsController>().selectedLesson);
+    
+    await _tester.pumpAndSettle();
   }
 
   Future<void> clickOnPastLesson() async {
@@ -55,6 +60,9 @@ class LessonsRobot {
 
     await _tester.ensureVisible(pastLesson);
     await _tester.tap(pastLesson);
-    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+    print(Get.find<LessonsController>().selectedLesson);
+
+    await _tester.pumpAndSettle();
   }
 }

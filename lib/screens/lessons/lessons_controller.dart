@@ -69,11 +69,19 @@ class LessonsController extends GetxController {
   /// ------------------------
 
   /// lessons screen => lesson screen details
-  void goToLessonScreenDetails() => Get.toNamed(LessonScreenDetails.routeName, arguments: {
-        'lesson': selectedLesson.lessonDetails,
-        'isSeatReserved': null,
-        'reservedSeat': null,
-      });
+  void goToLessonScreenDetails({required int index, bool isUpcoming = true}) {
+    if (isUpcoming) {
+      selectedLesson = upcomingLessons[index];
+    } else {
+      selectedLesson = pastLessons[index];
+    }
+
+    Get.toNamed(LessonScreenDetails.routeName, arguments: {
+      'lesson': selectedLesson.lessonDetails,
+      'isSeatReserved': null,
+      'reservedSeat': null,
+    });
+  }
 
   /// lesson details screen => lesson reserve a seat
   void goToLessonScreenReserveSeat() => Get.toNamed(LessonScreenReservations.routeName);

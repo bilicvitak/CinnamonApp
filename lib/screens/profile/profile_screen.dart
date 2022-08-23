@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/icons.dart';
+import '../../constants/keys.dart';
 import '../../constants/strings.dart';
 import '../../constants/text_styles.dart';
 import 'profile_controller.dart';
@@ -81,6 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Row(
                                 children: [
                                   Container(
+                                    key: FAKeys.profilePicture,
                                     width: 64.w,
                                     color: FCColors.white,
                                     child: profileController.user.profilePicture != null
@@ -100,10 +102,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     children: [
                                       Text(
                                         profileController.user.name ?? 'John Doe',
+                                        key: FAKeys.profileFullName,
                                         style: FATextStyles.headline,
                                       ),
                                       Text(
                                         profileController.user.email,
+                                        key: FAKeys.profileEmail,
                                         style: FATextStyles.description,
                                       ),
                                     ],
@@ -135,6 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                           /// Goals
                           Container(
+                            key: FAKeys.profileGoalsContainer,
                             margin: EdgeInsets.only(top: 8.h),
                             height: 140.h,
                             color: FCColors.white,
@@ -143,6 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: profileController.user.userGoals != null &&
                                       profileController.user.userGoals!.isNotEmpty
                                   ? ListView.builder(
+                                      key: FAKeys.profileGoalsList,
                                       physics: const BouncingScrollPhysics(),
                                       itemCount: profileController.user.userGoals?.length,
                                       itemBuilder: (context, index) => Text(
@@ -190,17 +196,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     tileColor: FCColors.white,
                                     shape: Border.all(color: FCColors.gray200),
                                     trailing: GestureDetector(
+                                      key: FAKeys.profileNotificationsToggle,
                                       onTap: () => profileController
                                         ..notifications = !profileController.notifications
                                         ..setNotifications(),
                                       child: profileController.notifications
                                           ? SvgPicture.asset(
                                               FCIcons.turnOn,
+                                              key: FAKeys.profileNotificationsOn,
                                               height: 31.h,
                                               width: 51.w,
                                             )
                                           : SvgPicture.asset(
                                               FCIcons.turnOff,
+                                              key: FAKeys.profileNotificationsOff,
                                               height: 31.h,
                                               width: 51.w,
                                             ),
@@ -219,17 +228,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     tileColor: FCColors.white,
                                     shape: Border.all(color: FCColors.gray200),
                                     trailing: GestureDetector(
+                                      key: FAKeys.profileDarkModeToggle,
                                       onTap: () => profileController
                                         ..darkMode = !profileController.darkMode
                                         ..setDarkMode(),
                                       child: profileController.darkMode
                                           ? SvgPicture.asset(
                                               FCIcons.turnOn,
+                                              key: FAKeys.profileDarkModeOn,
                                               height: 31.h,
                                               width: 51.w,
                                             )
                                           : SvgPicture.asset(
                                               FCIcons.turnOff,
+                                              key: FAKeys.profileDarkModeOff,
                                               height: 31.h,
                                               width: 51.w,
                                             ),

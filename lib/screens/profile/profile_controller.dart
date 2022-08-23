@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 import '../../constants/dependencies.dart';
 import '../../constants/firestore_collections.dart';
@@ -88,6 +89,7 @@ class ProfileController extends GetxController {
 
     name = user.name ?? '';
     email = user.email;
+    validateFields();
 
     profilePictureSet = user.profilePicture != null;
 
@@ -198,19 +200,22 @@ class ProfileController extends GetxController {
 
   void validateFields() {
     /// if field is/was filled show error message (if value is not good)
-    if (name.isNotEmpty) {
+    if (name.isEmpty) {
       errorTextFullName = true;
     }
-    if (email.isNotEmpty) {
+
+    if (email.isEmpty || !email.isEmail) {
       errorTextEmail = true;
     }
 
     /// check validation of all fields
-    if (name.isNotEmpty || !email.isEmail) {
+    if (name.isEmpty || !email.isEmail) {
       validated = false;
       return;
     }
 
+    errorTextFullName = false;
+    errorTextEmail = false;
     validated = true;
   }
 

@@ -5,14 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../constants/dependencies.dart';
 import '../constants/errors.dart';
 import '../constants/firestore_collections.dart';
-import '../main.dart';
 import '../models/user/user.dart' as cinnamon_user;
 
 class FirebaseService extends GetxService {

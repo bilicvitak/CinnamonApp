@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/icons.dart';
+import '../../../constants/keys.dart';
 import '../../../constants/strings.dart';
 import '../../../constants/text_styles.dart';
 import '../../../widgets/profile_picture_dialog.dart';
@@ -98,6 +99,7 @@ class ProfileScreenEdit extends StatelessWidget {
 
                 /// Full Name TextField
                 TextFormField(
+                  key: FAKeys.profileEditFullName,
                   initialValue: profileController.name,
                   onChanged: (value) => profileController
                     ..name = value
@@ -122,6 +124,7 @@ class ProfileScreenEdit extends StatelessWidget {
 
                 /// E-mail TextFormField
                 TextFormField(
+                  key: FAKeys.profileEditEmail,
                   initialValue: profileController.email,
                   onChanged: (value) => profileController
                     ..email = value
@@ -152,6 +155,7 @@ class ProfileScreenEdit extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     child: YellowButton(
                       text: FAStrings.buttonSave,
+                      enabled: profileController.validated,
                       onPressed: profileController.updateUserInfo,
                     ),
                   ),

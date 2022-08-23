@@ -31,9 +31,6 @@ class FAKeys {
   static const homeLessonTitle = Key('homeLessonTitle');
   static const homeLessonTime = Key('homeLessonTime');
 
-  /// Lesson Reservations screen
-  static const reservationsClose = Key('reservationsClose');
-
   /// Notifications screen
   static final notificationsRefreshIndicator = GlobalKey<RefreshIndicatorState>();
   static const notificationsListView = Key('notificationsListView');
@@ -62,4 +59,23 @@ class FAKeys {
   static const lessonDetailsScrollView = Key('lessonDetailsScrollView');
   static const lessonAttachmentDownload = Key('lessonAttachmentDownload');
   static const lessonPdfViewer = Key('lessonPdfViewer');
+
+  /// Lesson Reservations screen
+  static const reservationsClose = Key('reservationsClose');
+
+  /// Profile screen
+  static const profilePicture = Key('profilePicture');
+  static const profileFullName = Key('profileFullName');
+  static const profileEmail = Key('profileEmail');
+  static const profileGoalsList = Key('profileGoalsList');
+  static const profileNotificationsToggle = Key('profileNotificationsToggle');
+  static const profileDarkModeToggle = Key('profileDarkModeToggle');
+  static const profileTermsScrollView = Key('profileTermsScrollView');
+  static const profileEditFullName = Key('profileEditFullName');
+  static const profileEditEmail = Key('profileEditEmail');
+  static const profileNotificationsOn = Key('profileNotificationsOn');
+  static const profileNotificationsOff = Key('profileNotificationsOff');
+  static const profileDarkModeOff = Key('profileDarkModeOff');
+  static const profileDarkModeOn = Key('profileDarkModeOn');
+  static const profileGoalsContainer = Key('profileGoalsContainer');
 }

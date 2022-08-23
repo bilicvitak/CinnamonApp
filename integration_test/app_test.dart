@@ -171,24 +171,52 @@ void main() {
       await profileRobot.toggleNotifications();
       await profileRobot.toggleDarkMode();
 
-      /// --- go to terms
+      /// --- go to terms, scroll, find terms and privacy policy, go back
       await profileRobot.clickTerms();
+      await profileRobot.scrollTermsPage();
+      await profileRobot.findPrivacyPolicy();
+      await profileRobot.scrollTermsPage(direction: AxisDirection.down);
+      await profileRobot.findTerms();
       await profileRobot.goBack();
 
       /// --- edit user info
-      await profileRobot.clickEditUserInfo();
+      await profileRobot.clickEditButton();
       await profileRobot.editProfilePicture();
+
+      /// ----- enter empty, enter correct name
       await profileRobot.editName();
+      await profileRobot.editName(name: 'Iva Ivić');
+
+      /// ----- enter empty, enter invalid email, enter valid email
       await profileRobot.editEmail();
+      await profileRobot.editEmail(email: 'ivapapac');
+      await profileRobot.editEmail(email: 'ipapac@foi.hr');
+      await profileRobot.clickSaveButton();
+      await profileRobot.findUserInfo(fullName: 'Iva Ivić', email: 'ipapac@foi.hr');
+
+      /// ----- return old values
+      await profileRobot.clickEditButton();
+      await profileRobot.editName(name: 'Iva Papac');
+      await profileRobot.editEmail(email: 'ivapapac22@gmail.com');
       await profileRobot.clickSaveButton();
       await profileRobot.findUserInfo();
 
       /// --- edit user's goals
-      await profileRobot.clickEditGoals();
-      await profileRobot.selectGoals();
-      await profileRobot.deselectGoals();
+      /// ----- deselect all goals and save
+      await profileRobot.clickEditButton(index: 1);
+      await profileRobot.clickGoals(isSelecting: false);
+      await profileRobot.clickSaveButton();
+      await profileRobot.findUserGoals(goalsEmpty: true);
+
+      /// ----- select all goals and save
+      await profileRobot.clickEditButton(index: 1);
+      await profileRobot.clickGoals();
       await profileRobot.clickSaveButton();
       await profileRobot.findUserGoals();
+
+      /// ---- scroll goals
+      await profileRobot.scrollGoals();
+      await profileRobot.scrollGoals(direction: AxisDirection.down);
 
       /// --- sign out
       await profileRobot.signOut();

@@ -219,11 +219,11 @@ void main() {
       await profileRobot.scrollGoals(direction: AxisDirection.down);
 
       /// --- sign out
-      await profileRobot.signOut();
+      // await profileRobot.signOut();
     });
 
-    testWidgets('Second scenario - user forgot password', (tester) async {});
+    //testWidgets('Second scenario - user forgot password', (tester) async {});
 
-    testWidgets('Third scenario - registration', (tester) async {});
+    //testWidgets('Third scenario - registration', (tester) async {});
   });
 }

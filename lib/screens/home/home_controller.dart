@@ -91,7 +91,7 @@ class HomeController extends GetxController {
 
   /// home screen => lesson screen details
   void goToLessonScreenDetails() {
-    print(upcomingLesson);
+    logger.i(upcomingLesson);
 
     Get.toNamed(LessonScreenDetails.routeName, arguments: {
       'lesson': upcomingLesson.lessonDetails,

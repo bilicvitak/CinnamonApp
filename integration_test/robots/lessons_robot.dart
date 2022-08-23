@@ -48,9 +48,6 @@ class LessonsRobot {
 
     await _tester.ensureVisible(upcomingLesson);
     await _tester.tap(upcomingLesson);
-
-    print(Get.find<LessonsController>().selectedLesson);
-    
     await _tester.pumpAndSettle();
   }
 
@@ -60,9 +57,6 @@ class LessonsRobot {
 
     await _tester.ensureVisible(pastLesson);
     await _tester.tap(pastLesson);
-
-    print(Get.find<LessonsController>().selectedLesson);
-
     await _tester.pumpAndSettle();
   }
 }

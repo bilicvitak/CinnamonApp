@@ -90,11 +90,15 @@ class HomeController extends GetxController {
   /// ------------------------
 
   /// home screen => lesson screen details
-  void goToLessonScreenDetails() => Get.toNamed(LessonScreenDetails.routeName, arguments: {
-        'lesson': upcomingLesson.lessonDetails,
-        'isSeatReserved': isSeatReserved,
-        'reservedSeat': reservedSeat,
-      });
+  void goToLessonScreenDetails() {
+    print(upcomingLesson);
+
+    Get.toNamed(LessonScreenDetails.routeName, arguments: {
+      'lesson': upcomingLesson.lessonDetails,
+      'isSeatReserved': isSeatReserved,
+      'reservedSeat': reservedSeat,
+    });
+  }
 
   void goToLessonScreenReservations() =>
       Get.toNamed(LessonScreenReservations.routeName, arguments: {
@@ -171,8 +175,8 @@ class HomeController extends GetxController {
             doc: firebaseService.firebaseUser.value!.uid)
         .snapshots()
         .listen((snapshot) {
-          sharedFirebaseDataService.notifications = updateNotifications(snapshot);
-          checkNotifications();
+      sharedFirebaseDataService.notifications = updateNotifications(snapshot);
+      checkNotifications();
     });
   }
 

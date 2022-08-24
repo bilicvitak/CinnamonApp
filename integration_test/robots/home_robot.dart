@@ -1,3 +1,4 @@
+import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:cinnamon_flutter_template_1/widgets/white_button.dart';
@@ -18,7 +19,9 @@ class HomeRobot {
     final schedulePainter = find.byType(CustomPaint);
     final reservedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
 
-    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
+    logger.w('PRIJE');
+    await _tester.runAsync(() => Future.delayed(const Duration(seconds: 1)));
+    logger.w('POSLIJE');
 
     expect(upcomingHeadline, findsOneWidget);
     expect(lessonTitle, findsOneWidget);
@@ -65,6 +68,6 @@ class HomeRobot {
 
     await _tester.ensureVisible(notificationsButton);
     await _tester.tap(notificationsButton);
-    await _tester.pumpAndSettle();
+    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
   }
 }

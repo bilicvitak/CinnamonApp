@@ -35,7 +35,7 @@ class NotificationCard extends StatelessWidget {
         ),
         onDismissed: (direction) => notificationsController.updateNotification(index: index),
         child: Container(
-          height: 88.h,
+          height: 93.h,
           width: double.infinity,
           padding: EdgeInsets.all(16.r),
           decoration: BoxDecoration(

@@ -91,8 +91,6 @@ class HomeController extends GetxController {
 
   /// home screen => lesson screen details
   void goToLessonScreenDetails() {
-    print('[UPCOMING LESSON]: $upcomingLesson');
-
     Get.toNamed(LessonScreenDetails.routeName, arguments: {
       'lesson': upcomingLesson.lessonDetails,
       'isSeatReserved': isSeatReserved,

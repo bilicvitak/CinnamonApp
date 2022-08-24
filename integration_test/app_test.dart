@@ -87,6 +87,7 @@ void main() {
       await homeRobot.findUpcomingLesson();
       await homeRobot.goToUpcomingLessonDetails();
       await homeRobot.goBackToHome();
+      return;
 
       /// --- find upcoming lesson, go to reserve seat, close & go back
       await homeRobot.findUpcomingLesson();

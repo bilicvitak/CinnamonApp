@@ -81,7 +81,7 @@ class LoginRobot {
 
     await _tester.ensureVisible(loginButton);
     await _tester.tap(loginButton);
-    await _tester.pumpAndSettle(const Duration(seconds: 1));
+    await _tester.pumpAndSettle(const Duration(seconds: 2));
 
     switch (resultCode) {
       case 0:

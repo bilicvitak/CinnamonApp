@@ -3,6 +3,7 @@ import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:cinnamon_flutter_template_1/widgets/white_button.dart';
 import 'package:cinnamon_flutter_template_1/widgets/yellow_back_button.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,7 +20,12 @@ class HomeRobot {
     final schedulePainter = find.byType(CustomPaint);
     final reservedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
 
-    await Future.delayed(const Duration(seconds: 1));
+    fakeAsync((async) {
+      Future.delayed(const Duration(seconds: 1));
+      async.elapse(Duration.zero);
+    });
+
+    await _tester.pump();
 
     expect(upcomingHeadline, findsOneWidget);
     expect(lessonTitle, findsOneWidget);

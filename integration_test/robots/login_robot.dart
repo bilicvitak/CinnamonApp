@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
@@ -84,8 +85,18 @@ class LoginRobot {
 
     await _tester.ensureVisible(loginButton);
     await _tester.tap(loginButton);
-    await Future.delayed(const Duration(seconds: 1));
-    await _tester.pumpAndSettle();
+
+    fakeAsync((async) {
+      Future.delayed(const Duration(seconds: 1));
+      async.elapse(Duration.zero);
+    });
+
+    await _tester.pumpAndSettle(const Duration(seconds: 1));
+
+    fakeAsync((async) {
+      Future.delayed(const Duration(seconds: 1));
+      async.elapse(const Duration(seconds: 1));
+    });
 
     switch (resultCode) {
       case 0:

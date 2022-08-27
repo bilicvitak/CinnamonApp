@@ -85,18 +85,7 @@ class LoginRobot {
 
     await _tester.ensureVisible(loginButton);
     await _tester.tap(loginButton);
-
-    fakeAsync((async) {
-      Future.delayed(const Duration(seconds: 1));
-      async.elapse(Duration.zero);
-    });
-
     await _tester.pumpAndSettle(const Duration(seconds: 1));
-
-    fakeAsync((async) {
-      Future.delayed(const Duration(seconds: 1));
-      async.elapse(const Duration(seconds: 1));
-    });
 
     switch (resultCode) {
       case 0:

@@ -19,9 +19,7 @@ class HomeRobot {
     final schedulePainter = find.byType(CustomPaint);
     final reservedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
 
-    logger.w('PRIJE');
-    await _tester.runAsync(() => Future.delayed(const Duration(seconds: 1)));
-    logger.w('POSLIJE');
+    await Future.delayed(const Duration(seconds: 1));
 
     expect(upcomingHeadline, findsOneWidget);
     expect(lessonTitle, findsOneWidget);

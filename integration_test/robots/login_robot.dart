@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/errors.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:cinnamon_flutter_template_1/widgets/yellow_back_button.dart';
 import 'package:cinnamon_flutter_template_1/widgets/yellow_button.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -81,7 +84,8 @@ class LoginRobot {
 
     await _tester.ensureVisible(loginButton);
     await _tester.tap(loginButton);
-    await _tester.pumpAndSettle(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
+    await _tester.pumpAndSettle();
 
     switch (resultCode) {
       case 0:

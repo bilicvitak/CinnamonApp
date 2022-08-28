@@ -168,10 +168,12 @@ class LessonReservationsController extends GetxController {
         final user = await _getUser(student['userId']!);
 
         if (user != null) {
-          // TODO Use firebaseService method
+          final seatRef = firebaseService.getDocumentReference(doc: student['seatId']!);
+          final userRef = firebaseService.getDocumentReference(doc: student['userId']!);
+
           reservations.add({
-            'seatId': firebaseService.firebaseFirestore.doc(student['seatId']!),
-            'userId': firebaseService.firebaseFirestore.doc(student['userId']!),
+            'seatId': seatRef,
+            'userId': userRef,
           });
 
           reservationsDetails.addAll({seat.position: ReservationSeat(seat: seat, student: user)});
@@ -209,19 +211,19 @@ class LessonReservationsController extends GetxController {
   }
 
   Future<void> reserveSeat() async {
-    // TODO Use firebaseService method
-    reservations.add({
-      'seatId': firebaseService.firebaseFirestore
-          .doc('${FCFirestoreCollections.seatsCollection}/${selectedSeat.id}'),
-      'userId': firebaseService.firebaseFirestore.doc(
-          '${FCFirestoreCollections.usersCollection}/${firebaseService.firebaseUser.value?.uid}')
-    });
+    final seatRef = firebaseService.getDocumentReference(
+        collection: FCFirestoreCollections.seatsCollection, doc: selectedSeat.id);
+    final userRef = firebaseService.getDocumentReference(
+        collection: FCFirestoreCollections.usersCollection,
+        doc: '${firebaseService.firebaseUser.value?.uid}');
 
-    // TODO Use firebaseService method
-    await firebaseService.firebaseFirestore
-        .collection(FCFirestoreCollections.reservationsCollection)
-        .doc(reservationId)
-        .update({'students': reservations});
+    reservations.add({'seatId': seatRef, 'userId': userRef});
+
+    final success = await firebaseService.updateDoc(
+        collection: FCFirestoreCollections.reservationsCollection,
+        doc: reservationId,
+        field: 'students',
+        value: reservations);
   }
 
   Future<void> cancelReservation() async {
@@ -230,11 +232,11 @@ class LessonReservationsController extends GetxController {
 
     reservations.removeWhere((element) => element.containsValue(seatRef));
 
-    // TODO Use firebaseService method
-    await firebaseService.firebaseFirestore
-        .collection(FCFirestoreCollections.reservationsCollection)
-        .doc(reservationId)
-        .update({'students': reservations});
+    final success = await firebaseService.updateDoc(
+        collection: FCFirestoreCollections.reservationsCollection,
+        doc: reservationId,
+        field: 'students',
+        value: reservations);
 
     isSeatReserved = false;
   }

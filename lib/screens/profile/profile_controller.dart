@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 import '../../constants/dependencies.dart';
 import '../../constants/firestore_collections.dart';
@@ -125,7 +124,12 @@ class ProfileController extends GetxController {
   /// FUNCTION: Log out
   Future<void> logOut() async {
     await firebaseService.logOut();
-    await Get.offAllNamed(OnboardingScreen.routeName);
+    await Get.offNamedUntil(
+      OnboardingScreen.routeName,
+      (route) => route.settings.name == OnboardingScreen.routeName,
+    );
+
+    await Get.toNamed(OnboardingScreen.routeName);
   }
 
   /// FUNCTION: Get goal name by id

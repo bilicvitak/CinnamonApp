@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:cinnamon_flutter_template_1/constants/errors.dart';
 import 'package:cinnamon_flutter_template_1/main.dart' as app;
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -219,7 +221,7 @@ void main() {
       await profileRobot.scrollGoals(direction: AxisDirection.down);
 
       /// --- sign out
-      await profileRobot.signOut();
+      /// await profileRobot.signOut();
     });
   });
 }

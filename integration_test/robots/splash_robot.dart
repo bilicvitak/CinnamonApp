@@ -52,6 +52,8 @@ class SplashRobot {
 
     expect(splashSecondYellowContainer, findsOneWidget);
 
+    await _tester.pumpAndSettle();
+
     logger.i('[FINISH][SPLASH] findSecondYellowContainer');
   }
 }

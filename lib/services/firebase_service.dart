@@ -62,6 +62,8 @@ class FirebaseService extends GetxService {
 
     firebaseUser = Rx<User?>(firebaseAuth.currentUser);
     firebaseUser.bindStream(firebaseAuth.userChanges());
+
+    userLogged();
   }
 
   @override
@@ -77,12 +79,12 @@ class FirebaseService extends GetxService {
 
   /// FUNCTION: user logged in
   void userLogged() {
-    userChanges = firebaseAuth.userChanges().listen(
+    userChanges = firebaseUser.stream.listen(
       (user) {
         if (user == null) {
-          Get.snackbar('Message:', 'User is currently signed out!');
+          logger.wtf('User is currently signed out!');
         } else {
-          Get.snackbar(user.email!, 'User is signed in!');
+          logger.wtf('User (${user.email}) is signed in!');
         }
       },
     );

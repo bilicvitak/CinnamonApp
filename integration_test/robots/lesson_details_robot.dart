@@ -103,11 +103,8 @@ class LessonDetailsRobot {
     final attachmentCard = find.byType(AttachmentCard).at(0);
     final pdfViewer = find.byKey(FAKeys.lessonPdfViewer);
 
-    await _tester.ensureVisible(attachmentCard);
-    await _tester.pump();
-
     await _tester.tap(attachmentCard);
-    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await _tester.pump(const Duration(milliseconds: 500));
 
     expect(pdfViewer, findsOneWidget);
 

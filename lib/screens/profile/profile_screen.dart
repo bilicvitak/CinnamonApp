@@ -269,7 +269,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 /// Log out
                                 ListTile(
                                   title: GestureDetector(
-                                    onTap: profileController.logOut,
+                                    onTap: () => profileController.logOut(),
                                     child: Text(
                                       FAStrings.profileLogOut,
                                       style: FATextStyles.description,

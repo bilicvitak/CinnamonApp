@@ -107,7 +107,7 @@ class ProfileRobot {
     final editButton = find.widgetWithText(GestureDetector, FAStrings.profileEdit).at(index);
 
     await _tester.tap(editButton);
-    await _tester.pump(const Duration(milliseconds: 500));
+    await _tester.pump(const Duration(seconds: 1));
 
     logger.i('[START][PROFILE] clickEditButton');
   }
@@ -162,12 +162,10 @@ class ProfileRobot {
     final logOutText = find.text(FAStrings.profileLogOut);
 
     await _tester.tap(logOutText);
-    await _tester.pump(const Duration(seconds: 5));
+    await _tester.pumpAndSettle(const Duration(seconds: 2));
 
     final firebaseUser = firebaseService.firebaseUser.value;
     expect(firebaseUser == null, true);
-
-    await _tester.pumpAndSettle();
 
     logger.i('[START][PROFILE] signOut');
   }
@@ -240,7 +238,7 @@ class ProfileRobot {
     final saveButton = find.widgetWithText(YellowButton, FAStrings.buttonSave);
 
     await _tester.tap(saveButton);
-    await _tester.pumpAndSettle(const Duration(seconds: 5));
+    await _tester.pumpAndSettle(const Duration(seconds: 3));
 
     logger.i('[START][PROFILE] clickSaveButton');
   }

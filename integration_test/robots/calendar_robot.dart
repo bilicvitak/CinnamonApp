@@ -12,6 +12,9 @@ class CalendarRobot {
     logger.i('[START][CALENDAR] findCellCalendar');
 
     final cellCalendar = find.byType(CellCalendar);
+
+    await _tester.pump(const Duration(milliseconds: 500));
+
     expect(cellCalendar, findsOneWidget);
 
     logger.i('[FINISH][CALENDAR] findCellCalendar');

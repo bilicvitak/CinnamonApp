@@ -16,9 +16,7 @@ class ProfileRobot {
   Future<void> findProfileSettings() async {
     logger.i('[START][PROFILE] findProfileSettings');
 
-    final editButton = find.widgetWithText(GestureDetector, FAStrings.profileEdit);
-    expect(editButton, findsNWidgets(2));
-
+    await findEditButtons();
     await findUserInfo();
     await findUserGoals();
     await findSettings();
@@ -26,15 +24,28 @@ class ProfileRobot {
     logger.i('[START][PROFILE] findProfileSettings');
   }
 
+  Future<void> findEditButtons() async {
+    logger.i('[START][PROFILE] findEditButtons');
+
+    final editButton = find.widgetWithText(GestureDetector, FAStrings.profileEdit);
+
+    await _tester.pump(const Duration(seconds: 1));
+
+    expect(editButton, findsNWidgets(2));
+
+    logger.i('[FINISH][PROFILE] findEditButtons');
+  }
+
   Future<void> findUserInfo(
       {String fullName = 'Iva Papac', String email = 'ivapapac22@gmail.com'}) async {
-
     logger.i('[START][PROFILE] findUserInfo');
 
     final infoTitle = find.text(FAStrings.profileInfo);
     final profilePicture = find.byKey(FAKeys.profilePicture);
     final fullNameFinder = find.text(fullName);
     final emailFinder = find.text(email);
+
+    await _tester.pump();
 
     expect(infoTitle, findsOneWidget);
     expect(profilePicture, findsOneWidget);
@@ -51,6 +62,8 @@ class ProfileRobot {
     final goalsContainer = find.byKey(FAKeys.profileGoalsContainer);
     final goalsList = find.byKey(FAKeys.profileGoalsList);
     final noGoalsText = find.text(FAStrings.profileNoGoals);
+
+    await _tester.pump();
 
     expect(goalsTitle, findsOneWidget);
     expect(goalsContainer, findsOneWidget);
@@ -94,7 +107,7 @@ class ProfileRobot {
     final editButton = find.widgetWithText(GestureDetector, FAStrings.profileEdit).at(index);
 
     await _tester.tap(editButton);
-    await _tester.pumpAndSettle();
+    await _tester.pump(const Duration(milliseconds: 500));
 
     logger.i('[START][PROFILE] clickEditButton');
   }
@@ -149,10 +162,12 @@ class ProfileRobot {
     final logOutText = find.text(FAStrings.profileLogOut);
 
     await _tester.tap(logOutText);
-    await _tester.pumpAndSettle(const Duration(seconds: 5));
+    await _tester.pump(const Duration(seconds: 5));
 
     final firebaseUser = firebaseService.firebaseUser.value;
     expect(firebaseUser == null, true);
+
+    await _tester.pumpAndSettle();
 
     logger.i('[START][PROFILE] signOut');
   }
@@ -170,6 +185,7 @@ class ProfileRobot {
 
     await _tester.tap(fullNameEdit);
     await _tester.pump(const Duration(milliseconds: 500));
+
     await _tester.enterText(fullNameEdit, name);
     await _tester.pump(const Duration(seconds: 1));
 
@@ -192,6 +208,7 @@ class ProfileRobot {
 
     await _tester.tap(emailEdit);
     await _tester.pump(const Duration(milliseconds: 500));
+
     await _tester.enterText(emailEdit, email);
     await _tester.pump(const Duration(seconds: 1));
 
@@ -240,7 +257,7 @@ class ProfileRobot {
 
       if ((isSelecting && !isSelectedBefore) || (!isSelecting && isSelectedBefore)) {
         await _tester.tap(checkboxes.at(i));
-        await _tester.pump();
+        await _tester.pump(const Duration(milliseconds: 500));
       }
 
       final isSelectedAfter = _tester.widget<CheckboxListTile>(checkboxes.at(i)).value;
@@ -277,6 +294,8 @@ class ProfileRobot {
         of: find.byKey(FAKeys.profileTermsScrollView),
         matching: find.text(FAStrings.profileTermsCo));
     final termsText = find.text(FAStrings.profileTermsText);
+
+    await _tester.pump();
 
     expect(termsTitle, findsOneWidget);
     expect(termsText, findsOneWidget);

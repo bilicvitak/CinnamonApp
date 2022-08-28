@@ -65,6 +65,8 @@ class HomeRobot {
     final reserveSeatButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserveSeat);
 
     await _tester.ensureVisible(reserveSeatButton);
+    await _tester.pump();
+
     await _tester.tap(reserveSeatButton);
     await _tester.pumpAndSettle();
 
@@ -77,6 +79,8 @@ class HomeRobot {
     final closeButton = find.byKey(FAKeys.reservationsClose);
 
     await _tester.ensureVisible(closeButton);
+    await _tester.pump(const Duration(milliseconds: 500));
+
     await _tester.tap(closeButton);
     await _tester.pumpAndSettle();
 
@@ -89,8 +93,10 @@ class HomeRobot {
     final notificationsButton = find.byKey(FAKeys.homeNotificationButton);
 
     await _tester.ensureVisible(notificationsButton);
+    await _tester.pump(const Duration(milliseconds: 500));
+
     await _tester.tap(notificationsButton);
-    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await _tester.pumpAndSettle();
 
     logger.i('[FINISH][HOME] goToNotifications');
   }

@@ -126,7 +126,7 @@ void main() {
       await lessonsRobot.clickOnPastLesson();
       await lessonDetailsRobot.findLessonDetails(isPastLesson: true);
       await lessonDetailsRobot.scrollPageVertically();
-      await lessonDetailsRobot.rateLesson(rating: 4);
+      await lessonDetailsRobot.rateLesson();
 
       /// --- open pdf viewer, go back
       await lessonDetailsRobot.openPdfFile();

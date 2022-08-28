@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
@@ -28,6 +30,8 @@ class LessonDetailsRobot {
     final date = find.byKey(FAKeys.lessonDate);
     final attachmentsTitle = find.text(FAStrings.lessonsAttachments);
     final attachments = find.byType(AttachmentCard);
+
+    await _tester.pump(const Duration(milliseconds: 500));
 
     expect(descriptionTitle, findsOneWidget);
     expect(description, findsOneWidget);
@@ -71,9 +75,10 @@ class LessonDetailsRobot {
     logger.i('[FINISH][LESSON_DETAILS] scrollPageVertically');
   }
 
-  Future<void> rateLesson({required int rating}) async {
+  Future<void> rateLesson() async {
     logger.i('[START][LESSON_DETAILS] rateLesson');
 
+    final rating = 1 + Random().nextInt(5);
     final ratingBar = find.byType(RatingBar);
     final ratingBarStar =
         find.descendant(of: ratingBar, matching: find.byType(RatingBarStar)).at(rating - 1);
@@ -99,8 +104,10 @@ class LessonDetailsRobot {
     final pdfViewer = find.byKey(FAKeys.lessonPdfViewer);
 
     await _tester.ensureVisible(attachmentCard);
+    await _tester.pump();
+
     await _tester.tap(attachmentCard);
-    await _tester.pumpAndSettle();
+    await _tester.pumpAndSettle(const Duration(milliseconds: 500));
 
     expect(pdfViewer, findsOneWidget);
 
@@ -123,6 +130,9 @@ class LessonDetailsRobot {
 
     final reserveButton = find.widgetWithText(YellowButton, FAStrings.buttonReserve);
 
+    await _tester.ensureVisible(reserveButton);
+    await _tester.pump();
+
     await _tester.tap(reserveButton);
     await _tester.pumpAndSettle();
 
@@ -135,6 +145,8 @@ class LessonDetailsRobot {
     final selectedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
     final changeButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonChange);
 
+    await _tester.pump();
+
     expect(selectedSeat, findsOneWidget);
     expect(changeButton, findsOneWidget);
 
@@ -146,6 +158,9 @@ class LessonDetailsRobot {
 
     final changeButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonChange);
 
+    await _tester.ensureVisible(changeButton);
+    await _tester.pump();
+
     await _tester.tap(changeButton);
     await _tester.pumpAndSettle(const Duration(milliseconds: 500));
 
@@ -156,6 +171,9 @@ class LessonDetailsRobot {
     logger.i('[START][LESSON_DETAILS] findReserveButton');
 
     final reserveButton = find.widgetWithText(YellowButton, FAStrings.buttonReserve);
+
+    await _tester.pump();
+
     expect(reserveButton, findsOneWidget);
 
     logger.i('[FINISH][LESSON_DETAILS] findReserveButton');

@@ -16,6 +16,8 @@ class LessonsRobot {
     final upcomingTitle = find.text(FAStrings.homeUpcoming);
     final upcomingListView = find.byKey(FAKeys.lessonsUpcomingListView);
 
+    await _tester.pump(const Duration(seconds: 1));
+
     expect(upcomingTitle, findsOneWidget);
     expect(upcomingListView, findsOneWidget);
 
@@ -27,6 +29,8 @@ class LessonsRobot {
 
     final pastTitle = find.text(FAStrings.lessonsPast);
     final pastListView = find.byKey(FAKeys.lessonsPastListView);
+
+    await _tester.pump(const Duration(seconds: 1));
 
     expect(pastTitle, findsOneWidget);
     expect(pastListView, findsOneWidget);
@@ -60,6 +64,8 @@ class LessonsRobot {
         find.descendant(of: upcomingLessons, matching: find.byType(LessonCard)).at(1);
 
     await _tester.ensureVisible(upcomingLesson);
+    await _tester.pump();
+
     await _tester.tap(upcomingLesson);
     await _tester.pumpAndSettle();
 
@@ -73,6 +79,8 @@ class LessonsRobot {
     final pastLesson = find.descendant(of: pastLessons, matching: find.byType(LessonCard)).at(0);
 
     await _tester.ensureVisible(pastLesson);
+    await _tester.pump();
+
     await _tester.tap(pastLesson);
     await _tester.pumpAndSettle();
 

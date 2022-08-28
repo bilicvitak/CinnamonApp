@@ -15,6 +15,9 @@ class LessonReservationsRobot {
     logger.i('[START][LESSON_RESERVATIONS] findSeats');
 
     final seats = find.byType(SeatCard);
+
+    await _tester.pump(const Duration(milliseconds: 500));
+
     expect(seats, findsWidgets);
 
     logger.i('[FINISH][LESSON_RESERVATIONS] findSeats');
@@ -26,6 +29,8 @@ class LessonReservationsRobot {
     final seatAvailableText = find.text(FAStrings.lessonsSeatAvailable);
     final seatNotAvailableText = find.text(FAStrings.lessonsSeatNotAvailable);
     final seatSelectedText = find.text(FAStrings.lessonsSeatSelected);
+
+    await _tester.pump();
 
     expect(seatAvailableText, findsOneWidget);
     expect(seatNotAvailableText, findsOneWidget);
@@ -40,6 +45,8 @@ class LessonReservationsRobot {
     final reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
     final selectedSeatTitle = find.textContaining(FAStrings.lessonsSelectedSeat);
 
+    await _tester.pump();
+
     expect(selectedSeatTitle, findsOneWidget);
     expect(reserveButton, findsOneWidget);
 
@@ -52,7 +59,7 @@ class LessonReservationsRobot {
     final seat = find.byType(SeatCard).at(0);
 
     await _tester.tap(seat);
-    await _tester.pump();
+    await _tester.pump(const Duration(milliseconds: 500));
 
     final seatWidget = _tester.widget<SeatCard>(seat);
     final seatName = seatWidget.reservation.seat.name;
@@ -72,7 +79,7 @@ class LessonReservationsRobot {
     final cancelButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonCancel);
 
     await _tester.tap(reserveButton);
-    await _tester.pump(const Duration(milliseconds: 500));
+    await _tester.pump(const Duration(seconds: 1));
 
     final seatWidget = _tester.widget<SeatCard>(seat);
 
@@ -101,8 +108,11 @@ class LessonReservationsRobot {
     final seat = find.byType(SeatCard).at(0);
     final reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
 
+    await _tester.ensureVisible(cancelButton);
+    await _tester.pump();
+
     await _tester.tap(cancelButton);
-    await _tester.pump(const Duration(milliseconds: 500));
+    await _tester.pump(const Duration(seconds: 1));
 
     final seatWidget = _tester.widget<SeatCard>(seat);
 

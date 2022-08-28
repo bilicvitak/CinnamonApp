@@ -17,6 +17,8 @@ class NotificationsRobot {
     final notificationTitle = find.text(FAStrings.notificationsNotifications);
     final notificationCards = find.byType(NotificationCard);
 
+    await _tester.pump(const Duration(milliseconds: 500));
+
     expect(notificationTitle, findsOneWidget);
     expect(notificationCards, findsWidgets);
 
@@ -72,6 +74,8 @@ class NotificationsRobot {
     final yellowCloseButton = find.byType(YellowCloseButton);
 
     await _tester.ensureVisible(yellowCloseButton);
+    await _tester.pump();
+
     await _tester.tap(yellowCloseButton);
     await _tester.pumpAndSettle();
 

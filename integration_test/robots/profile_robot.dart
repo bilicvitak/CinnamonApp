@@ -238,7 +238,7 @@ class ProfileRobot {
     final saveButton = find.widgetWithText(YellowButton, FAStrings.buttonSave);
 
     await _tester.tap(saveButton);
-    await _tester.pumpAndSettle(const Duration(seconds: 3));
+    await _tester.pumpAndSettle(const Duration(seconds: 5));
 
     logger.i('[START][PROFILE] clickSaveButton');
   }

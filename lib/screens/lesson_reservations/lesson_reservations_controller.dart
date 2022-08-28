@@ -127,12 +127,10 @@ class LessonReservationsController extends GetxController {
 
   Future<void> getReservations() async {
     final lectureId = '${FCFirestoreCollections.lessonsCollection}/Lesson${lesson.lessonNumber}';
-    final lectureRef =
-        firebaseService.firebaseFirestore.doc(lectureId); // TODO Use firebaseService method
+    final lectureRef = firebaseService.getDocumentReference(doc: lectureId);
 
-    final firebaseReservation = await firebaseService.firebaseFirestore
-        .collection(
-            FCFirestoreCollections.reservationsCollection) // TODO Use firebaseService method
+    final firebaseReservation = await firebaseService
+        .getCollectionReference(collection: FCFirestoreCollections.reservationsCollection)
         .where('lectureId', isEqualTo: lectureRef)
         .get();
 
@@ -146,10 +144,14 @@ class LessonReservationsController extends GetxController {
       .where((seat) => '${FCFirestoreCollections.seatsCollection}/${seat.id}' == seatPath)
       .single;
 
-  Future<cinnamon_user.User> _getUser(String path) async {
-    // TODO Use firebaseService method
-    final firebaseUser = await firebaseService.firebaseFirestore.doc(path).get();
-    return cinnamon_user.User.fromJson(firebaseUser.data()!);
+  Future<cinnamon_user.User?> _getUser(String path) async {
+    final firebaseUser = await firebaseService.getDocument(docPath: path);
+
+    if (firebaseUser != null) {
+      return cinnamon_user.User.fromJson(firebaseUser.data()!);
+    } else {
+      return null;
+    }
   }
 
   Future<void> _setSeatReservation(List<Map<String, String>> students) async {
@@ -165,17 +167,19 @@ class LessonReservationsController extends GetxController {
         final seat = _getSeat(student['seatId']!);
         final user = await _getUser(student['userId']!);
 
-        // TODO Use firebaseService method
-        reservations.add({
-          'seatId': firebaseService.firebaseFirestore.doc(student['seatId']!),
-          'userId': firebaseService.firebaseFirestore.doc(student['userId']!),
-        });
+        if (user != null) {
+          // TODO Use firebaseService method
+          reservations.add({
+            'seatId': firebaseService.firebaseFirestore.doc(student['seatId']!),
+            'userId': firebaseService.firebaseFirestore.doc(student['userId']!),
+          });
 
-        reservationsDetails.addAll({seat.position: ReservationSeat(seat: seat, student: user)});
+          reservationsDetails.addAll({seat.position: ReservationSeat(seat: seat, student: user)});
 
-        if (user.id == firebaseService.firebaseUser.value?.uid) {
-          isSeatReserved = true;
-          selectedSeat = seat;
+          if (user.id == firebaseService.firebaseUser.value?.uid) {
+            isSeatReserved = true;
+            selectedSeat = seat;
+          }
         }
       });
     }
@@ -221,9 +225,10 @@ class LessonReservationsController extends GetxController {
   }
 
   Future<void> cancelReservation() async {
-    // TODO Use firebaseService method
-    reservations.removeWhere((element) => element.containsValue(firebaseService.firebaseFirestore
-        .doc('${FCFirestoreCollections.seatsCollection}/${selectedSeat.id}')));
+    final seatId = '${FCFirestoreCollections.seatsCollection}/${selectedSeat.id}';
+    final seatRef = firebaseService.getDocumentReference(doc: seatId);
+
+    reservations.removeWhere((element) => element.containsValue(seatRef));
 
     // TODO Use firebaseService method
     await firebaseService.firebaseFirestore

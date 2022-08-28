@@ -246,17 +246,19 @@ class ProfileController extends GetxController {
     if (success) {
       final updatedUser = user.copyWith(email: email, name: name);
 
-      // TODO Add try-catch block
-      await firebaseService.firebaseUser.value?.updateEmail(updatedUser.email);
-      await firebaseService.firebaseUser.value?.updateDisplayName(updatedUser.name);
+      try {
+        await firebaseService.firebaseUser.value?.updateEmail(updatedUser.email);
+        await firebaseService.firebaseUser.value?.updateDisplayName(updatedUser.name);
 
-      // TODO Check success
-      final success = await firebaseService.createDoc(
-          collection: FCFirestoreCollections.usersCollection,
-          doc: updatedUser.id,
-          data: updatedUser.toJson());
+        await firebaseService.createDoc(
+            collection: FCFirestoreCollections.usersCollection,
+            doc: updatedUser.id,
+            data: updatedUser.toJson());
 
-      user = updatedUser;
+        user = updatedUser;
+      } catch (e) {
+        logger.e(e);
+      }
     }
 
     Get.back();
@@ -266,7 +268,7 @@ class ProfileController extends GetxController {
     await storageService.deleteValue(key: FAStrings.notificationsKey);
     await storageService.insertValue(key: FAStrings.notificationsKey, value: notifications);
 
-    if(notifications){
+    if (notifications) {
       await firebaseService.firebaseMessaging.subscribeToTopic('lectures');
     } else {
       await firebaseService.firebaseMessaging.unsubscribeFromTopic('lectures');

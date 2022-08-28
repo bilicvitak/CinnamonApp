@@ -14,18 +14,18 @@ class LoginRobot {
   LoginRobot(this._tester);
 
   Future<void> goBack() async {
-    logger.i('[START] goBack');
+    logger.i('[START][LOGIN] goBack');
 
     final backButton = find.byType(YellowBackButton);
 
     await _tester.tap(backButton);
     await _tester.pumpAndSettle();
 
-    logger.i('[FINISH] goBack');
+    logger.i('[FINISH][LOGIN] goBack');
   }
 
   Future<void> enterEmail({required String email}) async {
-    logger.i('[START] enterEmail');
+    logger.i('[START][LOGIN] enterEmail');
 
     final loginEmail = find.byKey(FAKeys.loginEmail);
 
@@ -37,11 +37,11 @@ class LoginRobot {
     FocusManager.instance.primaryFocus?.unfocus();
     await _tester.pump(const Duration(milliseconds: 500));
 
-    logger.i('[FINISH] enterEmail');
+    logger.i('[FINISH][LOGIN] enterEmail');
   }
 
   Future<void> findEmailError({bool isEmpty = false}) async {
-    logger.i('[START] findEmailError');
+    logger.i('[START][LOGIN] findEmailError');
 
     if (isEmpty) {
       final emailEmptyError = find.text(FAStrings.registrationValidationRequiredField);
@@ -51,11 +51,11 @@ class LoginRobot {
       expect(emailInvalidError, findsOneWidget);
     }
 
-    logger.i('[FINISH] findEmailError');
+    logger.i('[FINISH][LOGIN] findEmailError');
   }
 
   Future<void> enterPassword({required String password}) async {
-    logger.i('[START] enterPassword');
+    logger.i('[START][LOGIN] enterPassword');
 
     final loginPassword = find.byKey(FAKeys.loginPassword);
 
@@ -67,11 +67,11 @@ class LoginRobot {
     FocusManager.instance.primaryFocus?.unfocus();
     await _tester.pump(const Duration(milliseconds: 500));
 
-    logger.i('[FINISH] enterPassword');
+    logger.i('[FINISH][LOGIN] enterPassword');
   }
 
   Future<void> findPasswordError({bool isEmpty = false}) async {
-    logger.i('[START] findPasswordError');
+    logger.i('[START][LOGIN] findPasswordError');
 
     if (isEmpty) {
       final passwordEmptyError = find.text(FAStrings.registrationValidationRequiredField);
@@ -81,31 +81,31 @@ class LoginRobot {
       expect(passwordInvalidError, findsOneWidget);
     }
 
-    logger.i('[FINISH] findPasswordError');
+    logger.i('[FINISH][LOGIN] findPasswordError');
   }
 
   Future<void> toggleObscureText() async {
-    logger.i('[START] toggleObscureText');
+    logger.i('[START][LOGIN] toggleObscureText');
 
     final showPassword = find.byKey(FAKeys.loginShowPassword);
     await _tester.tap(showPassword);
     await _tester.pump();
 
-    logger.i('[FINISH] toggleObscureText');
+    logger.i('[FINISH][LOGIN] toggleObscureText');
   }
 
   Future<void> findDisabledLoginButton() async {
-    logger.i('[START] findDisabledLoginButton');
+    logger.i('[START][LOGIN] findDisabledLoginButton');
 
     final loginButton = find.byKey(FAKeys.loginButton);
 
     expect(_tester.widget<YellowButton>(loginButton).enabled, false);
 
-    logger.i('[FINISH] findDisabledLoginButton');
+    logger.i('[FINISH][LOGIN] findDisabledLoginButton');
   }
 
   Future<void> clickLoginButton({int resultCode = 0}) async {
-    logger.i('[START] clickLoginButton');
+    logger.i('[START][LOGIN] clickLoginButton');
 
     final loginButton = find.byKey(FAKeys.loginButton);
 
@@ -130,6 +130,6 @@ class LoginRobot {
 
     await _tester.pumpAndSettle();
 
-    logger.i('[FINISH] clickLoginButton');
+    logger.i('[FINISH][LOGIN] clickLoginButton');
   }
 }

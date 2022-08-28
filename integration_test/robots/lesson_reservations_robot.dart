@@ -1,3 +1,4 @@
+import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:cinnamon_flutter_template_1/widgets/outlined_gray_button.dart';
@@ -11,11 +12,17 @@ class LessonReservationsRobot {
   LessonReservationsRobot(this._tester);
 
   Future<void> findSeats() async {
+    logger.i('[START][LESSON_RESERVATIONS] findSeats');
+
     final seats = find.byType(SeatCard);
     expect(seats, findsWidgets);
+
+    logger.i('[FINISH][LESSON_RESERVATIONS] findSeats');
   }
 
   Future<void> findSeatLegend() async {
+    logger.i('[START][LESSON_RESERVATIONS] findSeatLegend');
+
     final seatAvailableText = find.text(FAStrings.lessonsSeatAvailable);
     final seatNotAvailableText = find.text(FAStrings.lessonsSeatNotAvailable);
     final seatSelectedText = find.text(FAStrings.lessonsSeatSelected);
@@ -23,17 +30,25 @@ class LessonReservationsRobot {
     expect(seatAvailableText, findsOneWidget);
     expect(seatNotAvailableText, findsOneWidget);
     expect(seatSelectedText, findsOneWidget);
+
+    logger.i('[FINISH][LESSON_RESERVATIONS] findSeatLegend');
   }
 
   Future<void> findReserveButton() async {
+    logger.i('[START][LESSON_RESERVATIONS] findReserveButton');
+
     final reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
     final selectedSeatTitle = find.textContaining(FAStrings.lessonsSelectedSeat);
 
     expect(selectedSeatTitle, findsOneWidget);
     expect(reserveButton, findsOneWidget);
+
+    logger.i('[FINISH][LESSON_RESERVATIONS] findReserveButton');
   }
 
   Future<void> selectSeat() async {
+    logger.i('[START][LESSON_RESERVATIONS] selectSeat');
+
     final seat = find.byType(SeatCard).at(0);
 
     await _tester.tap(seat);
@@ -45,9 +60,13 @@ class LessonReservationsRobot {
 
     expect(seatWidget.isSelected, true);
     expect(selectedSeat, findsOneWidget);
+
+    logger.i('[FINISH][LESSON_RESERVATIONS] selectSeat');
   }
 
   Future<void> reserveSeat() async {
+    logger.i('[START][LESSON_RESERVATIONS] reserveSeat');
+
     final seat = find.byType(SeatCard).at(0);
     final reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
     final cancelButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonCancel);
@@ -60,16 +79,24 @@ class LessonReservationsRobot {
     expect(reserveButton, findsNothing);
     expect(cancelButton, findsOneWidget);
     expect(seatWidget.isReserved, true);
+
+    logger.i('[FINISH][LESSON_RESERVATIONS] reserveSeat');
   }
 
   Future<void> closeScreen() async {
+    logger.i('[START][LESSON_RESERVATIONS] closeScreen');
+
     final closeButton = find.byKey(FAKeys.reservationsClose);
 
     await _tester.tap(closeButton);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH][LESSON_RESERVATIONS] closeScreen');
   }
 
   Future<void> cancelReservations() async {
+    logger.i('[START][LESSON_RESERVATIONS] cancelReservations');
+
     final cancelButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonCancel);
     final seat = find.byType(SeatCard).at(0);
     final reserveButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserve);
@@ -82,5 +109,7 @@ class LessonReservationsRobot {
     expect(cancelButton, findsNothing);
     expect(reserveButton, findsOneWidget);
     expect(seatWidget.isReserved, false);
+
+    logger.i('[FINISH][LESSON_RESERVATIONS] cancelReservations');
   }
 }

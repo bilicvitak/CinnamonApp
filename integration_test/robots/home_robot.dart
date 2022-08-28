@@ -12,7 +12,7 @@ class HomeRobot {
   HomeRobot(this._tester);
 
   Future<void> findUpcomingLesson() async {
-    logger.i('[START] findUpcomingLesson');
+    logger.i('[START][HOME] findUpcomingLesson');
 
     final upcomingHeadline = find.text(FAStrings.homeUpcoming);
     final lessonTitle = find.byKey(FAKeys.homeLessonTitle);
@@ -30,11 +30,11 @@ class HomeRobot {
     expect(scheduleHeadline, findsOneWidget);
     expect(schedulePainter, findsWidgets);
 
-    logger.i('[FINISH] findUpcomingLesson');
+    logger.i('[FINISH][HOME] findUpcomingLesson');
   }
 
   Future<void> goToUpcomingLessonDetails() async {
-    logger.i('[START] goToUpcomingLessonDetails');
+    logger.i('[START][HOME] goToUpcomingLessonDetails');
 
     final chevronRight = find.byKey(FAKeys.homeChevronRight);
 
@@ -44,11 +44,11 @@ class HomeRobot {
     await _tester.tap(chevronRight);
     await _tester.pumpAndSettle();
 
-    logger.i('[FINISH] goToUpcomingLessonDetails');
+    logger.i('[FINISH][HOME] goToUpcomingLessonDetails');
   }
 
   Future<void> goBackToHome() async {
-    logger.i('[START] goBackToHome');
+    logger.i('[START][HOME] goBackToHome');
 
     final yellowBackButton = find.byType(YellowBackButton);
 
@@ -56,11 +56,11 @@ class HomeRobot {
     await _tester.tap(yellowBackButton);
     await _tester.pumpAndSettle();
 
-    logger.i('[FINISH] goBackToHome');
+    logger.i('[FINISH][HOME] goBackToHome');
   }
 
   Future<void> goToReserveSeat() async {
-    logger.i('[START] goToReserveSeat');
+    logger.i('[START][HOME] goToReserveSeat');
 
     final reserveSeatButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserveSeat);
 
@@ -68,11 +68,11 @@ class HomeRobot {
     await _tester.tap(reserveSeatButton);
     await _tester.pumpAndSettle();
 
-    logger.i('[FINISH] goToReserveSeat');
+    logger.i('[FINISH][HOME] goToReserveSeat');
   }
 
   Future<void> closeAndGoToHome() async {
-    logger.i('[START] closeAndGoToHome');
+    logger.i('[START][HOME] closeAndGoToHome');
 
     final closeButton = find.byKey(FAKeys.reservationsClose);
 
@@ -80,11 +80,11 @@ class HomeRobot {
     await _tester.tap(closeButton);
     await _tester.pumpAndSettle();
 
-    logger.i('[FINISH] closeAndGoToHome');
+    logger.i('[FINISH][HOME] closeAndGoToHome');
   }
 
   Future<void> goToNotifications() async {
-    logger.i('[START] goToNotifications');
+    logger.i('[START][HOME] goToNotifications');
 
     final notificationsButton = find.byKey(FAKeys.homeNotificationButton);
 
@@ -92,6 +92,6 @@ class HomeRobot {
     await _tester.tap(notificationsButton);
     await _tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-    logger.i('[FINISH] goToNotifications');
+    logger.i('[FINISH][HOME] goToNotifications');
   }
 }

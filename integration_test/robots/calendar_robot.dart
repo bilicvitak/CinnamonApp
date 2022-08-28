@@ -1,4 +1,5 @@
 import 'package:cell_calendar/cell_calendar.dart';
+import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,11 +9,17 @@ class CalendarRobot {
   CalendarRobot(this._tester);
 
   Future<void> findCellCalendar() async {
+    logger.i('[START][CALENDAR] findCellCalendar');
+
     final cellCalendar = find.byType(CellCalendar);
     expect(cellCalendar, findsOneWidget);
+
+    logger.i('[FINISH][CALENDAR] findCellCalendar');
   }
 
   Future<void> swipeLeft() async {
+    logger.i('[START][CALENDAR] swipeLeft');
+
     final cellCalendar = find.byType(CellCalendar);
     final cellCalendarController =
         _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
@@ -22,9 +29,13 @@ class CalendarRobot {
     await _tester.pumpAndSettle();
 
     await _findNextPage(initialPage: page!);
+
+    logger.i('[FINISH][CALENDAR] swipeLeft');
   }
 
   Future<void> swipeRight() async {
+    logger.i('[START][CALENDAR] swipeRight');
+
     final cellCalendar = find.byType(CellCalendar);
     final cellCalendarController =
         _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
@@ -34,9 +45,13 @@ class CalendarRobot {
     await _tester.pumpAndSettle();
 
     await _findPreviousPage(initialPage: page!);
+
+    logger.i('[FINISH][CALENDAR] swipeRight');
   }
 
   Future<void> clickChevronRight() async {
+    logger.i('[START][CALENDAR] clickChevronRight');
+
     final cellCalendar = find.byType(CellCalendar);
     final cellCalendarController =
         _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
@@ -47,9 +62,13 @@ class CalendarRobot {
     await _tester.pumpAndSettle();
 
     await _findNextPage(initialPage: page!);
+
+    logger.i('[FINISH][CALENDAR] clickChevronRight');
   }
 
   Future<void> clickChevronLeft() async {
+    logger.i('[START][CALENDAR] clickChevronLeft');
+
     final cellCalendar = find.byType(CellCalendar);
     final cellCalendarController =
         _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
@@ -60,21 +79,31 @@ class CalendarRobot {
     await _tester.pumpAndSettle();
 
     await _findPreviousPage(initialPage: page!);
+
+    logger.i('[FINISH][CALENDAR] clickChevronLeft');
   }
 
   Future<void> _findPreviousPage({double initialPage = 0}) async {
+    logger.i('[START][CALENDAR] _findPreviousPage');
+
     final cellCalendar = find.byType(CellCalendar);
     final cellCalendarController =
         _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
 
     expect(cellCalendarController?.page, initialPage - 1);
+
+    logger.i('[FINISH][CALENDAR] _findPreviousPage');
   }
 
   Future<void> _findNextPage({double initialPage = 0}) async {
+    logger.i('[START][CALENDAR] _findNextPage');
+
     final cellCalendar = find.byType(CellCalendar);
     final cellCalendarController =
         _tester.widget<CellCalendar>(cellCalendar).cellCalendarPageController;
 
     expect(cellCalendarController?.page, initialPage + 1);
+
+    logger.i('[FINISH][CALENDAR] _findNextPage');
   }
 }

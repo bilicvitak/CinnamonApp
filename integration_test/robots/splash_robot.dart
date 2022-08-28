@@ -8,7 +8,7 @@ class SplashRobot {
   SplashRobot(this._tester);
 
   Future<void> findFirstYellowContainer() async {
-    logger.i('[START] findFirstYellowContainer');
+    logger.i('[START][SPLASH] findFirstYellowContainer');
 
     final splashFirstYellowContainer = find.byKey(FAKeys.splashFirstYellowContainer);
 
@@ -16,11 +16,11 @@ class SplashRobot {
 
     expect(splashFirstYellowContainer, findsOneWidget);
 
-    logger.i('[FINISH] findFirstYellowContainer');
+    logger.i('[FINISH][SPLASH] findFirstYellowContainer');
   }
 
   Future<void> findWhiteContainer() async {
-    logger.i('[START] findWhiteContainer');
+    logger.i('[START][SPLASH] findWhiteContainer');
 
     final splashWhiteContainer = find.byKey(FAKeys.splashWhiteContainer);
 
@@ -28,11 +28,11 @@ class SplashRobot {
 
     expect(splashWhiteContainer, findsOneWidget);
 
-    logger.i('[FINISH] findWhiteContainer');
+    logger.i('[FINISH][SPLASH] findWhiteContainer');
   }
 
   Future<void> findLogo() async {
-    logger.i('[START] findLogo');
+    logger.i('[START][SPLASH] findLogo');
 
     final splashLogoFull = find.byKey(FAKeys.splashLogoFull);
 
@@ -40,11 +40,11 @@ class SplashRobot {
 
     expect(splashLogoFull, findsOneWidget);
 
-    logger.i('[FINISH] findLogo');
+    logger.i('[FINISH][SPLASH] findLogo');
   }
 
   Future<void> findSecondYellowContainer() async {
-    logger.i('[START] findSecondYellowContainer');
+    logger.i('[START][SPLASH] findSecondYellowContainer');
 
     final splashSecondYellowContainer = find.byKey(FAKeys.splashSecondYellowContainer);
 
@@ -52,6 +52,6 @@ class SplashRobot {
 
     expect(splashSecondYellowContainer, findsOneWidget);
 
-    logger.i('[FINISH] findSecondYellowContainer');
+    logger.i('[FINISH][SPLASH] findSecondYellowContainer');
   }
 }

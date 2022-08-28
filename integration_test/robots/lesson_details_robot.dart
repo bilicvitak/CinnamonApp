@@ -1,3 +1,4 @@
+import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:cinnamon_flutter_template_1/widgets/attachment_card.dart';
@@ -15,6 +16,8 @@ class LessonDetailsRobot {
   LessonDetailsRobot(this._tester);
 
   Future<void> findLessonDetails({bool isPastLesson = false}) async {
+    logger.i('[START][LESSON_DETAILS] findLessonDetails');
+
     final descriptionTitle = find.text(FAStrings.lessonsDescription);
     final description = find.byKey(FAKeys.lessonDescription);
     final lessonScheduleTitle = find.text(FAStrings.lessonsLessonSchedule);
@@ -46,9 +49,13 @@ class LessonDetailsRobot {
     } else {
       await findReserveButton();
     }
+
+    logger.i('[FINISH][LESSON_DETAILS] findLessonDetails');
   }
 
   Future<void> scrollPageVertically({AxisDirection direction = AxisDirection.up}) async {
+    logger.i('[START][LESSON_DETAILS] scrollPageVertically');
+
     final scrollView = find.byKey(FAKeys.lessonDetailsScrollView);
     final locationTitle = find.text(FAStrings.lessonsLocation);
     final initialPosition = _tester.getCenter(locationTitle);
@@ -60,9 +67,13 @@ class LessonDetailsRobot {
     final newPosition = _tester.getCenter(locationTitle);
 
     expect(newPosition.dy < initialPosition.dy, direction == AxisDirection.up);
+
+    logger.i('[FINISH][LESSON_DETAILS] scrollPageVertically');
   }
 
   Future<void> rateLesson({required int rating}) async {
+    logger.i('[START][LESSON_DETAILS] rateLesson');
+
     final ratingBar = find.byType(RatingBar);
     final ratingBarStar =
         find.descendant(of: ratingBar, matching: find.byType(RatingBarStar)).at(rating - 1);
@@ -77,9 +88,13 @@ class LessonDetailsRobot {
 
     expect(filledStars, findsNWidgets(rating));
     expect(emptyStars, findsNWidgets(5 - rating));
+
+    logger.i('[FINISH][LESSON_DETAILS] rateLesson');
   }
 
   Future<void> openPdfFile() async {
+    logger.i('[START][LESSON_DETAILS] openPdfFile');
+
     final attachmentCard = find.byType(AttachmentCard).at(0);
     final pdfViewer = find.byKey(FAKeys.lessonPdfViewer);
 
@@ -88,39 +103,61 @@ class LessonDetailsRobot {
     await _tester.pumpAndSettle();
 
     expect(pdfViewer, findsOneWidget);
+
+    logger.i('[FINISH][LESSON_DETAILS] openPdfFile');
   }
 
   Future<void> goBack() async {
+    logger.i('[START][LESSON_DETAILS] goBack');
+
     final yellowBackButton = find.byType(YellowBackButton);
 
     await _tester.tap(yellowBackButton);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH][LESSON_DETAILS] goBack');
   }
 
   Future<void> clickReserveButton() async {
+    logger.i('[START][LESSON_DETAILS] clickReserveButton');
+
     final reserveButton = find.widgetWithText(YellowButton, FAStrings.buttonReserve);
 
     await _tester.tap(reserveButton);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH][LESSON_DETAILS] clickReserveButton');
   }
 
   Future<void> findReservedSeat() async {
+    logger.i('[START][LESSON_DETAILS] findReservedSeat');
+
     final selectedSeat = find.textContaining(FAStrings.lessonsSelectedSeat);
     final changeButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonChange);
 
     expect(selectedSeat, findsOneWidget);
     expect(changeButton, findsOneWidget);
+
+    logger.i('[FINISH][LESSON_DETAILS] findReservedSeat');
   }
 
   Future<void> changeReservation() async {
+    logger.i('[START][LESSON_DETAILS] changeReservation');
+
     final changeButton = find.widgetWithText(OutlinedGrayButton, FAStrings.buttonChange);
 
     await _tester.tap(changeButton);
     await _tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+    logger.i('[FINISH][LESSON_DETAILS] changeReservation');
   }
 
   Future<void> findReserveButton() async {
+    logger.i('[START][LESSON_DETAILS] findReserveButton');
+
     final reserveButton = find.widgetWithText(YellowButton, FAStrings.buttonReserve);
     expect(reserveButton, findsOneWidget);
+
+    logger.i('[FINISH][LESSON_DETAILS] findReserveButton');
   }
 }

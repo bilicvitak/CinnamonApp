@@ -1,3 +1,4 @@
+import 'package:cinnamon_flutter_template_1/constants/dependencies.dart';
 import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -9,6 +10,8 @@ class OnboardingRobot {
   OnboardingRobot(this._tester);
 
   Future<void> findFirstSlide() async {
+    logger.i('[START] findFirstSlide');
+
     final lessonAndSchedule = find.byKey(FAKeys.onboardingLessonSchedule);
     final onboardingFirstText = find.text(FAStrings.onboardingFirstText);
 
@@ -16,9 +19,13 @@ class OnboardingRobot {
 
     expect(lessonAndSchedule, findsOneWidget);
     expect(onboardingFirstText, findsOneWidget);
+
+    logger.i('[FINISH] findFirstSlide');
   }
 
   Future<void> swipeToLeft() async {
+    logger.i('[START] swipeToLeft');
+
     final onboardingPageView = find.byKey(FAKeys.onboardingPageView);
     final dotsIndicator = find.byKey(FAKeys.onboardingDotsIndicator);
     final positionBefore = _tester.widget<DotsIndicator>(dotsIndicator).position;
@@ -29,45 +36,67 @@ class OnboardingRobot {
     final positionAfter =  _tester.widget<DotsIndicator>(dotsIndicator).position;
 
     expect(positionAfter, positionBefore + 1);
+
+    logger.i('[FINISH] swipeToLeft');
   }
 
   Future<void> findSecondSlide() async {
+    logger.i('[START] findSecondSlide');
+
     final onboardingSecondText = find.text(FAStrings.onboardingSecondText);
     final onboardingSeats = find.byKey(FAKeys.onboardingSeats);
 
     expect(onboardingSecondText, findsOneWidget);
     expect(onboardingSeats, findsOneWidget);
+
+    logger.i('[FINISH] findSecondSlide');
   }
 
   Future<void> findThirdSlide() async {
+    logger.i('[START] findThirdSlide');
+
     final onboardingThirdText = find.text(FAStrings.onboardingThirdText);
     final onboardingFirstWhiteImage = find.byKey(FAKeys.onboardingFirstWhiteImage);
 
     expect(onboardingThirdText, findsOneWidget);
     expect(onboardingFirstWhiteImage, findsOneWidget);
+
+    logger.i('[FINISH] findThirdSlide');
   }
 
   Future<void> findFourthSlide() async {
+    logger.i('[START] findFourthSlide');
+
     final onboardingFourthText = find.text(FAStrings.onboardingFourthText);
     final onboardingSecondWhiteImage = find.byKey(FAKeys.onboardingSecondWhiteImage);
 
     expect(onboardingFourthText, findsOneWidget);
     expect(onboardingSecondWhiteImage, findsOneWidget);
+
+    logger.i('[FINISH] findFourthSlide');
   }
 
   Future<void> clickRegistrationButton() async {
+    logger.i('[START] clickRegistrationButton');
+
     final registrationButton = find.byKey(FAKeys.onboardingRegistrationButton);
 
     await _tester.ensureVisible(registrationButton);
     await _tester.tap(registrationButton);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH] clickRegistrationButton');
   }
 
   Future<void> clickLoginButton() async {
+    logger.i('[START] clickLoginButton');
+
     final loginButton = find.byKey(FAKeys.onboardingLoginButton);
 
     await _tester.ensureVisible(loginButton);
     await _tester.tap(loginButton);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH] clickLoginButton');
   }
 }

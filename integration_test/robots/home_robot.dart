@@ -3,7 +3,6 @@ import 'package:cinnamon_flutter_template_1/constants/keys.dart';
 import 'package:cinnamon_flutter_template_1/constants/strings.dart';
 import 'package:cinnamon_flutter_template_1/widgets/white_button.dart';
 import 'package:cinnamon_flutter_template_1/widgets/yellow_back_button.dart';
-import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -13,6 +12,8 @@ class HomeRobot {
   HomeRobot(this._tester);
 
   Future<void> findUpcomingLesson() async {
+    logger.i('[START] findUpcomingLesson');
+
     final upcomingHeadline = find.text(FAStrings.homeUpcoming);
     final lessonTitle = find.byKey(FAKeys.homeLessonTitle);
     final lessonTime = find.byKey(FAKeys.homeLessonTime);
@@ -28,45 +29,67 @@ class HomeRobot {
     expect(reservedSeat, findsNothing);
     expect(scheduleHeadline, findsOneWidget);
     expect(schedulePainter, findsWidgets);
+
+    logger.i('[FINISH] findUpcomingLesson');
   }
 
   Future<void> goToUpcomingLessonDetails() async {
+    logger.i('[START] goToUpcomingLessonDetails');
+
     final chevronRight = find.byKey(FAKeys.homeChevronRight);
 
     await _tester.ensureVisible(chevronRight);
     await _tester.tap(chevronRight);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH] goToUpcomingLessonDetails');
   }
 
   Future<void> goBackToHome() async {
+    logger.i('[START] goBackToHome');
+
     final yellowBackButton = find.byType(YellowBackButton);
 
     await _tester.ensureVisible(yellowBackButton);
     await _tester.tap(yellowBackButton);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH] goBackToHome');
   }
 
   Future<void> goToReserveSeat() async {
+    logger.i('[START] goToReserveSeat');
+
     final reserveSeatButton = find.widgetWithText(WhiteButton, FAStrings.buttonReserveSeat);
 
     await _tester.ensureVisible(reserveSeatButton);
     await _tester.tap(reserveSeatButton);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH] goToReserveSeat');
   }
 
   Future<void> closeAndGoToHome() async {
+    logger.i('[START] closeAndGoToHome');
+
     final closeButton = find.byKey(FAKeys.reservationsClose);
 
     await _tester.ensureVisible(closeButton);
     await _tester.tap(closeButton);
     await _tester.pumpAndSettle();
+
+    logger.i('[FINISH] closeAndGoToHome');
   }
 
   Future<void> goToNotifications() async {
+    logger.i('[START] goToNotifications');
+
     final notificationsButton = find.byKey(FAKeys.homeNotificationButton);
 
     await _tester.ensureVisible(notificationsButton);
     await _tester.tap(notificationsButton);
     await _tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+    logger.i('[FINISH] goToNotifications');
   }
 }

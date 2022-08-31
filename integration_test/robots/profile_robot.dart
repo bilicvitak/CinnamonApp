@@ -21,7 +21,7 @@ class ProfileRobot {
     await findUserGoals();
     await findSettings();
 
-    logger.i('[START][PROFILE] findProfileSettings');
+    logger.i('[FINISH][PROFILE] findProfileSettings');
   }
 
   Future<void> findEditButtons() async {
@@ -52,7 +52,7 @@ class ProfileRobot {
     expect(fullNameFinder, findsOneWidget);
     expect(emailFinder, findsOneWidget);
 
-    logger.i('[START][PROFILE] findUserInfo');
+    logger.i('[FINISH][PROFILE] findUserInfo');
   }
 
   Future<void> findUserGoals({bool goalsEmpty = false}) async {
@@ -76,7 +76,7 @@ class ProfileRobot {
       expect(noGoalsText, findsNothing);
     }
 
-    logger.i('[START][PROFILE] findUserGoals');
+    logger.i('[FINISH][PROFILE] findUserGoals');
   }
 
   Future<void> findSettings() async {
@@ -98,7 +98,7 @@ class ProfileRobot {
     expect(termsText, findsOneWidget);
     expect(logOutText, findsOneWidget);
 
-    logger.i('[START][PROFILE] findSettings');
+    logger.i('[FINISH][PROFILE] findSettings');
   }
 
   Future<void> clickEditButton({int index = 0}) async {
@@ -109,7 +109,7 @@ class ProfileRobot {
     await _tester.tap(editButton);
     await _tester.pump(const Duration(seconds: 1));
 
-    logger.i('[START][PROFILE] clickEditButton');
+    logger.i('[FINISH][PROFILE] clickEditButton');
   }
 
   Future<void> toggleNotifications() async {
@@ -126,7 +126,7 @@ class ProfileRobot {
 
     expect(notificationsIcon, findsOneWidget);
 
-    logger.i('[START][PROFILE] toggleNotifications');
+    logger.i('[FINISH][PROFILE] toggleNotifications');
   }
 
   Future<void> toggleDarkMode() async {
@@ -142,7 +142,7 @@ class ProfileRobot {
 
     expect(darkModeIcon, findsOneWidget);
 
-    logger.i('[START][PROFILE] toggleDarkMode');
+    logger.i('[FINISH][PROFILE] toggleDarkMode');
   }
 
   Future<void> clickTerms() async {
@@ -153,7 +153,7 @@ class ProfileRobot {
     await _tester.tap(termsText);
     await _tester.pumpAndSettle();
 
-    logger.i('[START][PROFILE] clickTerms');
+    logger.i('[FINISH][PROFILE] clickTerms');
   }
 
   Future<void> signOut() async {
@@ -167,7 +167,7 @@ class ProfileRobot {
     final firebaseUser = firebaseService.firebaseUser.value;
     expect(firebaseUser == null, true);
 
-    logger.i('[START][PROFILE] signOut');
+    logger.i('[FINISH][PROFILE] signOut');
   }
 
   /// Edit user info
@@ -196,7 +196,7 @@ class ProfileRobot {
     name.isEmpty ? expect(fullNameEmpty, findsOneWidget) : expect(fullNameEmpty, findsNothing);
     expect(saveButton.enabled, name.isNotEmpty);
 
-    logger.i('[START][PROFILE] editName');
+    logger.i('[FINISH][PROFILE] editName');
   }
 
   Future<void> editEmail({String email = ''}) async {
@@ -229,7 +229,7 @@ class ProfileRobot {
 
     expect(saveButton.enabled, email.isNotEmpty && email.isEmail);
 
-    logger.i('[START][PROFILE] editEmail');
+    logger.i('[FINISH][PROFILE] editEmail');
   }
 
   Future<void> clickSaveButton() async {
@@ -240,7 +240,7 @@ class ProfileRobot {
     await _tester.tap(saveButton);
     await _tester.pumpAndSettle(const Duration(seconds: 5));
 
-    logger.i('[START][PROFILE] clickSaveButton');
+    logger.i('[FINISH][PROFILE] clickSaveButton');
   }
 
   /// Edit goals
@@ -262,7 +262,7 @@ class ProfileRobot {
       expect(isSelectedAfter, isSelecting);
     }
 
-    logger.i('[START][PROFILE] clickGoals');
+    logger.i('[FINISH][PROFILE] clickGoals');
   }
 
   Future<void> scrollGoals({AxisDirection direction = AxisDirection.up}) async {
@@ -281,7 +281,7 @@ class ProfileRobot {
 
     expect(newPosition.dy < initialPosition.dy, direction == AxisDirection.up);
 
-    logger.i('[START][PROFILE] scrollGoals');
+    logger.i('[FINISH][PROFILE] scrollGoals');
   }
 
   /// Profile Terms screen
@@ -298,7 +298,7 @@ class ProfileRobot {
     expect(termsTitle, findsOneWidget);
     expect(termsText, findsOneWidget);
 
-    logger.i('[START][PROFILE] findTerms');
+    logger.i('[FINISH][PROFILE] findTerms');
   }
 
   Future<void> findPrivacyPolicy() async {
@@ -310,7 +310,7 @@ class ProfileRobot {
     expect(privacyPolicyTitle, findsOneWidget);
     expect(privacyPolicyText, findsOneWidget);
 
-    logger.i('[START][PROFILE] findPrivacyPolicy');
+    logger.i('[FINISH][PROFILE] findPrivacyPolicy');
   }
 
   Future<void> goBack() async {
@@ -321,7 +321,7 @@ class ProfileRobot {
     await _tester.tap(yellowBackButton);
     await _tester.pumpAndSettle();
 
-    logger.i('[START][PROFILE] goBack');
+    logger.i('[FINISH][PROFILE] goBack');
   }
 
   Future<void> scrollTermsPage({AxisDirection direction = AxisDirection.up}) async {
@@ -341,6 +341,6 @@ class ProfileRobot {
 
     expect(newPosition.dy < initialPosition.dy, direction == AxisDirection.up);
 
-    logger.i('[START][PROFILE] scrollTermsPage');
+    logger.i('[FINISH][PROFILE] scrollTermsPage');
   }
 }

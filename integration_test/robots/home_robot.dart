@@ -39,7 +39,7 @@ class HomeRobot {
     final chevronRight = find.byKey(FAKeys.homeChevronRight);
 
     await _tester.ensureVisible(chevronRight);
-    await _tester.pump(const Duration(seconds: 1));
+    await _tester.pump(const Duration(seconds: 2));
 
     await _tester.tap(chevronRight);
     await _tester.pumpAndSettle();

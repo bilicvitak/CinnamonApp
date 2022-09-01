@@ -1,4 +1,4 @@
-# Automatically generated on 2022-08-19 UTC from https://codemagic.io/app/62f79ab3b44a1ffc4d8afdf7/settings
+# Automatically generated on 2022-09-01 UTC from https://codemagic.io/app/62f79ab3b44a1ffc4d8afdf7/settings
 # Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
 
 workflows:
@@ -33,6 +33,16 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+      tag_patterns:
+        - pattern: '*'
+          include: true
     scripts:
       - flutter emulators --launch emulator
       - |
@@ -67,3 +77,7 @@ workflows:
       - '*.snap'
       - build/windows/**/*.msix
       - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - ipapac@foi.hr
